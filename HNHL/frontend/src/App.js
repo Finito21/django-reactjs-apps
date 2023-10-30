@@ -237,14 +237,8 @@ function App() {
               <div className="card-body">
                 <h4 className="card-title">Seller Name</h4>
               </div>
-              
-            </div>
-          </div>
-          <div className='col-12 col-md-3 mb-4'>
-            <div className="card">
-              <img src={logo} className="card-img-top" alt="..."/>
-              <div className="card-body">
-                <h4 className="card-title">Seller Name</h4>
+              <div className='card-footer'>
+                Categories: <a href="#">Cat1</a>, <a href="#">Cat2</a>
               </div>
               
             </div>
@@ -255,14 +249,8 @@ function App() {
               <div className="card-body">
                 <h4 className="card-title">Seller Name</h4>
               </div>
-              
-            </div>
-          </div>
-          <div className='col-12 col-md-3 mb-4'>
-            <div className="card">
-              <img src={logo} className="card-img-top" alt="..."/>
-              <div className="card-body">
-                <h4 className="card-title">Seller Name</h4>
+              <div className='card-footer'>
+                Categories: <a href="#">Cat1</a>, <a href="#">Cat2</a>
               </div>
               
             </div>
@@ -272,6 +260,33 @@ function App() {
               <img src={logo} className="card-img-top" alt="..."/>
               <div className="card-body">
                 <h4 className="card-title">Seller Name</h4>
+              </div>
+              <div className='card-footer'>
+                Categories <a href="#">Cat1</a>, <a href="#">Cat2</a>
+              </div>
+              
+            </div>
+          </div>
+          <div className='col-12 col-md-3 mb-4'>
+            <div className="card">
+              <img src={logo} className="card-img-top" alt="..."/>
+              <div className="card-body">
+                <h4 className="card-title">Seller Name</h4>
+              </div>
+              <div className='card-footer'>
+                Categories: <a href="#">Cat1</a>, <a href="#">Cat2</a>
+              </div>
+              
+            </div>
+          </div>
+          <div className='col-12 col-md-3 mb-4'>
+            <div className="card">
+              <img src={logo} className="card-img-top" alt="..."/>
+              <div className="card-body">
+                <h4 className="card-title">Seller Name</h4>
+              </div>
+              <div className='card-footer'>
+                Categories: <a href="#">Cat1</a>, <a href="#">Cat2</a>
               </div>
               
             </div>
