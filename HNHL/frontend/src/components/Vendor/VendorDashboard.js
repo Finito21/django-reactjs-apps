@@ -1,13 +1,14 @@
 
-import Sidebar from './Sidebar';
+import VendorSidebar from './VendorSidebar';
+import Sidebar from './VendorSidebar';
 
 
-function Dashboard(props){
+function VendorDashbaord(props){
     return(
             <div className='container mt-4'>
                 <div className='row'>
                     <div className='col-md-3 col-12 mb-2'>
-                        <Sidebar></Sidebar>
+                        <VendorSidebar></VendorSidebar>
                     </div>
                     <div className='col-md-9 col-12 mb-2'>
                         <div className='row'>
@@ -44,4 +45,4 @@ function Dashboard(props){
             </div>
     )
 }
-export default Dashboard;
+export default VendorDashbaord;

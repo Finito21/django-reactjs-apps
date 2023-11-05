@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom';
 
-function Sidebar(){
+function VendorSidebar(){
     return (
         <div className="list-group">
             <Link to="/customer/dashboard" className="list-group-item list-group-item-action active">Dashboard</Link>
@@ -13,4 +13,4 @@ function Sidebar(){
         </div>
     )
 }
-export default Sidebar;
+export default VendorSidebar;

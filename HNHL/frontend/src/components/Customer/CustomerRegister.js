@@ -2,7 +2,7 @@ import logo from '../../logo.svg';
 import {Link} from 'react-router-dom';
 
 
-function Register(props){
+function CustomerRegister(props){
     return(
             <div className='container mt-4'>
                 <div className='row'>
@@ -44,4 +44,4 @@ function Register(props){
             </div>
     )
 }
-export default Register;
+export default CustomerRegister;

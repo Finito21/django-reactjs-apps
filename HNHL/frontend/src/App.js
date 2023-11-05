@@ -12,9 +12,9 @@ import ProductDetail from './components/ProductDetail';
 import CategoryProducts from './components/CategoryProducts';
 import Checkout from './components/Checkout';
 
-import Register from './components/Customer/Register';
-import Login from './components/Customer/Login';
-import Dashboard from './components/Customer/Dashboard';
+import CustomerRegister from './components/Customer/CustomerRegister';
+import CustomerLogin from './components/Customer/CustomerLogin';
+import CustomerDashboard from './components/Customer/CustomerDashboard';
 import Orders from './components/Customer/Orders';
 import Wishlist from './components/Customer/Wishlist';
 import Profile from './components/Customer/Profile';
@@ -25,6 +25,10 @@ import AddAddress from './components/Customer/AddAddress';
 
 import OrderSuccess from './components/OrderSuccess';
 import OrderFailure from './components/OrderFailure';
+
+import VendorRegister from './components/Vendor/VendorRegister';
+import VendorLogin from './components/Vendor/VendorLogin';
+import VendorDashbaord from './components/Vendor/VendorDashboard';
 
 function App() {
   return (
@@ -38,9 +42,11 @@ function App() {
       <Route path='/category/:category_slug/:category_id' element={<CategoryProducts/>}/>
       <Route path='/product/:product_slug/:product_id' element={<ProductDetail/>}/>
       <Route path='/checkout' element={<Checkout/>}/>
-      <Route path='/customer/register' element={<Register/>}/>
-      <Route path='/customer/login' element={<Login/>}/>
-      <Route path='/customer/dashboard' element={<Dashboard/>}/>
+
+      <Route path='/customer/register' element={<CustomerRegister/>}/>
+      <Route path='/customer/login' element={<CustomerLogin/>}/>
+      <Route path='/customer/dashboard' element={<CustomerDashboard/>}/>
+
       <Route path='/customer/orders' element={<Orders/>}/>
       <Route path='/customer/wishlist' element={<Wishlist/>}/>
       <Route path='/customer/profile' element={<Profile/>}/>
@@ -52,6 +58,10 @@ function App() {
 
       <Route path='/order/success' element={<OrderSuccess/>}/>
       <Route path='/order/failure' element={<OrderFailure/>}/>
+
+      <Route path='/vendor/register' element={<VendorRegister/>}/>
+      <Route path='/vendor/login' element={<VendorLogin/>}/>
+      <Route path='/vendor/dashboard' element={<VendorDashbaord/>}/>
 
     </Routes>
     <Footer/>
