@@ -15,6 +15,14 @@ function VendorDashbaord(props){
                             <div className='col-md-4 mb-2'>
                                 <div className='card'>
                                     <div className='card-body text-center'>
+                                        <h4>Total Products</h4>
+                                        <h4><a href='#'>123</a></h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='col-md-4 mb-2'>
+                                <div className='card'>
+                                    <div className='card-body text-center'>
                                         <h4>Total Orders</h4>
                                         <h4><a href='#'>123</a></h4>
                                     </div>
@@ -23,15 +31,7 @@ function VendorDashbaord(props){
                             <div className='col-md-4 mb-2'>
                                 <div className='card'>
                                     <div className='card-body text-center'>
-                                        <h4>Total Wishlist</h4>
-                                        <h4><a href='#'>123</a></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className='col-md-4 mb-2'>
-                                <div className='card'>
-                                    <div className='card-body text-center'>
-                                        <h4>Total Addresses</h4>
+                                        <h4>Total Customers</h4>
                                         <h4><a href='#'>5</a></h4>
                                     </div>
                                 </div>

@@ -1,5 +1,5 @@
 
-import Sidebar from './CustomerSidebar';
+import CustomerSidebar from './CustomerSidebar';
 
 
 function CustomerLogin(props){
@@ -7,7 +7,7 @@ function CustomerLogin(props){
             <div className='container mt-4'>
                 <div className='row'>
                     <div className='col-md-3 col-12 mb-2'>
-                        <Sidebar></Sidebar>
+                        <CustomerSidebar></CustomerSidebar>
                     </div>
                     <div className='col-md-9 col-12 mb-2'>
                         <div className='row'>
