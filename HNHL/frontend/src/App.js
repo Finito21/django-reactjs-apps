@@ -29,6 +29,9 @@ import OrderFailure from './components/OrderFailure';
 import VendorRegister from './components/Vendor/VendorRegister';
 import VendorLogin from './components/Vendor/VendorLogin';
 import VendorDashbaord from './components/Vendor/VendorDashboard';
+import VendorProducts from './components/Vendor/VendorProducts';
+import AddProduct from './components/Vendor/AddProduct';
+
 
 function App() {
   return (
@@ -62,6 +65,9 @@ function App() {
       <Route path='/vendor/register' element={<VendorRegister/>}/>
       <Route path='/vendor/login' element={<VendorLogin/>}/>
       <Route path='/vendor/dashboard' element={<VendorDashbaord/>}/>
+      <Route path='/vendor/products' element={<VendorProducts/>}/>
+      <Route path='/vendor/add-product' element={<AddProduct/>}/>
+
 
     </Routes>
     <Footer/>

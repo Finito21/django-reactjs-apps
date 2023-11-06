@@ -1,5 +1,5 @@
 
-import Sidebar from './CustomerSidebar';
+import CustomerSidebar from './CustomerSidebar';
 import logo from '../../logo.svg';
 import {Link} from 'react-router-dom';
 
@@ -8,7 +8,7 @@ function ChangePassword(){
             <div className='container mt-4'>
                 <div className='row'>
                     <div className='col-md-3 col-12 mb-2'>
-                        <Sidebar></Sidebar>
+                        <CustomerSidebar></CustomerSidebar>
                     </div>
 
                     <div className='col-md-9 col-12 mb-2'>

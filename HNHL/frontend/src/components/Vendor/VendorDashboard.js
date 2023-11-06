@@ -1,6 +1,5 @@
 
 import VendorSidebar from './VendorSidebar';
-import Sidebar from './VendorSidebar';
 
 
 function VendorDashbaord(props){
