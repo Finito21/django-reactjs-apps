@@ -1,13 +1,13 @@
-import CustomerSidebar from './CustomerSidebar';
+import VendorSidebar from './VendorSidebar';
 import logo from '../../logo.svg';
 import {Link} from 'react-router-dom';
 
-function Profile(){
+function VendorProfile(){
     return(
         <div className='container mt-4'>
                 <div className='row'>
                     <div className='col-md-3 col-12 mb-2'>
-                        <CustomerSidebar></CustomerSidebar>
+                        <VendorSidebar></VendorSidebar>
                     </div>
                     <div className='col-md-9 col-12 mb-2'>
                         <div className='card'>
@@ -46,4 +46,4 @@ function Profile(){
             </div>
         )
                         }
-                        export default Profile;
+                        export default VendorProfile;

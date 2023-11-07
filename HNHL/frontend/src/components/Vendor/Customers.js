@@ -36,8 +36,10 @@ function Customers(){
                                         <td>1234</td>
                                         <td><span className='text-success'><i className='fa fa-check-circle'> </i> Completed</span></td>
                                        <td>
-
-                                        <button className='btn btn-danger btn-sm'>Remove from list</button>
+                                       <button className='btn btn-primary btn-sm'>Orders</button>
+                                        <button className='btn btn-danger btn-sm ms-1'>Remove from list</button>
+                                        
+                                       
                                        </td>
                                           
 
@@ -52,8 +54,10 @@ function Customers(){
                                         <td>1234</td>
                                         <td><span className='text-success'><i className='fa fa-check-circle'> </i> Completed</span></td>
                                        <td>
-
-                                        <button className='btn btn-danger btn-sm'>Remove from list</button>
+                                        <button className='btn btn-primary btn-sm'>Orders</button>
+                                        <button className='btn btn-danger btn-sm ms-1'>Remove from list</button>
+                                        
+                                       
                                        </td>
                                           
 

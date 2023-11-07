@@ -17,8 +17,8 @@ import CustomerLogin from './components/Customer/CustomerLogin';
 import CustomerDashboard from './components/Customer/CustomerDashboard';
 import CustomerOrders from './components/Customer/CustomerOrders';
 import Wishlist from './components/Customer/Wishlist';
-import Profile from './components/Customer/Profile';
-import ChangePassword from './components/Customer/ChangePassword';
+import CustomerProfile from './components/Customer/CustomerProfile';
+import ChangeCustomerPassword from './components/Customer/ChangeCustomerPassword';
 import AddressesList from './components/Customer/AddressesList';
 import AddAddress from './components/Customer/AddAddress';
 
@@ -33,6 +33,9 @@ import VendorProducts from './components/Vendor/VendorProducts';
 import AddProduct from './components/Vendor/AddProduct';
 import VendorOrders from './components/Vendor/VendorOrders';
 import Customers from './components/Vendor/Customers';
+import Reports from './components/Vendor/Reports';
+import VendorProfile from './components/Vendor/VendorProfile';
+import ChangeVendorPassword from './components/Vendor/ChangeVendorPassword';
 
 
 
@@ -55,8 +58,8 @@ function App() {
 
       <Route path='/customer/CustomerOrders' element={<CustomerOrders/>}/>
       <Route path='/customer/wishlist' element={<Wishlist/>}/>
-      <Route path='/customer/profile' element={<Profile/>}/>
-      <Route path='/customer/change-password' element={<ChangePassword/>}/>
+      <Route path='/customer/customer-profile' element={<CustomerProfile/>}/>
+      <Route path='/customer/change-customer-password' element={<ChangeCustomerPassword/>}/>
       <Route path='/customer/addresses' element={<AddressesList/>}/>
       <Route path='/customer/add-address' element={<AddAddress/>}/>
 
@@ -71,8 +74,11 @@ function App() {
       <Route path='/vendor/products' element={<VendorProducts/>}/>
       <Route path='/vendor/add-product' element={<AddProduct/>}/>
       <Route path='/vendor/VendorOrders' element={<VendorOrders/>}/>
-      <Route path='/vendor/customers' element={<Customers/>}/>
 
+      <Route path='/vendor/customers' element={<Customers/>}/>
+      <Route path='/vendor/reports' element={<Reports/>}/>
+      <Route path='/vendor/vendor-profile' element={<VendorProfile/>}/>
+      <Route path='/vendor/change-vendor-password' element={<ChangeVendorPassword/>}/>
 
     </Routes>
     <Footer/>
