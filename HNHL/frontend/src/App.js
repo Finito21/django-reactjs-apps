@@ -15,7 +15,7 @@ import Checkout from './components/Checkout';
 import CustomerRegister from './components/Customer/CustomerRegister';
 import CustomerLogin from './components/Customer/CustomerLogin';
 import CustomerDashboard from './components/Customer/CustomerDashboard';
-import Orders from './components/Customer/Orders';
+import CustomerOrders from './components/Customer/CustomerOrders';
 import Wishlist from './components/Customer/Wishlist';
 import Profile from './components/Customer/Profile';
 import ChangePassword from './components/Customer/ChangePassword';
@@ -31,6 +31,9 @@ import VendorLogin from './components/Vendor/VendorLogin';
 import VendorDashbaord from './components/Vendor/VendorDashboard';
 import VendorProducts from './components/Vendor/VendorProducts';
 import AddProduct from './components/Vendor/AddProduct';
+import VendorOrders from './components/Vendor/VendorOrders';
+import Customers from './components/Vendor/Customers';
+
 
 
 function App() {
@@ -50,7 +53,7 @@ function App() {
       <Route path='/customer/login' element={<CustomerLogin/>}/>
       <Route path='/customer/dashboard' element={<CustomerDashboard/>}/>
 
-      <Route path='/customer/orders' element={<Orders/>}/>
+      <Route path='/customer/CustomerOrders' element={<CustomerOrders/>}/>
       <Route path='/customer/wishlist' element={<Wishlist/>}/>
       <Route path='/customer/profile' element={<Profile/>}/>
       <Route path='/customer/change-password' element={<ChangePassword/>}/>
@@ -67,6 +70,8 @@ function App() {
       <Route path='/vendor/dashboard' element={<VendorDashbaord/>}/>
       <Route path='/vendor/products' element={<VendorProducts/>}/>
       <Route path='/vendor/add-product' element={<AddProduct/>}/>
+      <Route path='/vendor/VendorOrders' element={<VendorOrders/>}/>
+      <Route path='/vendor/customers' element={<Customers/>}/>
 
 
     </Routes>

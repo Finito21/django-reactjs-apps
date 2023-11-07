@@ -3,7 +3,7 @@ import CustomerSidebar from './CustomerSidebar';
 import logo from '../../logo.svg';
 import {Link} from 'react-router-dom';
 
-function Orders(){
+function CustomerOrders(){
     return(
             <div className='container mt-4'>
                 <div className='row'>
@@ -82,4 +82,4 @@ function Orders(){
             </div>
     )
 }
-export default Orders;
+export default CustomerOrders;
