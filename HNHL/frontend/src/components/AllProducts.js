@@ -3,20 +3,23 @@ import SingleProduct from './SingleProduct';
 import { useState,useEffect} from 'react';
 function AllProducts(){
         const [products,setProducts]=useState([])
+        const[totalResult,setTotalResults]=useState(0);
 
         useEffect(()=>{
-            fetchData('http://127.0.0.1:8000/api/products/');
+            fetchData();
            
-        });
+        },[]);
 
         function fetchData(baseurl){
-            fetch(baseurl)
+            fetch('http://127.0.0.1:8000/api/products/')
             .then((response)=> response.json())
-            .then((data)=> setProducts(data.results));
-    
-    
+            .then((data)=> {
+                setProducts(data.results);
+                setTotalResults(data.count);})
         }
 
+        var links=[];
+        for(let i=1; i<to)
     
     
 
@@ -36,6 +39,7 @@ function AllProducts(){
 
 
             <nav aria-label="Page navigation example">
+                {totalResult}
                 <ul class="pagination">
                     <li class="page-item">
                     <a class="page-link" href="#" aria-label="Previous">
