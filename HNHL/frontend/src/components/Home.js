@@ -2,23 +2,33 @@ import {Link} from 'react-router-dom';
 import SingleProduct from './SingleProduct';
 import logo from '../logo.svg';
 function Home(){
+    const products=[
+
+        {
+            'title':'Product1',
+            'price':100
+        },
+        {
+            'title':'Product2',
+            'price':103243
+        },
+        {
+            'title':'Product3',
+            'price':14545
+        }
+    ]
     return (
     <main className='mt-4'>
         <div className='container'>
         <h3 className='mb-4'>Latest Products<Link to='/products' className='float-end btn btn-sm btn-dark'>View All Products</Link></h3>
         <div className='row mb-4'>
-            <SingleProduct title="Django Project 1"/>
-            <SingleProduct title="Django Project 2"/>
-            <SingleProduct title="Django Project 3"/>
-            <SingleProduct title="Django Project 4"/>
-            <SingleProduct title="Django Project 5"/>
-            <SingleProduct title="Django Project 6"/>
-            <SingleProduct title="Django Project 7"/>
-            <SingleProduct title="Django Project 8"/>
-            <SingleProduct title="Django Project 9"/>
+
+        {
+            products.map((product) => <SingleProduct product={product}/>)
+        }
         </div>
 
-        <h3 className='mb-4'>Popular Categories<a href='#' className='float-end btn btn-sm btn-dark'>View All Categories</a></h3>
+        <h3 className='mb-4'>Popular Categories<Link to='/categories' className='float-end btn btn-sm btn-dark'>View All Categories</Link></h3>
         <div className='row mb-4'>
             
             <div className='col-12 col-md-3 mb-4'>

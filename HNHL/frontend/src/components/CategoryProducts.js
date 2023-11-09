@@ -1,6 +1,7 @@
 import logo from '../logo.svg';
 import SingleProduct from './SingleProduct';
 function CategoryProducts(){
+
     return(
         <section className='container'>
             <h3 className='mb-4'><span className='text-danger'>test Products</span></h3>
