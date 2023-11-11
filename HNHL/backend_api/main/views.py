@@ -18,6 +18,7 @@ class ProductList(generics.ListCreateAPIView):
     serializer_class=serializers.ProductListSerializer
     pagination_class=pagination.PageNumberPagination
 
+    
 class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset=models.Product.objects.all()
     serializer_class=serializers.ProductDetailSerializer

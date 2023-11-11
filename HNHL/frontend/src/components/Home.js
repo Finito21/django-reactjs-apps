@@ -15,7 +15,7 @@ function Home(){
         {
             'title':'Product3',
             'price':14545
-        }
+        },
     ]
     return (
     <main className='mt-4'>

@@ -31,30 +31,25 @@ function AllProducts(props){
         }
 
         
-    
-    
+        return(
+            <section className='container'>
+                <h3 className='mb-4'>All Products</h3>
+                <div className='row mb-4'>
+                    {
+                    products.map((product) => <SingleProduct product={product}/>)
+                    }
+                    
+                </div>
+                    
+                    
 
 
-
-    return(
-        <section className='container'>
-            <h3 className='mb-4'>All Products</h3>
-            <div className='row mb-4'>
-                {
-                products.map((product) => <SingleProduct product={product}/>)
-                }
-                
-            </div>
-                
-                 
-
-
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    {links}
-                </ul>
-            </nav>
-        </section>  
-        )
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        {links}
+                    </ul>
+                </nav>
+            </section>  
+            )
 }
 export default AllProducts;
