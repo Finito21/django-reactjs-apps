@@ -10,6 +10,7 @@ import Categories from './components/Categories';
 import AllProducts from './components/AllProducts';
 import ProductDetail from './components/ProductDetail';
 import CategoryProducts from './components/CategoryProducts';
+import TagProducts from './components/TagProducts';
 import Checkout from './components/Checkout';
 
 import CustomerRegister from './components/Customer/CustomerRegister';
@@ -49,6 +50,8 @@ function App() {
 
       <Route path='/categories' element={<Categories/>}/>
       <Route path='/category/:category_slug/:category_id' element={<CategoryProducts/>}/>
+      <Route path='/products/:tag' element={<TagProducts/>}/>
+
       <Route path='/product/:product_slug/:product_id' element={<ProductDetail/>}/>
       <Route path='/checkout' element={<Checkout/>}/>
 
