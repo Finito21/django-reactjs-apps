@@ -2,9 +2,9 @@ import logo from '../logo.svg';
 import {Link} from 'react-router-dom';
 
 
-function SingleProduct(props){
+function SingleRelatedProduct(props){
     return(
-            <div className='col-12 col-md-3 mb-4'>
+            <div className='col-4 offset-4 mb-4'>
                 <div className="card">
                     <Link to={`/product/${props.product.slug}/${props.product.id}`}> 
                         <img src={props.product.image} className="card-img-top" alt="..."/>
@@ -23,4 +23,4 @@ function SingleProduct(props){
             </div>
 )
 }
-export default SingleProduct;
+export default SingleRelatedProduct;
