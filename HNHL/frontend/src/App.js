@@ -14,7 +14,8 @@ import TagProducts from './components/TagProducts';
 import Checkout from './components/Checkout';
 
 import CustomerRegister from './components/Customer/CustomerRegister';
-import CustomerLogin from './components/Customer/CustomerLogin';
+import Login from './components/Customer/Login';
+import CustomerLogout from './components/Customer/CustomerLogout';
 import CustomerDashboard from './components/Customer/CustomerDashboard';
 import CustomerOrders from './components/Customer/CustomerOrders';
 import Wishlist from './components/Customer/Wishlist';
@@ -56,7 +57,9 @@ function App() {
       <Route path='/checkout' element={<Checkout/>}/>
 
       <Route path='/customer/register' element={<CustomerRegister/>}/>
-      <Route path='/customer/login' element={<CustomerLogin/>}/>
+      <Route path='/customer/login' element={<Login/>}/>
+      <Route path='/customer/logout' element={<CustomerLogout/>}/>
+
       <Route path='/customer/dashboard' element={<CustomerDashboard/>}/>
 
       <Route path='/customer/CustomerOrders' element={<CustomerOrders/>}/>
