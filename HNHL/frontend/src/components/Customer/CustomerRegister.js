@@ -3,7 +3,6 @@ import { useState } from "react";
 
 function CustomerRegister(props){
     const baseUrl = 'http://127.0.0.1:8000/api/';
-    const [formError, setFormError] = useState(false);
     const [errorMsg, seterrorMsg] = useState('');
     const [successMsg,setsuccessMsg]=useState('');
     const [registerFormData, setRegisterFormData] = useState({
@@ -35,8 +34,8 @@ function CustomerRegister(props){
         axios.post(baseUrl + 'customer/register/', formData)
             .then(function (response) {
                 if (response.data.bool === false) {
-                    setFormError(true);
                     seterrorMsg(response.data.msg);
+                    setsuccessMsg('');
                 } else {
                     setRegisterFormData({
                         "first_name": '',
@@ -45,7 +44,7 @@ function CustomerRegister(props){
                         "email": '',
                         "password": '',
                     })
-                    setFormError(false);
+                    seterrorMsg(false);
                     setsuccessMsg(response.data.msg);
                 }
             })
@@ -64,7 +63,8 @@ function CustomerRegister(props){
                             <h4 className='card-header'>Register</h4>
                             <div className='card-body'>
                             <p className="text-muted"><strong>Note:</strong> All fields are required</p>
-                            {successMsg &&<p>{successMsg}</p>}
+                            {successMsg &&<p className="text-success">{successMsg}</p>}
+                            {errorMsg && <p className="text-danger">{errorMsg}</p>}
                                 <form>
                                     <div className='mb-3'>
                                         <label for="firstName" className='form-label'>First Name</label>

@@ -17,7 +17,7 @@ function Login(props) {
         });
     }
 
-    console.log(loginFormData);
+    
 
     const submitHandler = (event) => {
         event.preventDefault();
@@ -42,10 +42,12 @@ function Login(props) {
             });
     };
 
+    
     const checkCustomer=localStorage.getItem('customer_login');
     if(checkCustomer){
         window.location.href='/customer/dashboard';
     }
+    console.log(checkCustomer);
 
     const buttonEnable=(loginFormData.username!='')&&(loginFormData.password!='')
 
