@@ -1,9 +1,15 @@
 import {Link} from 'react-router-dom';
 import { useContext } from 'react';
-import {UserContext} from '../Context';
+import {UserContext, CartContext} from '../Context';
 
-function Header(){
+function Header(props){
     const userContext=useContext(UserContext);
+    const {cartData,setcartData}=useContext(CartContext)
+    if(cartData==null){
+        var cartItems=0;
+    }else{
+        var cartItems=cartData.length;
+    }
 
     return (
     
@@ -56,7 +62,7 @@ function Header(){
                         <Link className="nav-link " aria-current="page" to="/checkout" >New Orders (4)</Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link " aria-current="page" to="/checkout" >My Cart (4)</Link>
+                        <Link className="nav-link " aria-current="page" to="/checkout" >My Cart ({cartItems})</Link>
                     </li>
                 
                 </ul>

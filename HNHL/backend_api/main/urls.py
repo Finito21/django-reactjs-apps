@@ -11,6 +11,8 @@ urlpatterns= [
     # Verdor URLS
     path('vendors/', views.VendorList.as_view()),
     path('vendor/<int:pk>/', views.VendorDetail.as_view()),
+    #path('vendor/login/', views._login,name='customer_login'),
+    #path('vendor/register/', views.customer_register,name='customer_register'),
 
     # Customer URLS
     path('customers/', views.CustomerList.as_view()),

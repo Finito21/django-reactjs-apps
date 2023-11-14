@@ -39,56 +39,59 @@ import Reports from './components/Vendor/Reports';
 import VendorProfile from './components/Vendor/VendorProfile';
 import ChangeVendorPassword from './components/Vendor/ChangeVendorPassword';
 
-
+import { CartContext } from './Context';
+import {useState} from 'react';
+const checkCart=localStorage.getItem('cartData');
 
 function App() {
+  const [cartData,setCartData]=useState(JSON.parse(checkCart));
   return (
-    <>
-    <Header></Header>
-    <Routes>
-      <Route path='/' element={<Home/>}/>
-      <Route path='/products' element={<AllProducts/>}/>
+    <CartContext.Provider value={{cartData,setCartData}}>
+      <Header></Header>
+      <Routes>
+        <Route path='/' element={<Home/>}/>
+        <Route path='/products' element={<AllProducts/>}/>
 
-      <Route path='/categories' element={<Categories/>}/>
-      <Route path='/category/:category_slug/:category_id' element={<CategoryProducts/>}/>
-      <Route path='/products/:tag' element={<TagProducts/>}/>
+        <Route path='/categories' element={<Categories/>}/>
+        <Route path='/category/:category_slug/:category_id' element={<CategoryProducts/>}/>
+        <Route path='/products/:tag' element={<TagProducts/>}/>
 
-      <Route path='/product/:product_slug/:product_id' element={<ProductDetail/>}/>
-      <Route path='/checkout' element={<Checkout/>}/>
+        <Route path='/product/:product_slug/:product_id' element={<ProductDetail/>}/>
+        <Route path='/checkout' element={<Checkout/>}/>
 
-      <Route path='/customer/register' element={<CustomerRegister/>}/>
-      <Route path='/customer/login' element={<Login/>}/>
-      <Route path='/customer/logout' element={<CustomerLogout/>}/>
+        <Route path='/customer/register' element={<CustomerRegister/>}/>
+        <Route path='/customer/login' element={<Login/>}/>
+        <Route path='/customer/logout' element={<CustomerLogout/>}/>
 
-      <Route path='/customer/dashboard' element={<CustomerDashboard/>}/>
+        <Route path='/customer/dashboard' element={<CustomerDashboard/>}/>
 
-      <Route path='/customer/CustomerOrders' element={<CustomerOrders/>}/>
-      <Route path='/customer/wishlist' element={<Wishlist/>}/>
-      <Route path='/customer/customer-profile' element={<CustomerProfile/>}/>
-      <Route path='/customer/change-customer-password' element={<ChangeCustomerPassword/>}/>
-      <Route path='/customer/addresses' element={<AddressesList/>}/>
-      <Route path='/customer/add-address' element={<AddAddress/>}/>
+        <Route path='/customer/CustomerOrders' element={<CustomerOrders/>}/>
+        <Route path='/customer/wishlist' element={<Wishlist/>}/>
+        <Route path='/customer/customer-profile' element={<CustomerProfile/>}/>
+        <Route path='/customer/change-customer-password' element={<ChangeCustomerPassword/>}/>
+        <Route path='/customer/addresses' element={<AddressesList/>}/>
+        <Route path='/customer/add-address' element={<AddAddress/>}/>
 
 
 
-      <Route path='/order/success' element={<OrderSuccess/>}/>
-      <Route path='/order/failure' element={<OrderFailure/>}/>
+        <Route path='/order/success' element={<OrderSuccess/>}/>
+        <Route path='/order/failure' element={<OrderFailure/>}/>
 
-      <Route path='/vendor/register' element={<VendorRegister/>}/>
-      <Route path='/vendor/login' element={<VendorLogin/>}/>
-      <Route path='/vendor/dashboard' element={<VendorDashbaord/>}/>
-      <Route path='/vendor/products' element={<VendorProducts/>}/>
-      <Route path='/vendor/add-product' element={<AddProduct/>}/>
-      <Route path='/vendor/VendorOrders' element={<VendorOrders/>}/>
+        <Route path='/vendor/register' element={<VendorRegister/>}/>
+        <Route path='/vendor/login' element={<VendorLogin/>}/>
+        <Route path='/vendor/dashboard' element={<VendorDashbaord/>}/>
+        <Route path='/vendor/products' element={<VendorProducts/>}/>
+        <Route path='/vendor/add-product' element={<AddProduct/>}/>
+        <Route path='/vendor/VendorOrders' element={<VendorOrders/>}/>
 
-      <Route path='/vendor/customers' element={<Customers/>}/>
-      <Route path='/vendor/reports' element={<Reports/>}/>
-      <Route path='/vendor/vendor-profile' element={<VendorProfile/>}/>
-      <Route path='/vendor/change-vendor-password' element={<ChangeVendorPassword/>}/>
+        <Route path='/vendor/customers' element={<Customers/>}/>
+        <Route path='/vendor/reports' element={<Reports/>}/>
+        <Route path='/vendor/vendor-profile' element={<VendorProfile/>}/>
+        <Route path='/vendor/change-vendor-password' element={<ChangeVendorPassword/>}/>
 
-    </Routes>
-    <Footer/>
-    </>
+      </Routes>
+      <Footer/>
+    </CartContext.Provider>
     
   );
 }
