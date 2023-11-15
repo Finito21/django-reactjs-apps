@@ -8,12 +8,12 @@ import {UserContext} from './Context';
 
 
 const checkCustomer=localStorage.getItem('customer_login');
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <React.StrictMode>
     <Router>
-      <UserContext.Provider value={checkCustomer}>
+      <UserContext.Provider value={{'login':checkCustomer}}>
         <App />
       </UserContext.Provider>
     </Router>

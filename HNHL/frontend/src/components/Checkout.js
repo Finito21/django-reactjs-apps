@@ -12,10 +12,14 @@ function Checkout(props){
     }else{
         var cartItems=cartData.length;
     }
+
+    
     var sum=0;
     cartData.map((item,index)=>{
         sum+=parseFloat(item.product.price);
     })
+
+
     const cartRemoveButtonHandler = (product_id)=>{
         var previousCart=localStorage.getItem('cartData');
         var cartJson=JSON.parse(previousCart)
@@ -37,7 +41,7 @@ function Checkout(props){
                 <h3 className='mb-4'>All Items ({cartItems})</h3>
                 {cartItems!=0&&
                 <div className='row'>
-                    <div className='col-md-8 col-12'>
+                    <div className='col-12'>
                         <div className='table-responsive'>
                             <table className='table table-bordered'>
                                 <thead>
@@ -75,13 +79,14 @@ function Checkout(props){
                                 <tfoot>
                                     <tr>
                                         <th></th>
+                                        <th></th>
                                         <th>Total</th>
                                         <th>{sum}</th>
                                     </tr>
                                     <tr>
-                                        <td colSpan='3' align='center'>
+                                        <td colSpan='4' align='center'>
                                             <Link to="/categories" className='btn btn-secondary'>Continue Shopping</Link>
-                                            <Link className='btn btn-success ms-1'>Proceed to Payment</Link>
+                                            <Link to="/confirm-order" className='btn btn-success ms-1'>Proceed to Payment</Link>
                                         </td>
                                     </tr>
                                 </tfoot>

@@ -77,9 +77,11 @@ def customer_login(request):
         user = authenticate(username=username, password=password)
 
         if user:
+            customer=models.Customer.objects.get(user=user)
             msg = {
                 'bool': True,
-                'user': user.username
+                'user': user.username,
+                'id':user.id,
             }
         else:
             msg = {
@@ -141,6 +143,12 @@ def customer_register(request):
 class OrderList(generics.ListCreateAPIView):
     queryset = models.Order.objects.all()
     serializer_class = serializers.OrderSerializer
+
+    
+class OrderItemList(generics.ListCreateAPIView):
+    queryset = models.OrderItems.objects.all()
+    serializer_class = serializers.OrderItemSerializer
+
 
 class OrderDetail(generics.ListAPIView):
     serializer_class = serializers.OrderDetailSerializer

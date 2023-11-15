@@ -20,17 +20,20 @@ urlpatterns= [
     path('customer/login/', views.customer_login,name='customer_login'),
     path('customer/register/', views.customer_register,name='customer_register'),
 
-    # Product and Category URLS
+    # Product URLS
     path('products/', views.ProductList.as_view()),
     path('products/<str:tag>', views.TagProductList.as_view()),
     path('product/<int:pk>/', views.ProductDetail.as_view()),
     path('related-products/<int:pk>/', views.RelatedProductList.as_view()),
+
+    # Categories URLS
     path('categories/', views.CategoryList.as_view()),
     path('category/<int:pk>/', views.CategoryDetail.as_view()),
 
     # Order URLS
     path('orders/', views.OrderList.as_view()),
-    path('order/<int:pk>/', views.OrderDetail.as_view())
+    path('order/<int:pk>/', views.OrderDetail.as_view()),
+    path('orderitems/', views.OrderItemList.as_view()),
 
 ]
 urlpatterns+=router.urls

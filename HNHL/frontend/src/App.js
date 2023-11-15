@@ -24,7 +24,7 @@ import ChangeCustomerPassword from './components/Customer/ChangeCustomerPassword
 import AddressesList from './components/Customer/AddressesList';
 import AddAddress from './components/Customer/AddAddress';
 
-
+import ConfirmOrder from './components/ConfirmOrder';
 import OrderSuccess from './components/OrderSuccess';
 import OrderFailure from './components/OrderFailure';
 
@@ -73,7 +73,7 @@ function App() {
         <Route path='/customer/add-address' element={<AddAddress/>}/>
 
 
-
+        <Route path='/confirm-order' element={<ConfirmOrder/>}/>
         <Route path='/order/success' element={<OrderSuccess/>}/>
         <Route path='/order/failure' element={<OrderFailure/>}/>
 
