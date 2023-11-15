@@ -22,7 +22,7 @@ class Product(models.Model):
     title=models.CharField(max_length=200)
     slug=models.CharField(max_length=300,unique=True,null=True)
     detail=models.TextField(null=True)
-    price=models.FloatField()
+    price=models.DecimalField(max_digits=10,decimal_places=2)
     tags=models.TextField(null=True)
     image=models.ImageField(upload_to='product_imgs/',null=True)
 
@@ -47,6 +47,7 @@ class Customer(models.Model):
 class Order(models.Model):
         customer=models.ForeignKey(Customer,on_delete=models.CASCADE,related_name='customer_orders')
         order_time=models.DateTimeField(auto_now_add=True)
+        order_status=models.BooleanField(default=False)
 
         def __str__(self):
              return '%s' % (self.order_time)

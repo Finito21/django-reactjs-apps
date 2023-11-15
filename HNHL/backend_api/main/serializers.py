@@ -70,7 +70,7 @@ class CustomerDetailSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model=models.Order
-        fields=['id','customer']
+        fields=['id','customer','order_status']
 
     # def __init__(self, *args, **kwargs):
     #     super(OrderSerializer,self).__init__(*args, **kwargs)

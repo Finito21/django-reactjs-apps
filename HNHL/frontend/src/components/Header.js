@@ -32,13 +32,13 @@ function Header(props){
                             My Account
                         </a>
                         <ul className="dropdown-menu">
-                            {userContext !='true' &&
+                            {userContext.login !='true' &&
                             <>
                             <li><Link className="dropdown-item" to="/customer/register">Register</Link></li>
                             <li><Link className="dropdown-item" to="/customer/login">Login</Link></li>
                             </>
                             }
-                            {userContext =='true' &&
+                            {userContext.login =='true' &&
                             <>
                                 <li><Link className="dropdown-item" to="/customer/dashboard">Dashboard</Link></li>
                                 <li><Link className="dropdown-item" to="/customer/logout">Logout</Link></li>
