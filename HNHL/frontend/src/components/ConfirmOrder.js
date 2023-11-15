@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useContext } from 'react';
 import {UserContext} from '../Context';
-
 import { CartContext } from '../Context';
+
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js"; 
 import axios from "axios";
 
 
-const baseUrl='http://127.0.0.1:8000/api/';
+const baseUrl='http://127.0.0.1:8000/api';
 
 function ConfirmOrder(){
     const [ConfirmOrder,SetConfirmOrder]=useState(false);
@@ -30,9 +30,10 @@ function ConfirmOrder(){
         formData.append('customer',customerId);
 
 
-        axios.post(baseUrl+'/orders/',formData)
+        axios.post(baseUrl + '/orders/', formData)
         .then(function(response){
             var orderId=response.data.id;
+            console.log(orderId)
             SetorderId(orderId);
             orderItems(orderId);
             SetConfirmOrder(true);
@@ -43,8 +44,10 @@ function ConfirmOrder(){
 
         })
     }
+
     function orderItems(orderId){
         var previousCart=localStorage.getItem('cartData');
+        console.log(previousCart);
         var cartJson=JSON.parse(previousCart);
 
         if(cartJson!=null){

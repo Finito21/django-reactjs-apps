@@ -81,7 +81,7 @@ def customer_login(request):
             msg = {
                 'bool': True,
                 'user': user.username,
-                'id':user.id,
+                'id':customer.id,
             }
         else:
             msg = {
@@ -144,10 +144,18 @@ class OrderList(generics.ListCreateAPIView):
     queryset = models.Order.objects.all()
     serializer_class = serializers.OrderSerializer
 
+    def post(self,request, *args,**kwargs):
+        print(request.POST)
+        return super().post(request, *args,**kwargs)
+
     
 class OrderItemList(generics.ListCreateAPIView):
     queryset = models.OrderItems.objects.all()
     serializer_class = serializers.OrderItemSerializer
+
+    def post(self,request, *args,**kwargs):
+        print(request.POST)
+        return super().post(request, *args,**kwargs)
 
 
 class OrderDetail(generics.ListAPIView):
