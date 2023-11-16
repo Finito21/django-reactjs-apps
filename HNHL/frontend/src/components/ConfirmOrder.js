@@ -1,18 +1,16 @@
 import { useState } from 'react';
 import { useContext } from 'react';
-import {UserContext} from '../Context';
+import { UserContext } from '../Context';
 import { CartContext } from '../Context';
 
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js"; 
 import axios from "axios";
-
 
 const baseUrl='http://127.0.0.1:8000/api';
 
 function ConfirmOrder(){
     const [ConfirmOrder,SetConfirmOrder]=useState(false);
     const [orderId,SetorderId]=useState('');
-    const [PayMethod,SetPayMethod]=useState('');
     const userContext=useContext(UserContext);
     const {cartData,setCartData}=useContext(CartContext);
     if(userContext.login==null){
@@ -22,7 +20,6 @@ function ConfirmOrder(){
             addOrderInTable();
         }
     }
-
 
     function addOrderInTable(){
         const customerId=localStorage.getItem('customer_id');
@@ -37,11 +34,9 @@ function ConfirmOrder(){
             SetorderId(orderId);
             orderItems(orderId);
             SetConfirmOrder(true);
-    
         })
         .catch(function(error){
             console.log(error);
-
         })
     }
 
@@ -54,11 +49,9 @@ function ConfirmOrder(){
             cartJson.map((cart,index)=>{
                 const formData=new FormData();
                 formData.append('order',orderId);
-                formData.append('product',cart.product_id);
+                formData.append('product',cart.product.id);
                 formData.append('qty',1);
                 formData.append('price',cart.product.price);
-
-
 
                 axios.post(baseUrl+'/orderitems/',formData)
                 .then(function(response){
@@ -68,25 +61,10 @@ function ConfirmOrder(){
                 })
                 .catch(function(error){
                     console.log(error);
-
                 });
             });
         }
-        
     }
-
-    function changePaymentMethod(payMethod){
-        SetPayMethod(payMethod);
-    }
-    function PayNowButton(){
-        if(PayMethod!=''){
-            changePaymentMethod(PayMethod);
-        }else{
-            alert('Select Payment Method');
-        }
-        
-    }
-
 
     return(
         <div className='container'>
@@ -96,9 +74,28 @@ function ConfirmOrder(){
                         <h3><i className="fa fa-check-circle text-success"></i>Your Order has been confirmed</h3>
                         <h5>ORDER ID: {orderId}</h5>
                     </div>
-                    <div className='card p-3 mt-4'>       
-                        <PayPalScriptProvider options={{ "client-id": "test" }}> 
-                        <PayPalButtons className='mt-3'  /> 
+                    <div className='card p-3 mt-4'>      
+                        <PayPalScriptProvider options={{ "client-id": "AbaaQ1EeoO_JeUq_Yu5ZaVTbfVvaYceYVpPndM6PXmaxVrY4c0r9U6KdQrLvvDO7GbQmKPzIFHLwDqja" }}> 
+                        <PayPalButtons className='mt-3'  
+                            createOrder={(data,actions)=>{
+                                return actions.order.create({
+                                    purchase_units: [
+                                        {
+                                            amount: {
+                                                currency_code:'USD',
+                                                value:"3",
+                                            },
+                                        },
+                                    ],
+                                });
+                            }}
+                            onApprove={(data,actions)=>{
+                                return actions.order.capture().then((details)=>{
+                                    const name=details.payer.name.given_name;
+                                    alert(`Transaction completed by ${name}`);
+                                });
+                            }}
+                        /> 
                         </PayPalScriptProvider>
                     </div>
                 </div>
