@@ -41,6 +41,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     product_ratings=serializers.StringRelatedField(many=True, read_only=True)
     product_imgs=ProductImageSerializer (many=True, read_only=True)
     class Meta:
+        many= True
         model=models.Product
         fields=['id','category','vendor','title','slug','tag_list','detail','price','product_ratings','product_imgs','image']
 
@@ -76,6 +77,8 @@ class OrderSerializer(serializers.ModelSerializer):
     #     super(OrderSerializer,self).__init__(*args, **kwargs)
     #     self.Meta.depth = 1
 class OrderItemSerializer(serializers.ModelSerializer):
+    order=OrderSerializer()
+    product=ProductDetailSerializer()
     class Meta:
         model=models.OrderItems
         fields=['id','order','product','qty','price']

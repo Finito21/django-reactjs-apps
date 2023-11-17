@@ -40,6 +40,17 @@ function ConfirmOrder(){
         })
     }
 
+    function updateOrderStatus(order_status){
+        console.log("wypisz cos")
+        axios.post(baseUrl + '/update-order-status/'+orderId)
+        .then(function(response){
+            window.location.href='/customer/CustomerOrders';
+        })
+        .catch(function(error){
+            console.log(error);
+        })
+    }
+
     function orderItems(orderId){
         var previousCart=localStorage.getItem('cartData');
         console.log(previousCart);
@@ -93,6 +104,8 @@ function ConfirmOrder(){
                                 return actions.order.capture().then((details)=>{
                                     const name=details.payer.name.given_name;
                                     alert(`Transaction completed by ${name}`);
+                                    //SetOrderStatus(true);
+                                    updateOrderStatus(true);
                                 });
                             }}
                         /> 
