@@ -1,16 +1,25 @@
 import {Link} from 'react-router-dom';
-import { useContext } from 'react';
-import {UserContext, CartContext} from '../Context';
+import { useState,useContext } from 'react';
+import {UserContext, CartContext, CurrencyContext} from '../Context';
 
 function Header(props){
     const userContext=useContext(UserContext);
-    const {cartData,setcartData}=useContext(CartContext)
+    const {cartData}=useContext(CartContext)
+   
+    const {CurrencyData,setCurrencyData}=useContext(CurrencyContext);
+    
     if(cartData==null){
         var cartItems=0;
     }else{
         var cartItems=cartData.length;
     }
 
+    const changeCurrency=(e)=>
+    {
+        var _currency=e.target.value;
+        localStorage.setItem('currency',_currency)
+        setCurrencyData(_currency);
+    }
     return (
     
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -63,6 +72,24 @@ function Header(props){
                     </li>
                     <li className="nav-item">
                         <Link className="nav-link " aria-current="page" to="/checkout" >My Cart ({cartItems})</Link>
+                    </li>
+                    <li className='nav-item'>
+                        <div className='nav-link'>
+                            <select onChange={changeCurrency}>
+                                {
+                                    CurrencyData=='PLN' && <>
+                                        <option value='PLN' selected>PLN</option>
+                                        <option value='USD'>USD</option>
+                                    </>
+                                }
+                                {
+                                    CurrencyData!='PLN' && <>
+                                    <option value='PLN' >PLN</option>
+                                    <option value='USD' selected>USD</option>
+                                </>
+                                }
+                            </select>
+                        </div>   
                     </li>
                 
                 </ul>

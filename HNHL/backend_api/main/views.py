@@ -29,8 +29,9 @@ class ProductList(generics.ListCreateAPIView):
         qs = super().get_queryset()
         if 'category' in self.request.GET:
             category_id = self.request.GET['category']
-            category = models.ProductCategory.objects.get(id=category_id)
+            category = models.ProductCategory.objects.get(id=category)
             qs = qs.filter(category=category)
+            
         return qs
     
 class TagProductList(generics.ListCreateAPIView):
@@ -148,6 +149,13 @@ class OrderList(generics.ListCreateAPIView):
         print(request.POST)
         return super().post(request, *args,**kwargs)
 
+class OrderItemList(generics.ListCreateAPIView):
+    queryset = models.OrderItems.objects.all()
+    serializer_class = serializers.OrderItemSerializer
+
+    def post(self,request, *args,**kwargs):
+        print(request.POST)
+        return super().post(request, *args,**kwargs)
     
 class CustomerOrderItemList(generics.ListAPIView):
     queryset = models.OrderItems.objects.all()
@@ -158,16 +166,6 @@ class CustomerOrderItemList(generics.ListAPIView):
         customer_id = self.kwargs['pk']
         qs = qs.filter(order__customer__id=customer_id)
         return qs
-
-    
-class OrderItemList(generics.ListCreateAPIView):
-    queryset = models.OrderItems.objects.all()
-    serializer_class = serializers.OrderItemSerializer
-
-    def post(self,request, *args,**kwargs):
-        print(request.POST)
-        return super().post(request, *args,**kwargs)
-
 
 class OrderDetail(generics.ListAPIView):
     serializer_class = serializers.OrderDetailSerializer

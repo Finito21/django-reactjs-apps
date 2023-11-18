@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom';
 import { useState,useEffect} from 'react';
 
 function CustomerOrders(){
+    const url='http://127.0.0.1:8000';
     const baseUrl='http://127.0.0.1:8000/api';
     const customerId=localStorage.getItem('customer_id');
     const [OrderItems,setOrderItems]=useState([])
@@ -48,7 +49,7 @@ function CustomerOrders(){
                                                 <td>{index+1}</td>
                                                 <td>
                                                     <Link to={`/product/${item.product.slug}/${item.product.id}`}>
-                                                        <img src={item.product.image} className="img-thumbnail" width='80' alt="..."/>
+                                                        <img src={`${url}/${item.product.image}`} className="img-thumbnail" width='80' alt="..."/>
                                                     </Link>
                                                 <p><Link to={`/product/${item.product.slug}/${item.product.id}`}>{item.product.title}</Link></p>
                                                 </td>

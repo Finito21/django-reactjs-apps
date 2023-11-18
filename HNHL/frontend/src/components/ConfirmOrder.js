@@ -41,19 +41,17 @@ function ConfirmOrder(){
     }
 
     function updateOrderStatus(order_status){
-        console.log("wypisz cos")
         axios.post(baseUrl + '/update-order-status/'+orderId)
         .then(function(response){
-            window.location.href='/customer/CustomerOrders';
+            window.location.href='/order/success';
         })
         .catch(function(error){
-            console.log(error);
+            window.location.href='/order/failure';
         })
     }
 
     function orderItems(orderId){
         var previousCart=localStorage.getItem('cartData');
-        console.log(previousCart);
         var cartJson=JSON.parse(previousCart);
 
         if(cartJson!=null){

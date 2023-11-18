@@ -21,7 +21,6 @@ function CustomerRegister(props){
     }
 
     const submitHandler = (event) => {
-        event.preventDefault();
         const formData=new FormData();
         formData.append('first_name',registerFormData.first_name);
         formData.append('last_name',registerFormData.last_name);
@@ -44,7 +43,7 @@ function CustomerRegister(props){
                         "email": '',
                         "password": '',
                     })
-                    seterrorMsg(false);
+                    seterrorMsg('');
                     setsuccessMsg(response.data.msg);
                 }
             })

@@ -3,7 +3,7 @@ import logo from '../logo.svg';
 import SingleRelatedProduct from './SingleRelatedProduct';
 import { useParams } from 'react-router-dom';
 import { useState,useEffect, useContext} from 'react';
-import { UserContext,CartContext } from '../Context';
+import { UserContext,CartContext, CurrencyContext} from '../Context';
 function ProductDetail(){
     const baseUrl='http://127.0.0.1:8000/api';
     const [productData,setproductData]=useState([]);
@@ -13,6 +13,7 @@ function ProductDetail(){
     const {product_slug,product_id} = useParams();
     const [cartButtonClickStatus,setcartButtonClickStatus]=useState(false);
     const {cartData,setCartData}=useContext(CartContext);
+    const {CurrencyData}=useContext(CurrencyContext);
 
     useEffect(() => {
         fetchData(baseUrl+'/product/'+product_id);
@@ -152,7 +153,13 @@ function ProductDetail(){
                 <div className='col-8'>
                     <h3>{productData.title}</h3>
                     <p>{productData.detail}</p>
-                    <h5 className='card-title'>Price: {productData.price}</h5>
+
+                    {
+                        CurrencyData == 'PLN' && <h5 className='card-title'>Price: {productData.price} PLN</h5>
+                    }
+                    {
+                        CurrencyData != 'PLN' && <h5 className='card-title'>Price: {productData.price} USD</h5>
+                    }
                     <p className='mt-3'>
                         {!cartButtonClickStatus&&
                             <button title="Add to Cart" type='button' onClick={cartAddButtonHandler} className='btn btn-primary'>
@@ -178,10 +185,8 @@ function ProductDetail(){
                         </p>
                     </div>
                 </div>
-
             </div>
             
-
             <h3 className='mt-5 mb-3 text-center'>Related Products</h3>
 
             <div id="relatedProductsSlider" className="carousel carousel-dark slide" data-bs-ride="true">
@@ -211,14 +216,7 @@ function ProductDetail(){
                         }
                     })}    
                 </div>
-                
-    
             </div>
-            
-
-
-
-
         </section>
 
     )
