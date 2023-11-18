@@ -7,7 +7,6 @@ function Header(props){
     const {cartData}=useContext(CartContext)
    
     const {CurrencyData,setCurrencyData}=useContext(CurrencyContext);
-    
     if(cartData==null){
         var cartItems=0;
     }else{

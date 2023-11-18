@@ -36,6 +36,10 @@ urlpatterns= [
     path('orderitems/', views.OrderItemList.as_view()),
     path('customer/<int:pk>/orderitems/', views.CustomerOrderItemList.as_view()),
     path('update-order-status/<int:order_id>', views.update_order_status,name='update_order_status'),
+    path('wishlist/', views.WishList.as_view()),
+    path('check-in-wishlist/', views.check_in_wishlist,name='check_in_wishlist'),
+    path('customer/<int:pk>/wishitems/', views.CustomerWishItemList.as_view()),
+    path('remove-from-wishlist/', views.remove_from_wishlist,name='remove_from_wishlist'),
 
 ]
 urlpatterns+=router.urls

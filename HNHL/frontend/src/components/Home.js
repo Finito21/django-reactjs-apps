@@ -1,22 +1,23 @@
 import {Link} from 'react-router-dom';
 import SingleProduct from './SingleProduct';
 import logo from '../logo.svg';
+import { useState,useEffect } from 'react';
 function Home(){
-    const products=[
+    const baseUrl='http://127.0.0.1:8000/api';
+    const [products,setProducts]=useState([]);
 
-        {
-            'title':'Product1',
-            'price':100
-        },
-        {
-            'title':'Product2',
-            'price':103243
-        },
-        {
-            'title':'Product3',
-            'price':14545
-        },
-    ]
+    useEffect(() => {
+        fetchData(baseUrl+'/products/?fetch_limit=4');
+    },[]);
+
+    function fetchData(baseurl){
+        fetch(baseurl)
+        .then((response) => response.json())
+        .then((data) => {
+            setProducts(data.results);
+        });
+    }
+
     return (
     <main className='mt-4'>
         <div className='container'>

@@ -2,7 +2,8 @@
 import CustomerSidebar from './CustomerSidebar';
 import logo from '../../logo.svg';
 import {Link} from 'react-router-dom';
-import { useState,useEffect} from 'react';
+import { useState,useEffect} from 'react';;
+//import axios from 'axios';
 
 function CustomerOrders(){
     const url='http://127.0.0.1:8000';
@@ -68,19 +69,11 @@ function CustomerOrders(){
                                         })
                                     }
                                 </tbody>
-
-
                                 </table>
-
-
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-                
             </div>
     )
 }

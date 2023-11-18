@@ -4,5 +4,4 @@ export const UserContext=createContext({
 });
 
 export const CurrencyContext=createContext();
-export const CurrencyValueContext=createContext();
 export const CartContext=createContext();

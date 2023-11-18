@@ -28,10 +28,12 @@ class ProductList(generics.ListCreateAPIView):
     def get_queryset(self):
         qs = super().get_queryset()
         if 'category' in self.request.GET:
-            category_id = self.request.GET['category']
-            category = models.ProductCategory.objects.get(id=category_id)
+            category = self.request.GET['category']
+            category = models.ProductCategory.objects.get(id=category)
             qs = qs.filter(category=category)
-            
+        if 'fetch_limit' in self.request.GET:
+            limit = int(self.request.GET['fetch_limit'])
+            qs = qs[:limit]
         return qs
     
 class TagProductList(generics.ListCreateAPIView):
@@ -202,6 +204,50 @@ def update_order_status(request, order_id):
                 'bool': False,
             }
         if updateRes:
+            msg={
+                'bool':True,
+            }
+    return JsonResponse(msg)
+
+class WishList(generics.ListCreateAPIView):
+    queryset = models.Wishlist.objects.all()
+    serializer_class = serializers.WishlistSerializer
+
+
+@csrf_exempt
+def check_in_wishlist(request):
+    if request.method=="POST":
+        product_id=request.POST.get('product')
+        customer_id=request.POST.get('customer')
+        checkWishlist=models.Wishlist.objects.filter(product_id=product_id,customer_id=customer_id).count()
+        msg={
+                'bool': False,
+            }
+        if checkWishlist > 0:
+            msg={
+                'bool':True,
+            }
+    return JsonResponse(msg)
+
+class CustomerWishItemList(generics.ListAPIView):
+    queryset = models.Wishlist.objects.all()
+    serializer_class = serializers.WishlistSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        customer_id = self.kwargs['pk']
+        qs = qs.filter(customer__id=customer_id)
+        return qs
+    
+@csrf_exempt
+def remove_from_wishlist(request):
+    if request.method=="POST":
+        wishlist_id=request.POST.get('wishlist_id')
+        res=models.Wishlist.objects.filter(id=wishlist_id).delete()
+        msg={
+                'bool': False,
+            }
+        if res:
             msg={
                 'bool':True,
             }

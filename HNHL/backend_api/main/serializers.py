@@ -71,7 +71,7 @@ class CustomerDetailSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model=models.Order
-        fields=['id','customer','order_status']
+        fields=['id','customer','order_status','total_amount','total_usd_amount','total_eur_amount']
 
     # def __init__(self, *args, **kwargs):
     #     super(OrderSerializer,self).__init__(*args, **kwargs)
@@ -136,3 +136,16 @@ class CategoryDetailSerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super(CategoryDetailSerializer,self).__init__(*args, **kwargs)
         #self.Meta.depth = 1
+
+class WishlistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=models.Wishlist
+        fields=['id','product','customer']
+
+    def __init__(self, *args, **kwargs):
+        super(WishlistSerializer,self).__init__(*args, **kwargs)
+    def to_representation(self,instance):
+        response=super().to_representation(instance) 
+        response['customer']=CustomerSerializer(instance.customer).data
+        response['product']=ProductDetailSerializer(instance.product).data
+        return response
