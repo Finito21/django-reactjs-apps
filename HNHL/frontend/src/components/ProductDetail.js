@@ -68,6 +68,8 @@ function ProductDetail(){
                 'id':productData.id,
                 'title':productData.title,
                 'price':productData.price,
+                'usd_price':productData.usd_price,
+                'eur_price':productData.eur_price,
                 'image':productData.image
             },
             'user':{
@@ -155,10 +157,13 @@ function ProductDetail(){
                     <p>{productData.detail}</p>
 
                     {
-                        CurrencyData == 'PLN' && <h5 className='card-title'>Price: {productData.price} PLN</h5>
+                        CurrencyData == 'PLN' && <h5 className='card-title'>Price: {productData.price} zł</h5>
                     }
                     {
-                        CurrencyData != 'PLN' && <h5 className='card-title'>Price: {productData.price} USD</h5>
+                        CurrencyData == 'USD' && <h5 className='card-title'>Price: {productData.usd_price} $</h5>
+                    }
+                    {
+                        CurrencyData == 'EUR' && <h5 className='card-title'>Price: {productData.eur_price} €</h5>
                     }
                     <p className='mt-3'>
                         {!cartButtonClickStatus&&

@@ -1,12 +1,13 @@
 import logo from '../logo.svg';
 import {Link} from 'react-router-dom';
 import { useContext,useState} from 'react';
-import { CartContext } from '../Context';
+import { CartContext,CurrencyContext } from '../Context';
 
 function Checkout(props){
     const {cartData,setCartData}=useContext(CartContext);
     const [cartButtonClickStatus,setcartButtonClickStatus]=useState(false);
     const [productData,setproductData]=useState([]);
+    const {CurrencyData}=useContext(CurrencyContext);
     if(cartData==null || cartData.length==0){
         var cartItems=0;
     }else{
@@ -16,7 +17,15 @@ function Checkout(props){
     
     var sum=0;
     cartData.map((item,index)=>{
-        sum+=parseFloat(item.product.price);
+        if(CurrencyData=='PLN' || CurrencyData==undefined){
+            sum+=parseFloat(item.product.price);
+        }
+        else if(CurrencyData=='USD'){
+            sum+=parseFloat(item.product.usd_price);
+        }
+        else if(CurrencyData=='EUR'){
+            sum+=parseFloat(item.product.eur_price);
+        }
     })
 
 
@@ -62,7 +71,17 @@ function Checkout(props){
                                                         <Link><img src={item.product.image} className="img-thumbail" width='80' alt={item.product.title}/></Link>
                                                         <p><Link>{item.product.title}</Link></p>
                                                     </td>
-                                                    <td> {item.product.price}</td>
+                                                    <td> 
+                                                        {
+                                                        CurrencyData == 'PLN' && <h5 className='card-title'>Price: {item.product.price} zł</h5>
+                                                        }
+                                                        {
+                                                            CurrencyData == 'USD' && <h5 className='card-title'>Price: {item.product.usd_price} $</h5>
+                                                        }
+                                                        {
+                                                            CurrencyData == 'EUR' && <h5 className='card-title'>Price: {item.product.eur_price} €</h5>
+                                                        }
+                                                    </td>
                                                     <td>
                                                     
                                                         <button title="Remove from Cart" type='button' onClick={()=>cartRemoveButtonHandler(item.product.id)} className='btn btn-warning'>
@@ -81,7 +100,17 @@ function Checkout(props){
                                         <th></th>
                                         <th></th>
                                         <th>Total</th>
-                                        <th>{sum}</th>
+                                        <th>
+                                            {
+                                                (CurrencyData=='PLN'|| CurrencyData==undefined) && <th>{sum} zł</th>
+                                            }
+                                            {
+                                                (CurrencyData=='USD'|| CurrencyData==undefined) && <th>{sum} $</th>
+                                            }
+                                            {
+                                                (CurrencyData=='EUR'|| CurrencyData==undefined) && <th>{sum} €</th>
+                                            }
+                                        </th>
                                     </tr>
                                     <tr>
                                         <td colSpan='4' align='center'>

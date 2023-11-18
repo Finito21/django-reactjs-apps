@@ -29,7 +29,7 @@ class ProductList(generics.ListCreateAPIView):
         qs = super().get_queryset()
         if 'category' in self.request.GET:
             category_id = self.request.GET['category']
-            category = models.ProductCategory.objects.get(id=category)
+            category = models.ProductCategory.objects.get(id=category_id)
             qs = qs.filter(category=category)
             
         return qs

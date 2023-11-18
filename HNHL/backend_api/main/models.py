@@ -23,7 +23,8 @@ class Product(models.Model):
     slug=models.CharField(max_length=300,unique=True,null=True)
     detail=models.TextField(null=True)
     price=models.DecimalField(max_digits=10,decimal_places=2)
-    usd_price=models.DecimalField(max_digits=10,decimal_places=2)
+    usd_price=models.DecimalField(max_digits=10,decimal_places=2,default=0)
+    eur_price=models.DecimalField(max_digits=10,decimal_places=2,default=0)
     tags=models.TextField(null=True)
     image=models.ImageField(upload_to='product_imgs/',null=True)
 
@@ -60,6 +61,8 @@ class OrderItems(models.Model):
         product=models.ForeignKey(Product,on_delete=models.CASCADE)
         qty=models.IntegerField(default=1)
         price=models.DecimalField(max_digits=10,decimal_places=2,default=0)
+        usd_price=models.DecimalField(max_digits=10,decimal_places=2,default=0)
+        eur_price=models.DecimalField(max_digits=10,decimal_places=2,default=0)
 
         def __str__(self):
             return self.product.title

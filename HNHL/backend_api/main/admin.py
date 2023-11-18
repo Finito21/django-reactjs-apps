@@ -23,6 +23,8 @@ class ProductImagesInline(admin.StackedInline):
     model=models.ProductImage
 
 class ProductAdmin(admin.ModelAdmin):
+    list_display=['title','price','usd_price','eur_price']
+    list_editable=['usd_price','eur_price']
     prepopulated_fields={'slug':('title',)}
     inlines=[
         ProductImagesInline,

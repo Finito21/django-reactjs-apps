@@ -79,13 +79,22 @@ function Header(props){
                                 {
                                     CurrencyData=='PLN' && <>
                                         <option value='PLN' selected>PLN</option>
-                                        <option value='USD'>USD</option>
+                                        <option value='USD' >USD</option>
+                                        <option value='EUR' >EUR</option>
                                     </>
                                 }
                                 {
-                                    CurrencyData!='PLN' && <>
+                                    CurrencyData=='USD' && <>
                                     <option value='PLN' >PLN</option>
                                     <option value='USD' selected>USD</option>
+                                    <option value='EUR' >EUR</option>
+                                </>
+                                }
+                                {
+                                    CurrencyData=='EUR' && <>
+                                    <option value='PLN' >PLN</option>
+                                    <option value='USD' >USD</option>
+                                    <option value='EUR' selected>EUR</option>
                                 </>
                                 }
                             </select>

@@ -14,11 +14,14 @@ function SingleProduct(props){
                     <div className="card-body">
                         <h4 className="card-title"><Link to={`/product/${props.product.slug}/${props.product.id}`}>{props.product.title} </Link></h4>
                         {
-                        CurrencyData == 'PLN' && <h5 className='card-title text-muted'>Price: {props.product.price} PLN</h5>
-                    }
-                    {
-                        CurrencyData != 'PLN' && <h5 className='card-title text-muted'>Price: {props.product.price} USD</h5>
-                    }
+                        CurrencyData == 'PLN' && <h5 className='card-title'>Price: {props.product.price} zł</h5>
+                        }
+                        {
+                            CurrencyData == 'USD' && <h5 className='card-title'>Price: {props.product.usd_price} $</h5>
+                        }
+                        {
+                            CurrencyData == 'EUR' && <h5 className='card-title'>Price: {props.product.eur_price} €</h5>
+                        }
                     </div>
                     <div className='card-footer'>
                         <button title="Add to card" className='btn btn-success btn-sm'>
