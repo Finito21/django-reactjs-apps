@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_framework.fields import empty
 from . import models
+from django.contrib.auth.models import User
 
 class VendorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -62,11 +63,16 @@ class CustomerSerializer(serializers.ModelSerializer):
 class CustomerDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model=models.Customer
-        fields=['id','user','mobile']
+        fields=['id','user','mobile','profile_img','customer_orders']
 
     def __init__(self, *args, **kwargs):
         super(CustomerDetailSerializer ,self).__init__(*args, **kwargs)
         self.Meta.depth = 1
+
+    def to_representation(self,instance):
+        response=super().to_representation(instance) 
+        response['user']=UserSerializer(instance.user).data
+        return response
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
@@ -127,6 +133,11 @@ class CategorySerializer(serializers.ModelSerializer):
         super(CategorySerializer,self).__init__(*args, **kwargs)
         #self.Meta.depth = 1
 
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=User
+        fields=['id','first_name','last_name','username','email']
 
 class CategoryDetailSerializer(serializers.ModelSerializer):
     class Meta:

@@ -71,6 +71,10 @@ class CustomerDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Customer.objects.all()
     serializer_class = serializers.CustomerDetailSerializer
     # permission_classes = [permissions.IsAuthenticated]
+    
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.User.objects.all()
+    serializer_class = serializers.UserSerializer
 
 @csrf_exempt
 def customer_login(request):

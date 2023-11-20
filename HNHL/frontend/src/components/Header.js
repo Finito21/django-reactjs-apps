@@ -76,7 +76,7 @@ function Header(props){
                         <div className='nav-link'>
                             <select onChange={changeCurrency}>
                                 {
-                                    CurrencyData=='PLN' && <>
+                                    (CurrencyData!='USD' || CurrencyData!='EUR') && <>
                                         <option value='PLN' selected>PLN</option>
                                         <option value='USD' >USD</option>
                                         <option value='EUR' >EUR</option>

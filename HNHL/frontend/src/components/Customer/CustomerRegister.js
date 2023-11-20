@@ -52,8 +52,9 @@ function CustomerRegister(props){
             });
         };
 
-        const buttonEnable=(registerFormData.first_name!='')&&(registerFormData.last_name!='')&&(registerFormData.username!='')
-        &&(registerFormData.email!='') &&(registerFormData.mobile!='')&&(registerFormData.password!='')
+    const buttonEnable=(registerFormData.first_name!='')&&(registerFormData.last_name!='')&&(registerFormData.username!='')
+    &&(registerFormData.email!='') &&(registerFormData.mobile!='')&&(registerFormData.password!='')
+    
     return(
             <div className='container mt-4'>
                 <div className='row'>
