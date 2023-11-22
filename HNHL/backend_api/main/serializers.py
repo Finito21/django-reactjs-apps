@@ -113,7 +113,6 @@ class CustomerAddressSerializer(serializers.ModelSerializer):
 
     def __init__(self, *args, **kwargs):
         super(CustomerAddressSerializer,self).__init__(*args, **kwargs)
-        self.Meta.depth = 1
 
 class ProductRatingSerializer(serializers.ModelSerializer):
     class Meta:

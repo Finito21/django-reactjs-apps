@@ -256,3 +256,42 @@ def remove_from_wishlist(request):
                 'bool':True,
             }
     return JsonResponse(msg)
+
+class CustomerAddressList(generics.ListAPIView):
+    queryset = models.CustomerAddress.objects.all()
+    serializer_class = serializers.CustomerAddressSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        customer_id = self.kwargs['pk']
+        qs = qs.filter(customer__id=customer_id).order_by('id')
+        return qs
+    
+@csrf_exempt
+def mark_default_address(request,pk):
+    if request.method=="POST":
+        address_id=request.POST.get('address_id')
+        models.CustomerAddress.objects.all().update(default_address=False)
+        res=models.CustomerAddress.objects.filter(id=address_id).update(default_address=True)
+        msg={
+                'bool': False
+            }
+        if res:
+            msg={
+                'bool':True
+            }
+    return JsonResponse(msg)
+
+def customer_dashboard(request,pk):
+    customer_id=pk
+    totalOrders=models.Order.objects.filter(customer__id=customer_id).count()
+    totalWishList=models.Wishlist.objects.filter(customer__id=customer_id).count()
+    totalAddress=models.CustomerAddress.objects.filter(customer__id=customer_id).count()
+    print(totalWishList)
+    msg={
+            'totalOrders':totalOrders,
+            'totalWishList':totalWishList,
+            'totalAddress':totalAddress,
+
+        }
+    return JsonResponse(msg)

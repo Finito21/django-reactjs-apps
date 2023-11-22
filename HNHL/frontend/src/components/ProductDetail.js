@@ -204,7 +204,7 @@ function ProductDetail(){
                     <p>{productData.detail}</p>
 
                     {
-                        (CurrencyData!='USD' || CurrencyData!='EUR') && <h5 className='card-title'>Price: {productData.price} zł</h5>
+                        (CurrencyData!='USD' && CurrencyData!='EUR') && <h5 className='card-title'>Price: {productData.price} zł</h5>
                     }
                     {
                         CurrencyData == 'USD' && <h5 className='card-title'>Price: {productData.usd_price} $</h5>

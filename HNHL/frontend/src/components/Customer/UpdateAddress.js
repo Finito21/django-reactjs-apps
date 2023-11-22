@@ -1,8 +1,11 @@
 import CustomerSidebar from './CustomerSidebar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
+
 const baseUrl='http://127.0.0.1:8000/api';
-function AddAddress(){
+function UpdateAddress(){
+    const {address_id}=useParams();
     var customer_id=localStorage.getItem('customer_id');
     const [ErrorMsg,setErrorMsg]=useState('');
     const [SuccessMsg,setSuccessMsg]=useState('');
@@ -11,31 +14,43 @@ function AddAddress(){
         'customer':customer_id
     });
 
+    useEffect(()=>{
+        fetchData(baseUrl+'/address/'+address_id);
+    },[]);
+
+    function fetchData(baseurl){
+        fetch(baseurl)
+        .then((response) => response.json())
+        .then((data) => {
+            setAddressFormData({
+                'address':data.address,
+                'customer':customer_id
+            });
+        });
+    }
+
     const inputHandler = (event) =>{
         setAddressFormData({
             ...AddressFormData,
             [event.target.name]:event.target.value
         });
     };
+    console.log(AddressFormData.customer)
 
     const submitHandler = () => {
         const formData=new FormData();
         formData.append('address',AddressFormData.address);
         formData.append('customer',AddressFormData.customer);
 
-        axios.post(baseUrl + '/address/', formData)
+        axios.put(baseUrl + '/address/'+parseInt(address_id)+'/', formData)
         .then(function (response) {
-            if(response.status!=201){
+            if(response.status!=200){
                 setErrorMsg('Data not saved');
                 setSuccessMsg('');
             }else{
                 setErrorMsg('');
                 setSuccessMsg('Data saved');
-                setAddressFormData({
-                    'address':''
-
-                })
-            }
+                }
         })
         .catch(function (error) {
             console.log(error);
@@ -52,7 +67,7 @@ function AddAddress(){
                     </div>
                     <div className='col-md-9 col-12 mb-2'>
                         <div className='card'>
-                            <h4 className='card-header'>Add Address</h4>
+                            <h4 className='card-header'>Update Address</h4>
                             <div className='card-body'>
                                 {ErrorMsg &&<p className='alert alert-danger'>{ErrorMsg}</p>}
                                 {SuccessMsg &&<p className='alert alert-success'>{SuccessMsg}</p>}
@@ -67,5 +82,5 @@ function AddAddress(){
                 </div>
             </div>
         )
-                        }
-                        export default AddAddress;
+}
+export default UpdateAddress;

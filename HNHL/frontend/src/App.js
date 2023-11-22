@@ -21,8 +21,9 @@ import CustomerOrders from './components/Customer/CustomerOrders';
 import Wishlist from './components/Customer/Wishlist';
 import CustomerProfile from './components/Customer/CustomerProfile';
 import ChangeCustomerPassword from './components/Customer/ChangeCustomerPassword';
-import AddressesList from './components/Customer/AddressesList';
+import AddressList from './components/Customer/AddressList';
 import AddAddress from './components/Customer/AddAddress';
+import UpdateAddress from './components/Customer/UpdateAddress';
 
 import ConfirmOrder from './components/ConfirmOrder';
 import OrderSuccess from './components/OrderSuccess';
@@ -50,7 +51,6 @@ function App() {
   const [CurrencyData,setCurrencyData]=useState(currentCurrency);
 
   return (
-   
     <CurrencyContext.Provider value={{CurrencyData,setCurrencyData}}>
     <CartContext.Provider value={{cartData,setCartData}}>
       <Header></Header>
@@ -75,8 +75,9 @@ function App() {
         <Route path='/customer/wishlist' element={<Wishlist/>}/>
         <Route path='/customer/customer-profile' element={<CustomerProfile/>}/>
         <Route path='/customer/change-customer-password' element={<ChangeCustomerPassword/>}/>
-        <Route path='/customer/addresses' element={<AddressesList/>}/>
+        <Route path='/customer/addresses' element={<AddressList/>}/>
         <Route path='/customer/add-address' element={<AddAddress/>}/>
+        <Route path='/customer/update-address/:address_idy' element={<UpdateAddress/>}/>
 
 
         <Route path='/confirm-order' element={<ConfirmOrder/>}/>
