@@ -11,6 +11,7 @@ class Vendor(models.Model):
     def __str__(self):
         return self.user.username
 
+
 class ProductCategory(models.Model):
     title=models.CharField(max_length=200)
     detail=models.TextField(null=True)

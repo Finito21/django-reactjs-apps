@@ -66,7 +66,31 @@ def vendor_register(request):
         return JsonResponse(msg)
     else:
         return JsonResponse({'error': 'Invalid request method'})
+    
+@csrf_exempt
+def vendor_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
 
+        if user:
+            vendor=models.Vendor.objects.get(user=user)
+            msg = {
+                'bool': True,
+                'user': user.username,
+                'id':vendor.id,
+            }
+        else:
+            msg = {
+                'bool': False,
+                'msg': 'Invalid Username/Password'
+            }
+
+        return JsonResponse(msg)
+    else:
+        return JsonResponse({'error': 'Invalid request method'})
+    
 class ProductList(generics.ListCreateAPIView):
     queryset = models.Product.objects.all()
     serializer_class = serializers.ProductListSerializer
