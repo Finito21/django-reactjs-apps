@@ -20,6 +20,53 @@ class VendorDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.VendorDetailSerializer
     # permission_classes = [permissions.IsAuthenticated]
 
+@csrf_exempt
+def vendor_register(request):
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        mobile = request.POST.get('mobile')
+        address = request.POST.get('address')
+        password = request.POST.get('password')
+        try:
+            user = User.objects.create(
+                first_name=first_name,
+                last_name=last_name,
+                username=username,
+                email=email,
+                password=password,
+            )
+
+            if user:
+                try:
+                    vendor=models.Vendor.objects.create(user=user,mobile=mobile,address=address)
+                    msg = {
+                        'bool': True,
+                        'user': user.id,
+                        'vendor':vendor.id,
+                        'msg':'Thank you for your registration. You can login now.'
+                    }
+                except IntegrityError:
+                    msg={
+                        'bool': False,
+                        'msg': 'Mobile already exist!!!'
+                    }
+            else:
+                msg = {
+                    'bool': False,
+                    'msg': 'Ooops... Something went wrong!!!'
+                }
+        except IntegrityError:
+            msg={
+                'bool': False,
+                'msg': 'Username already exist!!!'
+            }
+        return JsonResponse(msg)
+    else:
+        return JsonResponse({'error': 'Invalid request method'})
+
 class ProductList(generics.ListCreateAPIView):
     queryset = models.Product.objects.all()
     serializer_class = serializers.ProductListSerializer

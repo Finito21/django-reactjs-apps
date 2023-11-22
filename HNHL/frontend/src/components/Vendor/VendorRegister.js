@@ -10,6 +10,8 @@ function VendorRegister(props){
         "last_name": '',
         "username": '',
         "email": '',
+        "mobile":'',
+        "address":'',
         "password": '',
     });
 
@@ -27,10 +29,11 @@ function VendorRegister(props){
         formData.append('username',registerFormData.username);
         formData.append('email',registerFormData.email);
         formData.append('mobile',registerFormData.mobile);
+        formData.append('address',registerFormData.address);
         formData.append('password',registerFormData.password);
 
 
-        axios.post(baseUrl + 'customer/register/', formData)
+        axios.post(baseUrl + 'vendor/register/', formData)
             .then(function (response) {
                 if (response.data.bool === false) {
                     seterrorMsg(response.data.msg);
@@ -41,6 +44,8 @@ function VendorRegister(props){
                         "last_name": '',
                         "username": '',
                         "email": '',
+                        "mobile":'',
+                        "address":'',
                         "password": '',
                     })
                     seterrorMsg('');
@@ -53,7 +58,7 @@ function VendorRegister(props){
         };
 
     const buttonEnable=(registerFormData.first_name!='')&&(registerFormData.last_name!='')&&(registerFormData.username!='')
-    &&(registerFormData.email!='') &&(registerFormData.mobile!='')&&(registerFormData.password!='')
+    &&(registerFormData.email!='') &&(registerFormData.mobile!='')&&(registerFormData.address!='')&&(registerFormData.password!='')
     
     return(
             <div className='container mt-4'>
@@ -86,6 +91,12 @@ function VendorRegister(props){
                                     <div className='mb-3'>
                                         <label for="mobile" className='form-label'>Mobile</label>
                                         <input type="number" onChange={inputHandler} name="mobile" value={registerFormData.mobile} className='form-control' id="mobile"/>
+                                    </div>
+                                    <div className='mb-3'>
+                                        <div className='mb-3'>
+                                            <label for="address" className='form-label'>Address</label>
+                                            <textarea onChange={inputHandler} name="address" value={registerFormData.address} className='form-control' id="address"/>
+                                        </div>
                                     </div>
                                     <div className='mb-3'>
                                         <div className='mb-3'>

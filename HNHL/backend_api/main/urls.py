@@ -12,7 +12,7 @@ urlpatterns= [
     path('vendors/', views.VendorList.as_view()),
     path('vendor/<int:pk>/', views.VendorDetail.as_view()),
     #path('vendor/login/', views._login,name='customer_login'),
-    #path('vendor/register/', views.customer_register,name='customer_register'),
+    path('vendor/register/', views.vendor_register,name='vendor_register'),
 
     # Product URLS
     path('products/', views.ProductList.as_view()),

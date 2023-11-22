@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Vendor(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
+    mobile=models.PositiveBigIntegerField(unique=True,null=True)
+    profile_img=models.ImageField(upload_to='vendor_imgs/',null=True)
     address=models.TextField(null=True)
 
     def __str__(self):
