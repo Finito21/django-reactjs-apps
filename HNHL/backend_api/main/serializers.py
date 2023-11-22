@@ -26,7 +26,7 @@ class ProductListSerializer(serializers.ModelSerializer):
     product_ratings=serializers.StringRelatedField(many=True, read_only=True)
     class Meta:
         model=models.Product
-        fields=['id','category','vendor','title','slug','tag_list','detail','price','usd_price','eur_price','product_ratings','image']
+        fields=['id','category','vendor','title','slug','tag_list','detail','price','usd_price','eur_price','product_ratings','image','tags']
 
     def __init__(self, *args, **kwargs):
         super(ProductListSerializer,self).__init__(*args, **kwargs)
