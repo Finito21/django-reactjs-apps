@@ -366,3 +366,7 @@ def customer_dashboard(request,pk):
 
         }
     return JsonResponse(msg)
+
+class ProductImgsList(generics.ListCreateAPIView):
+    queryset = models.ProductImage.objects.all()
+    serializer_class = serializers.ProductImageSerializer

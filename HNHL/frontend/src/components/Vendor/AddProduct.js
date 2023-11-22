@@ -1,6 +1,4 @@
 import VendorSidebar from './VendorSidebar';
-import logo from '../../logo.svg';
-import {Link} from 'react-router-dom';
 import { useState,useEffect} from 'react';
 import axios from 'axios';
 const baseUrl='http://127.0.0.1:8000/api/';
@@ -23,6 +21,10 @@ function AddProduct(){
         'image':'',
     });
 
+    const [ImgUploadErrorMsg,setImgUploadErrorMsg]=useState('');
+    const [ImgUploadSuccessMsg,setImgUploadSuccessMsg]=useState('');
+    const [ProductImgs,setProductImgs]=useState([]);
+
     const inputHandler=(event)=>{
         setProductData({
             ...ProductData,
@@ -30,12 +32,18 @@ function AddProduct(){
         })
 
     };
-
-    const fileHandler=(event)=>{
+    const fileHandler = (event)=>{
         setProductData({
             ...ProductData,
             [event.target.name]:event.target.files[0]
         })
+    };
+
+    const multipleFilesHandler=(event)=>{
+        var files=event.target.files;
+        if(files.length>0){
+            setProductImgs(files);
+        }
     };
     
     const submitHandler=()=>{
@@ -59,9 +67,6 @@ function AddProduct(){
         })
         .then(function (response) {
             if (response.status==201) {
-                setErrorMsg('');
-                setSuccessMsg(response.statusText);
-            } else {
                 setProductData({
                     'category':'',
                     'vendor':'',
@@ -72,10 +77,29 @@ function AddProduct(){
                     'usd_price':'',
                     'eur_price':'',
                     'tags':'',
-                    'image':'',
+                    'image':'', 
                 })
                 setErrorMsg('');
                 setSuccessMsg(response.statusText);
+
+                for(let i=0;i < ProductImgs.length;i++){
+                    const ImageFormData=new FormData();
+                    ImageFormData.append('product',response.data.id);
+                    ImageFormData.append('image',ProductImgs[i]);
+                    axios.post(baseUrl + 'product-imgs/', ImageFormData)
+                    .then(function (response) {
+                        console.log(response);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+                }
+
+                setProductImgs('')
+            } else {
+                setSuccessMsg('');
+                setErrorMsg(response.statusText);
             }
         })
         .catch(function (error) {
@@ -162,8 +186,13 @@ function AddProduct(){
                                             <input type="file" name='image' className='form-control' onChange={fileHandler} id="ProductImg"/>
                                         </div>
                                     </div>
+                                    <div className='mb-3'>
+                                        <div className='mb-3'>
+                                            <label for="Product_Imgs" className='form-label'>Product Images</label>
+                                            <input type="file" multiple name='product_imgs' onChange={multipleFilesHandler} className='form-control' id="Product_Imgs"/>
+                                        </div>
+                                    </div>
 
-                                    
                                     <button type='button' onClick={submitHandler} className='btn btn-primary'>Submit</button>
                                 </form>
                             </div>

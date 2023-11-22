@@ -59,7 +59,6 @@ function VendorProducts(props){
                                             }
                                         </td>
                                         <td>
-                                            <a href='#' className='btn btn-info'>View</a>
                                             <a href='#' className='btn btn-primary ms-1'>Edit</a>
                                             <a href='#' className='btn btn-danger ms-1'>Delete</a>
                                         </td>
