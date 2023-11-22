@@ -1,9 +1,23 @@
 
 import VendorSidebar from './VendorSidebar';
 import {Link} from 'react-router-dom';
-
+import { useState,useEffect } from 'react';
+const baseUrl='http://127.0.0.1:8000/api/';
 
 function VendorProducts(props){
+    const [ProductData,setProductData]=useState([]);
+
+    useEffect(() => {
+        fetchData(baseUrl+'products/');
+    },[]);
+
+    function fetchData(baseurl){
+        fetch(baseurl)
+        .then((response) => response.json())
+        .then((data) => {
+            setProductData(data.results);
+        });
+    }
     return(
             <div className='container mt-4'>
                 <div className='row'>
@@ -29,17 +43,28 @@ function VendorProducts(props){
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Product title</td>
-                                        <td>500</td>
-                                        <td>Published</td>
+                                    {
+                                        ProductData.map((product,index)=><tr>
+                                        <td>{product.id}</td>
+                                        <td>{product.title}</td>
+                                        <td>{product.price} zł</td>
+                                        <td>{product.usd_price} $</td>
+                                        <td>{product.eur_price} €</td>
+                                        <td>
+                                            {
+                                                !product.publish_status && 'Pending'
+                                            }
+                                            {
+                                                product.publish_status && <span class='text-success'>Published</span>
+                                            }
+                                        </td>
                                         <td>
                                             <a href='#' className='btn btn-info'>View</a>
                                             <a href='#' className='btn btn-primary ms-1'>Edit</a>
                                             <a href='#' className='btn btn-danger ms-1'>Delete</a>
                                         </td>
-                                    </tr>
+                                        </tr>)
+                                    } 
                                 </tbody>
                                 
                             </table>
