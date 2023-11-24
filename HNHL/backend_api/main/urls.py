@@ -20,6 +20,8 @@ urlpatterns= [
     path('product/<int:pk>/', views.ProductDetail.as_view()),
     path('related-products/<int:pk>/', views.RelatedProductList.as_view()),
     path('product-imgs/', views.ProductImgsList.as_view()),
+    path('product-imgs/<int:product_id>', views.ProductImgsDetail.as_view()),
+    path('product-img/<int:pk>/', views.ProductImgDetail.as_view()),
     
 
     # Categories URLS

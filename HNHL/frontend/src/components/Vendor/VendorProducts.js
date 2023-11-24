@@ -37,16 +37,20 @@ function VendorProducts(props){
                                     <tr>
                                         <th>#</th>
                                         <th>Product</th>
-                                        <th>Price</th>
+                                        <th>PLN price</th>
+                                        <th>USD price</th>
+                                        <th>EUR price</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {
+                                        
                                         ProductData.map((product,index)=><tr>
                                         <td>{product.id}</td>
-                                        <td>{product.title}</td>
+                                        <td><Link to={`/vendor/update-product/${product.id}`}>{product.title}</Link></td>
+                                        
                                         <td>{product.price} zł</td>
                                         <td>{product.usd_price} $</td>
                                         <td>{product.eur_price} €</td>

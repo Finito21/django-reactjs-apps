@@ -97,7 +97,7 @@ class ProductList(generics.ListCreateAPIView):
     pagination_class = pagination.PageNumberPagination
 
     def get_queryset(self):
-        qs = super().get_queryset()
+        qs = super().get_queryset().order_by('-id')
         if 'category' in self.request.GET:
             category = self.request.GET['category']
             category = models.ProductCategory.objects.get(id=category)
@@ -370,3 +370,21 @@ def customer_dashboard(request,pk):
 class ProductImgsList(generics.ListCreateAPIView):
     queryset = models.ProductImage.objects.all()
     serializer_class = serializers.ProductImageSerializer
+
+
+class ProductImgsDetail(generics.ListCreateAPIView):
+    queryset = models.ProductImage.objects.all()
+    serializer_class = serializers.ProductImageSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        product_id = self.kwargs['product_id']
+        qs = qs.filter(product__id=product_id)
+        return qs
+    
+
+class ProductImgDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.ProductImage.objects.all()
+    serializer_class = serializers.ProductImageSerializer
+
+    

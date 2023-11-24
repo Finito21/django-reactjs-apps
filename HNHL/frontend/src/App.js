@@ -35,6 +35,7 @@ import VendorLogout from './components/Vendor/VendorLogout';
 import VendorDashbaord from './components/Vendor/VendorDashboard';
 import VendorProducts from './components/Vendor/VendorProducts';
 import AddProduct from './components/Vendor/AddProduct';
+import UpdateProduct from './components/Vendor/UpdateProduct';
 import VendorOrders from './components/Vendor/VendorOrders';
 import Customers from './components/Vendor/Customers';
 import Reports from './components/Vendor/Reports';
@@ -78,7 +79,7 @@ function App() {
         <Route path='/customer/change-customer-password' element={<ChangeCustomerPassword/>}/>
         <Route path='/customer/addresses' element={<AddressList/>}/>
         <Route path='/customer/add-address' element={<AddAddress/>}/>
-        <Route path='/customer/update-address/:address_idy' element={<UpdateAddress/>}/>
+        <Route path='/customer/update-address/:address_id' element={<UpdateAddress/>}/>
 
 
         <Route path='/confirm-order' element={<ConfirmOrder/>}/>
@@ -90,7 +91,9 @@ function App() {
         <Route path='/vendor/logout' element={<VendorLogout/>}/>
         <Route path='/vendor/dashboard' element={<VendorDashbaord/>}/>
         <Route path='/vendor/products' element={<VendorProducts/>}/>
+        <Route path='/vendor/update-product/:product_id' element={<UpdateProduct/>}/>
         <Route path='/vendor/add-product' element={<AddProduct/>}/>
+
         <Route path='/vendor/VendorOrders' element={<VendorOrders/>}/>
 
         <Route path='/vendor/customers' element={<Customers/>}/>

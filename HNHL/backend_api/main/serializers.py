@@ -44,7 +44,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     class Meta:
         many= True
         model=models.Product
-        fields=['id','category','vendor','title','slug','tag_list','detail','price','usd_price','eur_price','product_ratings','product_imgs','image','publish_status']
+        fields=['id','category','vendor','title','slug','tag_list','detail','price','usd_price','eur_price','product_ratings','product_imgs','image','tags','publish_status']
 
     def __init__(self, *args, **kwargs):
         super(ProductDetailSerializer,self).__init__(*args, **kwargs)
