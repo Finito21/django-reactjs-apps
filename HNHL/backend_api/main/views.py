@@ -253,6 +253,16 @@ class VendorOrderItemList(generics.ListAPIView):
         vendor_id = self.kwargs['pk']
         qs = qs.filter(product__vendor__id=vendor_id)
         return qs
+    
+class VendorCustomerList(generics.ListAPIView):
+    queryset = models.OrderItems.objects.all()
+    serializer_class = serializers.OrderItemSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        vendor_id = self.kwargs['pk']
+        qs = qs.filter(product__vendor__id=vendor_id)
+        return qs
 
 class OrderDetail(generics.ListAPIView):
     serializer_class = serializers.OrderDetailSerializer
