@@ -17,7 +17,7 @@ import CustomerRegister from './components/Customer/CustomerRegister';
 import Login from './components/Customer/Login';
 import CustomerLogout from './components/Customer/CustomerLogout';
 import CustomerDashboard from './components/Customer/CustomerDashboard';
-import CustomerOrders from './components/Customer/CustomerOrders';
+import Orders from './components/Customer/Orders';
 import Wishlist from './components/Customer/Wishlist';
 import CustomerProfile from './components/Customer/CustomerProfile';
 import ChangeCustomerPassword from './components/Customer/ChangeCustomerPassword';
@@ -73,7 +73,7 @@ function App() {
 
         <Route path='/customer/dashboard' element={<CustomerDashboard/>}/>
 
-        <Route path='/customer/CustomerOrders' element={<CustomerOrders/>}/>
+        <Route path='/customer/orders' element={<Orders/>}/>
         <Route path='/customer/wishlist' element={<Wishlist/>}/>
         <Route path='/customer/customer-profile' element={<CustomerProfile/>}/>
         <Route path='/customer/change-customer-password' element={<ChangeCustomerPassword/>}/>

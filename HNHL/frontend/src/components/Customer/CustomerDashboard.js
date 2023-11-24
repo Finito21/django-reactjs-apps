@@ -46,7 +46,7 @@ function CustomerDashboard(props){
                                 <div className='card'>
                                     <div className='card-body text-center'>
                                         <h4>Total Orders</h4>
-                                        <h4><Link to="/customer/CustomerOrders">{CountList.totalOrders}</Link>
+                                        <h4><Link to="/customer/Orders">{CountList.totalOrders}</Link>
 </h4>
                                     </div>
                                 </div>

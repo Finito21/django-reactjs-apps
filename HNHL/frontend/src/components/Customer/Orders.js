@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom';
 import { useState,useEffect} from 'react';;
 //import axios from 'axios';
 
-function CustomerOrders(){
+function Orders(){
     const url='http://127.0.0.1:8000';
     const baseUrl='http://127.0.0.1:8000/api';
     const customerId=localStorage.getItem('customer_id');
@@ -77,4 +77,4 @@ function CustomerOrders(){
             </div>
     )
 }
-export default CustomerOrders;
+export default Orders;
