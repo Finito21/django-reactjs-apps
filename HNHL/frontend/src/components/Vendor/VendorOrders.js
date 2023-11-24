@@ -2,8 +2,41 @@
 import VendorSidebar from './VendorSidebar';
 import logo from '../../logo.svg';
 import {Link} from 'react-router-dom';
+import { useState,useEffect } from 'react';
+const baseUrl='http://127.0.0.1:8000/api/';
 
 function VendorOrders(){
+    const vendor_id=localStorage.getItem('vendor_id');
+    const [OrderItems,setOrderItems]=useState([]);
+
+    useEffect(() => {
+        fetchData(baseUrl+'vendor/'+vendor_id+'/orderitems/');
+    },[]);
+
+    function fetchData(baseurl){
+        fetch(baseurl)
+        .then((response) => response.json())
+        .then((data) => {
+            setOrderItems(data.results);
+        });
+    }
+
+    function changeOrderStatus(order_id,status){
+        fetch(baseUrl+'order-modify/'+ order_id + '/',{
+            method:"PATCH",
+            headers:{
+                'Accept':'application/json',
+                'Content-type':'application/json',
+            },
+            body: JSON.stringify({order_status:status})
+        })
+        .then(function(response){
+            if(response.status==200){
+                fetchData(baseUrl+'vendor/'+vendor_id+'/orderitems/');
+            }
+        });
+    }
+
     return(
             <div className='container mt-4'>
                 <div className='row'>
@@ -25,70 +58,50 @@ function VendorOrders(){
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    
-
-                                    <tr>
-                                        <td>1</td>
+                                        {
+                                            OrderItems.map((item,index)=> <tr>
+                                        <td>{index+1}</td>
                                         <td>
-                                            <Link><img src={logo} className="img-thumbnail" width='80' alt="..."/></Link>
-                                        <p><Link>Test</Link></p>
+                                            <Link><img src={item.product.image} className="img-thumbnail" width='80' alt="..."/></Link>
+                                        <p><Link>{item.product.title}</Link></p>
                                         </td>
-                                        <td> 500</td>
-                                        <td><span className='text-success'><i className='fa fa-check-circle'> </i> Completed</span></td>
-                                       
-                                        <div className="dropdown">
-                                            <button className="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                 Change Status
-                                            </button>
-                                            <ul className="dropdown-menu">
-                                                <li><a className="dropdown-item" href="#">Approve</a></li>
-                                                <li><a className="dropdown-item" href="#">Sent</a></li>
-                                                <li><a className="dropdown-item" href="#">Complete</a></li>
-                                            </ul>
-                                        </div>   
-
-                                    </tr>
-
-
-                                    <tr>
-                                        <td>2</td>
+                                        <td> {item.product.price}</td>
                                         <td>
-                                            <Link><img src={logo} className="img-thumbnail" width='80' alt="..."/></Link>
-                                        <p><Link>Test</Link></p>
+                                            {
+                                                item.order.order_status && <span className='text-success'><i className='fa fa-check-circle'> </i> Completed</span>
+                                            }
+                                            {
+                                                !item.order.order_status && <span className='text-warning'><i className='fa fa-spinner'> </i> Pending</span>
+                                            }
                                         </td>
-                                        <td> 500</td>
-                                        <td><span className='text-success'><i className='fa fa-check-circle'> </i> Completed</span></td>
-                                       
+                                        
+                                       <td>
                                         <div className="dropdown">
-                                            <button className="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                 Change Status
-                                            </button>
-                                            <ul className="dropdown-menu">
-                                                <li><a className="dropdown-item" href="#">Approve</a></li>
-                                                <li><a className="dropdown-item" href="#">Sent</a></li>
-                                                <li><a className="dropdown-item" href="#">Complete</a></li>
-                                            </ul>
-                                        </div>   
-
-                                    </tr>
-                                
-                                    
-                                    
-                                </tbody>
-
-
+                                                <button className="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Change Status
+                                                </button>
+                                                <ul className="dropdown-menu">
+                                                    <li>
+                                                        {
+                                                            !item.order.order_status && <a className="dropdown-item" onClick={()=>changeOrderStatus(item.order.id,true)} href="#">Complete</a>
+                                                        }
+                                                        {
+                                                            item.order.order_status && <a className="dropdown-item" onClick={()=>changeOrderStatus(item.order.id,false)} href="#">Pending</a>
+                                                        }
+                                                
+                                                    </li>
+                                                </ul>
+                                            </div>  
+                                       </td>
+                                        </tr>)
+                                        }
+                                    </tbody>
                                 </table>
-
-
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-                
             </div>
-    )
-}
-export default VendorOrders;
+        )
+    }
+    export default VendorOrders;

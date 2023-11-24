@@ -77,6 +77,8 @@ class OrderItems(models.Model):
             return self.product.title
         class Meta:
             verbose_name_plural='Order Items'
+
+
         
 class CustomerAddress(models.Model):
         customer=models.ForeignKey(Customer,on_delete=models.CASCADE,related_name='customer_addresses')

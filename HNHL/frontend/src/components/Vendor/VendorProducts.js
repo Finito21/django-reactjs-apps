@@ -2,9 +2,10 @@
 import VendorSidebar from './VendorSidebar';
 import {Link} from 'react-router-dom';
 import { useState,useEffect } from 'react';
-const baseUrl='http://127.0.0.1:8000/api/';
+
 
 function VendorProducts(props){
+    const baseUrl='http://127.0.0.1:8000/api/';
     const [ProductData,setProductData]=useState([]);
 
     useEffect(() => {
@@ -17,6 +18,19 @@ function VendorProducts(props){
         .then((data) => {
             setProductData(data.results);
         });
+    }
+    function showConfirm(product_id){
+        var _confirm=window.confirm('Are you sure to delete this product?');
+        if(_confirm){
+            fetch(baseUrl+'product/'+product_id,{
+                method:'DELETE'
+            })
+            .then((response)=> {
+                if(response.status==204){
+                    fetchData(baseUrl+'products/')
+                }
+            });
+        }
     }
     return(
             <div className='container mt-4'>
@@ -49,7 +63,7 @@ function VendorProducts(props){
                                         
                                         ProductData.map((product,index)=><tr>
                                         <td>{product.id}</td>
-                                        <td><Link to={`/vendor/update-product/${product.id}`}>{product.title}</Link></td>
+                                        <td>{product.title}</td>
                                         
                                         <td>{product.price} zł</td>
                                         <td>{product.usd_price} $</td>
@@ -63,8 +77,8 @@ function VendorProducts(props){
                                             }
                                         </td>
                                         <td>
-                                            <a href='#' className='btn btn-primary ms-1'>Edit</a>
-                                            <a href='#' className='btn btn-danger ms-1'>Delete</a>
+                                            <Link to={`/vendor/update-product/${product.id}`} className='btn btn-primary ms-1'>Edit</Link>
+                                            <Link to={'/vendor/products/'} className='btn btn-danger ms-1' onClick={()=>showConfirm(product.id)}>Delete</Link>
                                         </td>
                                         </tr>)
                                     } 

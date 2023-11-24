@@ -243,6 +243,16 @@ class CustomerOrderItemList(generics.ListAPIView):
         customer_id = self.kwargs['pk']
         qs = qs.filter(order__customer__id=customer_id)
         return qs
+    
+class VendorOrderItemList(generics.ListAPIView):
+    queryset = models.OrderItems.objects.all()
+    serializer_class = serializers.OrderItemSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        vendor_id = self.kwargs['pk']
+        qs = qs.filter(product__vendor__id=vendor_id)
+        return qs
 
 class OrderDetail(generics.ListAPIView):
     serializer_class = serializers.OrderDetailSerializer
@@ -270,6 +280,10 @@ class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.ProductCategory.objects.all()
     serializer_class = serializers.CategoryDetailSerializer
     # permission_classes = [permissions.IsAuthenticated]
+
+class OrderModify(generics.RetrieveUpdateAPIView):
+    queryset = models.Order.objects.all()
+    serializer_class = serializers.OrderSerializer
 
 @csrf_exempt
 def update_order_status(request, order_id):

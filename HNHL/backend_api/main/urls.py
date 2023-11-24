@@ -13,6 +13,8 @@ urlpatterns= [
     path('vendor/<int:pk>/', views.VendorDetail.as_view()),
     path('vendor/login/', views.vendor_login,name='vendor_login'),
     path('vendor/register/', views.vendor_register,name='vendor_register'),
+    path('vendor/<int:pk>/orderitems/', views.VendorOrderItemList.as_view()        ),
+
 
     # Product URLS
     path('products/', views.ProductList.as_view()),
@@ -38,6 +40,7 @@ urlpatterns= [
     # Order URLS
     path('orders/', views.OrderList.as_view()),
     path('order/<int:pk>/', views.OrderDetail.as_view()),
+    path('order-modify/<int:pk>/', views.OrderModify.as_view()),
     path('orderitems/', views.OrderItemList.as_view()),
     path('customer/<int:pk>/orderitems/', views.CustomerOrderItemList.as_view()),
     path('update-order-status/<int:order_id>', views.update_order_status,name='update_order_status'),
