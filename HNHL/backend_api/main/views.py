@@ -441,4 +441,17 @@ class ProductImgDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.ProductImage.objects.all()
     serializer_class = serializers.ProductImageSerializer
 
+def vendor_dashboard(request,pk):
+    vendor_id=pk
+    totalProducts=models.Product.objects.filter(vendor__id=vendor_id).count()
+    totalOrders=models.OrderItems.objects.filter(product__vendor__id=vendor_id).count()
+    totalCustomers=models.OrderItems.objects.filter(product__vendor__id=vendor_id).values('order__customer').count()
+    msg={
+            'totalProducts':totalProducts,
+            'totalOrders':totalOrders,
+            'totalCustomers':totalCustomers,
+
+        }
+    return JsonResponse(msg)
+
     

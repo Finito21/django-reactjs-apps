@@ -95,7 +95,7 @@ function App() {
         <Route path='/vendor/update-product/:product_id' element={<UpdateProduct/>}/>
         <Route path='/vendor/add-product' element={<AddProduct/>}/>
 
-        <Route path='/vendor/VendorOrders' element={<VendorOrders/>}/>
+        <Route path='/vendor/orders' element={<VendorOrders/>}/>
 
         <Route path='/vendor/customers' element={<Customers/>}/>
         <Route path='/vendor/customer/:customer_id/orderitems' element={<CustomerOrders/>}/>

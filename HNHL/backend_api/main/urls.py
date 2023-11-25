@@ -11,6 +11,8 @@ urlpatterns= [
     # Verdor URLS
     path('vendors/', views.VendorList.as_view()),
     path('vendor/<int:pk>/', views.VendorDetail.as_view()),
+    path('vendor/<int:pk>/dashboard/', views.vendor_dashboard),
+
     path('vendor/login/', views.vendor_login,name='vendor_login'),
     path('vendor/register/', views.vendor_register,name='vendor_register'),
     path('vendor/<int:pk>/orderitems/', views.VendorOrderItemList.as_view()),
