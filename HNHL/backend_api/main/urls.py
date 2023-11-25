@@ -15,6 +15,7 @@ urlpatterns= [
     path('vendor/register/', views.vendor_register,name='vendor_register'),
     path('vendor/<int:pk>/orderitems/', views.VendorOrderItemList.as_view()),
     path('vendor/<int:pk>/customers/', views.VendorCustomerList.as_view()),
+    path('vendor/<int:vendor_id>/customer/<int:customer_id>/orderitems/', views.VendorCustomerOrderItemList.as_view()),
 
 
     # Product URLS
@@ -41,6 +42,7 @@ urlpatterns= [
     # Order URLS
     path('orders/', views.OrderList.as_view()),
     path('order/<int:pk>/', views.OrderDetail.as_view()),
+    path('delete-customer-orders/<int:customer_id>/', views.delete_customer_orders,name='delete_customer_orders'),
     path('order-modify/<int:pk>/', views.OrderModify.as_view()),
     path('orderitems/', views.OrderItemList.as_view()),
     path('customer/<int:pk>/orderitems/', views.CustomerOrderItemList.as_view()),

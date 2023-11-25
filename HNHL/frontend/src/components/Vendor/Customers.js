@@ -3,6 +3,7 @@ import VendorSidebar from './VendorSidebar';
 import { useState,useEffect } from 'react';
 import logo from '../../logo.svg';
 import {Link} from 'react-router-dom';
+
 const baseUrl='http://127.0.0.1:8000/api/';
 
 function Customers(){
@@ -20,7 +21,19 @@ function Customers(){
             setCustomerList(data.results);
         });
     }
-    console.log(CustomerList)
+     function showConfirm(customer_id){
+        var _confirm=window.confirm('Are you sure to delete this order?');
+        if(_confirm){
+            fetch(baseUrl+'delete-customer-orders/'+customer_id,{
+                method:'DELETE'
+            })
+            .then((response)=> {
+                if(response.bool==true){
+                    fetchData(baseUrl+'vendor/customer/'+customer_id+'/orderitems');
+                }
+            });
+        }
+    }
 
 
     return(
@@ -54,8 +67,8 @@ function Customers(){
                                             <td>{item.customer.mobile}</td>
                                 
                                             <td>
-                                                <button className='btn btn-primary btn-sm'>Orders</button>
-                                                <button className='btn btn-danger btn-sm ms-1'>Remove from list</button>
+                                                <Link to={`/vendor/customer/${item.customer.id}/orderitems`} className='btn btn-primary btn-sm'>Orders</Link>
+                                                <button onClick={()=>showConfirm(item.customer.id)} className='btn btn-danger btn-sm ms-1'>Remove from list</button>
                                             </td>
                                         </tr>)
                                         }

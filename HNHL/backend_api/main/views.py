@@ -263,6 +263,17 @@ class VendorCustomerList(generics.ListAPIView):
         vendor_id = self.kwargs['pk']
         qs = qs.filter(product__vendor__id=vendor_id)
         return qs
+    
+class VendorCustomerOrderItemList(generics.ListAPIView):
+    queryset = models.OrderItems.objects.all()
+    serializer_class = serializers.OrderItemSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        vendor_id = self.kwargs['vendor_id']
+        customer_id = self.kwargs['customer_id']
+        qs = qs.filter(order__customer__id=customer_id,product__vendor__id=vendor_id)
+        return qs
 
 class OrderDetail(generics.ListAPIView):
     serializer_class = serializers.OrderDetailSerializer
@@ -272,6 +283,12 @@ class OrderDetail(generics.ListAPIView):
         order = models.Order.objects.get(id=order_id)
         order_items = models.OrderItems.objects.filter(order=order)
         return order_items
+    
+class OrderDelete(generics.RetrieveDestroyAPIView):
+    queryset = models.Order.objects.all()
+    serializer_class = serializers.OrderDetailSerializer
+
+    
 
 class CustomerAddressViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.CustomerAddressSerializer
@@ -303,6 +320,19 @@ def update_order_status(request, order_id):
                 'bool': False,
             }
         if updateRes:
+            msg={
+                'bool':True,
+            }
+    return JsonResponse(msg)
+
+@csrf_exempt
+def delete_customer_orders(request, customer_id):
+    if request.method=="DELETE":
+        orders=models.Order.objects.filter(customer__id=customer_id).delete()
+        msg={
+                'bool': False,
+            }
+        if orders:
             msg={
                 'bool':True,
             }
