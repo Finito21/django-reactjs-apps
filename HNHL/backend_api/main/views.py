@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.db.models import Count
+from django.contrib.auth.hashers import make_password
 
 
 # Create your views here.
@@ -39,7 +40,6 @@ def vendor_register(request):
                 email=email,
                 password=password,
             )
-
             if user:
                 try:
                     vendor=models.Vendor.objects.create(user=user,mobile=mobile,address=address)
@@ -67,7 +67,17 @@ def vendor_register(request):
         return JsonResponse(msg)
     else:
         return JsonResponse({'error': 'Invalid request method'})
-    
+
+@csrf_exempt 
+def vendor_change_password(request,vendor_id):
+    password=request.POST.get('password')
+    vendor=models.Vendor.objects.get(id=vendor_id)
+    user=vendor.user
+    user.password=make_password(password)
+    user.save()
+    msg={'bool':True,'msg':'Password has been changed'}
+    return JsonResponse(msg)
+
 @csrf_exempt
 def vendor_login(request):
     if request.method == 'POST':
@@ -218,6 +228,16 @@ def customer_register(request):
         return JsonResponse(msg)
     else:
         return JsonResponse({'error': 'Invalid request method'})
+    
+@csrf_exempt 
+def customer_change_password(request,customer_id):
+    password=request.POST.get('password')
+    customer=models.Customer.objects.get(id=customer_id)
+    user=customer.user
+    user.password=make_password(password)
+    user.save()
+    msg={'bool':True,'msg':'Password has been changed'}
+    return JsonResponse(msg)
 
 class OrderList(generics.ListCreateAPIView):
     queryset = models.Order.objects.all()

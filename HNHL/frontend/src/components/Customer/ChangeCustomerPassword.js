@@ -1,9 +1,43 @@
 
 import CustomerSidebar from './CustomerSidebar';
-import logo from '../../logo.svg';
-import {Link} from 'react-router-dom';
+import { useState } from 'react';
+import axios from 'axios';
+const baseUrl='http://127.0.0.1:8000/api';
 
 function ChangeCustomerPassword(){
+    var customer_id=localStorage.getItem('customer_id');
+    const [PasswordData,setPasswordData]= useState({
+        'password':'',
+        'c_password':'',
+    });
+    const [ConfirmError,setConfirmError]=useState(false);
+
+    const inputHandler = (event) => {
+        setPasswordData({
+            ...PasswordData,
+            [event.target.name]:event.target.value
+        });
+    };
+
+    const submitHandler = (event)=>{
+        if(PasswordData.password==PasswordData.c_password){
+            setConfirmError(false);
+        }else{
+            setConfirmError(true);
+        }
+        const formData=new FormData();
+        formData.append('password',PasswordData.password);
+
+        axios.post(baseUrl + '/customer-change-password/'+customer_id, formData)
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
+
     return(
             <div className='container mt-4'>
                 <div className='row'>
@@ -18,14 +52,14 @@ function ChangeCustomerPassword(){
                             <form>
                                 <div className='mb-3'>
                                     <label for="pwd" className='form-label'>New Password</label>
-                                    <input type="password" className='form-control' id="pwd"/>
+                                    <input type="password" name='password' value={PasswordData.password} onChange={inputHandler} className='form-control' id="pwd"/>
                                 </div>
                                 <div className='mb-3'>
                                     <label for="cpwd" className='form-label'>Confirm Password</label>
-                                    <input type="password" className='form-control' id="cpwd"/>
+                                    <input type="password" name='c_password' value={PasswordData.c_password} onChange={inputHandler} className='form-control' id="cpwd"/>
                                 </div>
                                 
-                                <button type='submit' className='btn btn-primary'>Submit</button>
+                                <button type='button' onClick={submitHandler} className='btn btn-primary'>Submit</button>
                             </form>
                         </div>
                     </div>

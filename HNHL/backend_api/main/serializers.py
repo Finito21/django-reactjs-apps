@@ -16,11 +16,15 @@ class VendorSerializer(serializers.ModelSerializer):
 class VendorDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model=models.Vendor
-        fields=['id','user','address','show_chart_daily_orders','show_chart_monthly_orders','show_chart_yearly_orders']
+        fields=['id','user','mobile','address','profile_img','show_chart_daily_orders','show_chart_monthly_orders','show_chart_yearly_orders']
 
     def __init__(self, *args, **kwargs):
         super(VendorDetailSerializer,self).__init__(*args, **kwargs)
         #self.Meta.depth = 1
+    def to_representation(self,instance):
+        response=super().to_representation(instance) 
+        response['user']=UserSerializer(instance.user).data
+        return response
 
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:

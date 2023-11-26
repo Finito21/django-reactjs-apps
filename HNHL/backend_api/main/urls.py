@@ -11,7 +11,9 @@ urlpatterns= [
     # Verdor URLS
     path('vendors/', views.VendorList.as_view()),
     path('vendor/<int:pk>/', views.VendorDetail.as_view()),
+    path('vendor-change-password/<int:vendor_id>', views.vendor_change_password),
     path('vendor/<int:pk>/dashboard/', views.vendor_dashboard),
+    
 
     path('vendor/login/', views.vendor_login,name='vendor_login'),
     path('vendor/register/', views.vendor_register,name='vendor_register'),
@@ -41,6 +43,7 @@ urlpatterns= [
     path('user/<int:pk>/', views.UserDetail.as_view()),
     path('customer/login/', views.customer_login,name='customer_login'),
     path('customer/register/', views.customer_register,name='customer_register'),
+    path('customer-change-password/<int:customer_id>', views.customer_change_password),
 
     # Order URLS
     path('orders/', views.OrderList.as_view()),
