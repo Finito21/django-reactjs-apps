@@ -50,6 +50,7 @@ function ConfirmOrder(){
         .then(function(response){
             var orderId=response.data.id;
             setorderId(orderId);
+            console.log(customerId)
 
             if(CurrencyData=='USD'){
                 setorderAmount(response.data.total_usd_amount);
