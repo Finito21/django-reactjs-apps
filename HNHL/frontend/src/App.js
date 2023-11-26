@@ -43,6 +43,8 @@ import Reports from './components/Vendor/Reports';
 import VendorProfile from './components/Vendor/VendorProfile';
 import ChangeVendorPassword from './components/Vendor/ChangeVendorPassword';
 import DailyReport from './components/Vendor/DailyReport';
+import MonthlyReport from './components/Vendor/MonthlyReport';
+import YearlyReport from './components/Vendor/YearlyReport';
 
 import { CartContext, CurrencyContext, } from './Context';
 import {useState} from 'react';
@@ -96,6 +98,8 @@ function App() {
         <Route path='/vendor/update-product/:product_id' element={<UpdateProduct/>}/>
         <Route path='/vendor/add-product' element={<AddProduct/>}/>
         <Route path='/vendor/daily-report' element={<DailyReport/>}/>
+        <Route path='/vendor/monthly-report' element={<MonthlyReport/>}/>
+        <Route path='/vendor/yearly-report' element={<YearlyReport/>}/>
 
         <Route path='/vendor/orders' element={<VendorOrders/>}/>
 

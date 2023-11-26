@@ -23,7 +23,7 @@ function Reports(){
                                 <div className='card'>
                                     <div className='card-body text-center'>
                                         <h4>Monthly Reports</h4>
-                                        <h4><a href='#' className='btn btn-info'>View</a></h4>
+                                        <h4><Link to='/vendor/monthly-report' className='btn btn-info'>View</Link></h4>
                                     </div>
                                 </div>
                             </div>
@@ -31,7 +31,7 @@ function Reports(){
                                 <div className='card'>
                                     <div className='card-body text-center'>
                                         <h4>Yearly  Reports</h4>
-                                        <h4><a href='#' className='btn btn-info'>View</a></h4>
+                                        <h4><Link to='/vendor/yearly-report' className='btn btn-info'>View</Link></h4>
                                     </div>
                                 </div>
                             </div>
