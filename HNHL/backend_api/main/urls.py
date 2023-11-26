@@ -18,6 +18,7 @@ urlpatterns= [
     path('vendor/<int:pk>/orderitems/', views.VendorOrderItemList.as_view()),
     path('vendor/<int:pk>/customers/', views.VendorCustomerList.as_view()),
     path('vendor/<int:vendor_id>/customer/<int:customer_id>/orderitems/', views.VendorCustomerOrderItemList.as_view()),
+    path('vendor/<int:pk>/daily-report/', views.VendorDailyReport.as_view()),
 
 
     # Product URLS
@@ -49,6 +50,7 @@ urlpatterns= [
     path('orderitems/', views.OrderItemList.as_view()),
     path('customer/<int:pk>/orderitems/', views.CustomerOrderItemList.as_view()),
     path('update-order-status/<int:order_id>', views.update_order_status,name='update_order_status'),
+    
 
     # Wishlist
     path('wishlist/', views.WishList.as_view()),

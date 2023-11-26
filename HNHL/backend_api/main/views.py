@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.db.models import Count
 
 
 # Create your views here.
@@ -454,4 +455,13 @@ def vendor_dashboard(request,pk):
         }
     return JsonResponse(msg)
 
+class VendorDailyReport(generics.ListAPIView):
+    queryset = models.OrderItems.objects.all()
+    serializer_class = serializers.OrdersSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        vendor_id = self.kwargs['pk']
+        qs = qs.filter(product__vendor__id=vendor_id).annotate(Count('id'))
+        return qs
     

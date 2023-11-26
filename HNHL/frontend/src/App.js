@@ -42,6 +42,7 @@ import CustomerOrders from './components/Vendor/CustomerOrders';
 import Reports from './components/Vendor/Reports';
 import VendorProfile from './components/Vendor/VendorProfile';
 import ChangeVendorPassword from './components/Vendor/ChangeVendorPassword';
+import DailyReport from './components/Vendor/DailyReport';
 
 import { CartContext, CurrencyContext, } from './Context';
 import {useState} from 'react';
@@ -94,6 +95,7 @@ function App() {
         <Route path='/vendor/products' element={<VendorProducts/>}/>
         <Route path='/vendor/update-product/:product_id' element={<UpdateProduct/>}/>
         <Route path='/vendor/add-product' element={<AddProduct/>}/>
+        <Route path='/vendor/daily-report' element={<DailyReport/>}/>
 
         <Route path='/vendor/orders' element={<VendorOrders/>}/>
 

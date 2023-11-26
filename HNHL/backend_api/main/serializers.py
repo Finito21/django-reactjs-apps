@@ -16,7 +16,7 @@ class VendorSerializer(serializers.ModelSerializer):
 class VendorDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model=models.Vendor
-        fields=['id','user','address']
+        fields=['id','user','address','show_chart_daily_orders']
 
     def __init__(self, *args, **kwargs):
         super(VendorDetailSerializer,self).__init__(*args, **kwargs)
@@ -112,6 +112,14 @@ class OrderItemSerializer(serializers.ModelSerializer):
         response['user']=UserSerializer(instance.order.customer.user).data
         response['product']=ProductDetailSerializer(instance.product).data
         return response
+    
+
+class OrdersSerializer(serializers.ModelSerializer):
+    order=OrderDetailSerializer()
+    class Meta:
+        model=models.OrderItems
+        fields=['id','order','product','qty','price','usd_price','eur_price']
+
 
 class CustomerAddressSerializer(serializers.ModelSerializer):
     class Meta:
