@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function VendorLogin(props) {
     const baseUrl = 'http://127.0.0.1:8000/api/';
@@ -55,7 +56,7 @@ function VendorLogin(props) {
             <div className='row'>
                 <div className='col-md-8 col-12 offset-2'>
                     <div className='card'>
-                        <h4 className='card-header'>Login</h4>
+                        <h4 className='card-header'>Login as a Seller</h4>
                         <div className='card-body'>
                             {formError &&
                                 <p className="text-danger">{errorMsg}</p>
@@ -75,6 +76,11 @@ function VendorLogin(props) {
                                 <button type="button" disabled={!buttonEnable} onClick={submitHandler} className='btn btn-primary'>Submit</button>
                             </form>
                         </div>
+                    </div>
+                    <div className="mt-3 d-flex justify-content-center">
+                        <ul className="list-unstyled">
+                            <li>Don't have an Seller account? <Link to="/vendor/register">Seller Register</Link></li>
+                        </ul>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function CustomerRegister(props){
     const baseUrl = 'http://127.0.0.1:8000/api/';
@@ -97,6 +98,13 @@ function CustomerRegister(props){
                                 </form>
                             </div>
                         </div>
+                        <div className="mt-3 d-flex justify-content-center">
+                        <ul className="list-unstyled">
+                            <li>Don you have an account? <Link to="/customer/login">Login</Link></li>
+                            <li>Are you a Seller? <Link to="/vendor/login">Seller Login</Link></li>
+                            <li>Want to be a Seller? <Link to="/vendor/register">Seller Register</Link></li>
+                        </ul>
+                    </div>
                     </div>
                 </div>
                 
