@@ -1,6 +1,9 @@
 import axios from "axios";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
+
+import '../../Switcher.css';
+
 
 function Login(props) {
     const baseUrl = 'http://127.0.0.1:8000/api/';
@@ -10,6 +13,20 @@ function Login(props) {
         "username": '',
         "password": ''
     });
+
+    const [switchChecked, setSwitchChecked] = useState(localStorage.getItem('switchChecked') === 'true');
+
+
+    const navigate = useNavigate();  // Use useNavigate for navigation
+
+    const handleSwitchToggle = () => {
+        const newSwitchChecked = !switchChecked;
+        setSwitchChecked(newSwitchChecked);
+        localStorage.setItem('switchChecked', newSwitchChecked.toString());
+        navigate(newSwitchChecked ? '/vendor/login' : '/customer/login'); // Use navigate for navigation
+    };
+
+    
 
     const inputHandler = (event) => {
         setLoginFormData({
@@ -48,8 +65,8 @@ function Login(props) {
     const checkCustomer=localStorage.getItem('customer_login');
     if(checkCustomer){
         window.location.href='/customer/dashboard';
-    }
-    console.log(checkCustomer);
+    };
+    
 
     const buttonEnable=(loginFormData.username!='')&&(loginFormData.password!='')
 
@@ -79,12 +96,12 @@ function Login(props) {
                             </form>
                         </div>
                     </div>
-                    <div className="mt-3 d-flex justify-content-center">
-                        <ul className="list-unstyled">
-                            <li>Don't have an account? <Link to="/customer/register">Register</Link></li>
-                            <li>Are you a Seller? <Link to="/vendor/login">Seller Login</Link></li>
-                            <li>Want to be a Seller? <Link to="/vendor/register">Seller Register</Link></li>
-                        </ul>
+                   
+                    <div className="switch-container row align-items-center">
+                        <div className="col-lg-1 text-center">Client</div>
+                        <input type="checkbox" id="switch" onClick={handleSwitchToggle} checked={switchChecked} />
+                        <label className="switch-label col-lg-1" htmlFor="switch">Toggle</label>
+                        <div className="col-lg-1 text-center">Seller</div>
                     </div>
                 </div>
             </div>

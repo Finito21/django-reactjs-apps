@@ -1,13 +1,15 @@
-import {Routes,Route} from 'react-router-dom';
+import {Routes,Route, useLocation} from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
 
 import Header from './components/Header';
+import HomeHeader from './components/HomeHeader';
 import Home from './components/Home';
 import Footer from './components/Footer';
 import Categories from './components/Categories';
 import AllProducts from './components/AllProducts';
+import AllSellers from './components/AllSellers';
 import ProductDetail from './components/ProductDetail';
 import CategoryProducts from './components/CategoryProducts';
 import TagProducts from './components/TagProducts';
@@ -53,16 +55,25 @@ const checkCart=localStorage.getItem('cartData');
 const currentCurrency=localStorage.getItem('currency');
 
 function App() {
+  
+  const location = useLocation();
+
+  const isHomeRoute = location.pathname === '/';
+  const isCategoriesRoute=location.pathname === '/categories';
+  const isAllProductsRoute=location.pathname === '/products';
+  const isAllSellersRoute=location.pathname === '/sellers';
+
   const [cartData,setCartData]=useState(JSON.parse(checkCart));
   const [CurrencyData,setCurrencyData]=useState(currentCurrency);
 
   return (
     <CurrencyContext.Provider value={{CurrencyData,setCurrencyData}}>
     <CartContext.Provider value={{cartData,setCartData}}>
-      <Header></Header>
+       {(isHomeRoute||isCategoriesRoute||isAllProductsRoute||isAllSellersRoute) ? <HomeHeader /> : <Header />}
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/products' element={<AllProducts/>}/>
+        <Route path='/sellers' element={<AllSellers/>}/>
 
         <Route path='/categories' element={<Categories/>}/>
         <Route path='/category/:category_slug/:category_id' element={<CategoryProducts/>}/>

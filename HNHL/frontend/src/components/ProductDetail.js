@@ -223,9 +223,7 @@ function ProductDetail(){
                                 <i className="fa-solid fa-cart-plus"></i>Remove from Cart
                                 </button>
                         }
-                            <button title="buy Now" className='btn btn-success ms-1'>
-                            <i className="fa-solid fa-bag-shopping"></i>Buy Now
-                            </button>
+                            
 
                             {
                                 (userContext.login && !ProductInWishlist) && <button onClick={saveInWishList} title="Add to Wishlist" className='btn btn-danger ms-1'>
