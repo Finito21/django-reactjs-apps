@@ -77,7 +77,8 @@ function ProductDetail(){
                 'price':productData.price,
                 'usd_price':productData.usd_price,
                 'eur_price':productData.eur_price,
-                'image':productData.image
+                'image':productData.image,
+                'purchase_count':productData.purchase_count
             },
             'user':{
                 'id':1
@@ -202,6 +203,7 @@ function ProductDetail(){
                 <div className='col-8'>
                     <h3>{productData.title}</h3>
                     <p>{productData.detail}</p>
+                    <p>{productData.purchase_count}</p>
 
                     {
                         (CurrencyData!='USD' && CurrencyData!='EUR') && <h5 className='card-title'>Price: {productData.price} zł</h5>

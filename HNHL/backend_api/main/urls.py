@@ -13,6 +13,7 @@ urlpatterns= [
     path('vendor/<int:pk>/', views.VendorDetail.as_view()),
     path('vendor-change-password/<int:vendor_id>', views.vendor_change_password),
     path('vendor/<int:pk>/dashboard/', views.vendor_dashboard),
+    path('vendor-products/<int:vendor_id>', views.VendorProductList.as_view()),
     
 
     path('vendor/login/', views.vendor_login,name='vendor_login'),

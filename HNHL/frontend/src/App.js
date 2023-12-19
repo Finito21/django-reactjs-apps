@@ -7,10 +7,12 @@ import Header from './components/Header';
 import HomeHeader from './components/HomeHeader';
 import Home from './components/Home';
 import Footer from './components/Footer';
+import Blog from './components/Blog';
 import Categories from './components/Categories';
 import AllProducts from './components/AllProducts';
 import AllSellers from './components/AllSellers';
 import ProductDetail from './components/ProductDetail';
+import SellerDetail from './components/SellerDetail';
 import CategoryProducts from './components/CategoryProducts';
 import TagProducts from './components/TagProducts';
 import Checkout from './components/Checkout';
@@ -69,17 +71,19 @@ function App() {
   return (
     <CurrencyContext.Provider value={{CurrencyData,setCurrencyData}}>
     <CartContext.Provider value={{cartData,setCartData}}>
-       {(isHomeRoute||isCategoriesRoute||isAllProductsRoute||isAllSellersRoute) ? <HomeHeader /> : <Header />}
+       <HomeHeader />
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/products' element={<AllProducts/>}/>
         <Route path='/sellers' element={<AllSellers/>}/>
+        <Route path='/blog' element={<Blog/>}/>
 
         <Route path='/categories' element={<Categories/>}/>
         <Route path='/category/:category_slug/:category_id' element={<CategoryProducts/>}/>
         <Route path='/products/:tag' element={<TagProducts/>}/>
 
         <Route path='/product/:product_slug/:product_id' element={<ProductDetail/>}/>
+        <Route path='/seller/:seller_username/:seller_id' element={<SellerDetail/>}/>
         <Route path='/checkout' element={<Checkout/>}/>
 
         <Route path='/customer/register' element={<CustomerRegister/>}/>

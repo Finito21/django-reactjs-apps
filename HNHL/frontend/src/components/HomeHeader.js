@@ -2,8 +2,6 @@ import {Link} from 'react-router-dom';
 import { useState,useContext, useEffect } from 'react';
 import {UserContext, CartContext, CurrencyContext} from '../Context';
 import logo from '../logo.svg';
-import banner from '../banner.svg';
-import '../CurrencySwitcher.css';
 
 function HomeHeader(props){
     const userContext=useContext(UserContext);
@@ -24,64 +22,7 @@ function HomeHeader(props){
         localStorage.setItem('currency',_currency)
         setCurrencyData(_currency);
     }
-    var TxtType = function(el, toRotate, period) {
-        this.toRotate = toRotate;
-        this.el = el;
-        this.loopNum = 0;
-        this.period = parseInt(period, 10) || 2000;
-        this.txt = '';
-        this.tick();
-        this.isDeleting = false;
-    };
-    
-    TxtType.prototype.tick = function() {
-        var i = this.loopNum % this.toRotate.length;
-        var fullTxt = this.toRotate[i];
-    
-        if (this.isDeleting) {
-            this.txt = fullTxt.substring(0, this.txt.length - 1);
-        } else {
-            this.txt = fullTxt.substring(0, this.txt.length + 1);
-        }
-    
-        this.el.innerHTML = '<span class="wrap">'+this.txt+'</span>';
-    
-        var that = this;
-        var delta = 200 - Math.random() * 100;
-    
-        if (this.isDeleting) { delta /= 2; }
-    
-        if (!this.isDeleting && this.txt === fullTxt) {
-            delta = this.period;
-            this.isDeleting = true;
-        } else if (this.isDeleting && this.txt === '') {
-            this.isDeleting = false;
-            this.loopNum++;
-            delta = 500;
-        }
-    
-        setTimeout(function() {
-            that.tick();
-        }, delta);
-    };
-    
-    
-        useEffect(() => {
-            // Animation initialization logic
-            var elements = document.getElementsByClassName('typewrite');
-            for (var i = 0; i < elements.length; i++) {
-              var toRotate = elements[i].getAttribute('data-type');
-              var period = elements[i].getAttribute('data-period');
-              if (toRotate) {
-                new TxtType(elements[i], JSON.parse(toRotate), period);
-              }
-            }
-            // INJECT CSS
-            var css = document.createElement('style');
-            css.type = 'text/css';
-            css.innerHTML = '.typewrite > .wrap { border-right: 0.08em solid transparent}';
-            document.body.appendChild(css);
-          }, []);
+   
 
 
           const cartAddButtonHandler = ()=>{
@@ -261,19 +202,7 @@ function HomeHeader(props){
                     </nav>
                 </div>
 
-                <div class="static-slider1 py-4">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-7 align-self-center">
-                                <h1 class="title">Invigorate your mind with our supplements - and remember also about  <span class="text-success-gradiant typewrite" data-period="2000" data-type='[ "HEALTHY NUTRITION", "HEALTHY LIFE"]'></span></h1>
-                                <a class="btn btn-success-gradiant btn-md btn-arrow mt-3 text-white border-0" href=""><span>Read More</span></a>
-                            </div>
-                            <div class="col-md-5 mt-4">
-                                <img src={banner} alt="wrapkit" class="img-fluid"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
 
            

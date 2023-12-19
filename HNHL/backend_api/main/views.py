@@ -16,11 +16,27 @@ class VendorList(generics.ListCreateAPIView):
     queryset = models.Vendor.objects.all()
     serializer_class = serializers.VendorSerializer
     # permission_classes = [permissions.IsAuthenticated]
+    def get_queryset(self):
+        qs = super().get_queryset().order_by('-id')
+        if 'fetch_limit' in self.request.GET:
+            limit = int(self.request.GET['fetch_limit'])
+            qs = qs[:limit]
+        return qs
 
 class VendorDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Vendor.objects.all()
     serializer_class = serializers.VendorDetailSerializer
     # permission_classes = [permissions.IsAuthenticated]
+
+class VendorProductList(generics.ListAPIView):
+    queryset = models.Product.objects.all()
+    serializer_class = serializers.ProductListSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        vendor_id = self.kwargs['vendor_id']
+        qs = qs.filter(vendor__id=vendor_id).order_by('id')
+        return qs
 
 @csrf_exempt
 def vendor_register(request):
@@ -323,6 +339,12 @@ class CategoryList(generics.ListCreateAPIView):
     queryset = models.ProductCategory.objects.all()
     serializer_class = serializers.CategorySerializer
     # permission_classes = [permissions.IsAuthenticated]
+    def get_queryset(self):
+        qs = super().get_queryset().order_by('-id')
+        if 'fetch_limit' in self.request.GET:
+            limit = int(self.request.GET['fetch_limit'])
+            qs = qs[:limit]
+        return qs
 
 class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.ProductCategory.objects.all()

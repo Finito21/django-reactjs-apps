@@ -21,17 +21,6 @@ function AllSellers(props){
             });
         }
 
-        function changeUrl(baseurl){
-            fetchData(baseurl);
-        }
-
-        var links=[];
-        var limit=12;
-        var totalLinks=totalResult/limit;
-        for(let i=1; i<=totalLinks; i++){
-            links.push(<li class="page-item"><Link onClick={()=>changeUrl(baseUrl+`/vendors/?page=${i}`)} to ={`/vendors/?page=${i}`} class="page-link">{i}</Link></li>)
-        }
-
         
         return(
             <section className='container'>
@@ -42,11 +31,7 @@ function AllSellers(props){
                     }
                     
                 </div>
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        {links}
-                    </ul>
-                </nav>
+               
             </section>  
             )
 }

@@ -1,15 +1,24 @@
 import logo from '../logo.svg';
 import {Link} from 'react-router-dom';
 import {CurrencyContext,CartContext, UserContext} from '../Context';
-import {useContext} from 'react';
+import {useContext, useEffect,useState} from 'react';
+import axios from "axios";
 
 function SingleProduct(props){
+    const baseUrl='http://127.0.0.1:8000/api';
+    const [productData,setproductData]=useState([]);
     const { CurrencyData } = useContext(CurrencyContext);
     const { cartData, setCartData } = useContext(CartContext);
+    const [ProductInWishlist,setProductInWishlist]=useState(false);
     const userContext=useContext(UserContext);
   
     // Sprawdź, czy produkt jest w koszyku
     const isProductInCart = cartData.some((cartItem) => cartItem.product.id === props.product.id);
+
+    useEffect(() => {
+        checkProductInWishList(baseUrl + '/check-in-wishlist/',props.product.id);
+
+    },[]);
   
     const addToCartHandler = () => {
       const newCartItem = {
@@ -36,9 +45,43 @@ function SingleProduct(props){
       setCartData(updatedCart);
     };
   
-    const addToWishlistHandler = () => {
-      console.log('Dodaj do listy życzeń:', props.product.title);
-    };
+    function saveInWishList(){
+        const customerId=localStorage.getItem('customer_id');
+        const formData=new FormData();
+        formData.append('customer',customerId);
+        formData.append('product',productData.id);
+
+        axios.post(baseUrl + '/wishlist/', formData)
+        .then(function(response){
+            if(response.data.id){
+                setProductInWishlist(true);
+            }
+            
+        })
+        .catch(function(error){
+            console.log(error);
+        })
+    }
+    function checkProductInWishList(baseUrl,product_id){
+        const customerId=localStorage.getItem('customer_id');
+        const formData=new FormData();
+        formData.append('customer',customerId);
+        formData.append('product',product_id);
+
+        axios.post(baseUrl, formData)
+        .then(function(response){
+            if(response.data.bool==true){
+                setProductInWishlist(true);
+            }
+            else{
+                setProductInWishlist(false);
+            }
+            
+        })
+        .catch(function(error){
+            console.log(error);
+        })
+    }
   
 
     return(
@@ -48,14 +91,9 @@ function SingleProduct(props){
                         <img src={props.product.image} className="card-img-top" alt="..." style={{ height: '250px', width: '100%', objectFit: 'contain' }}/>
                     </Link>
                     <div className="card-body">
-                    <h4 className="card-title" style={{ marginBottom: '10px' }}>
-                        <Link
-                        to={`/product/${props.product.slug}/${props.product.id}`}
+                        <h4 className="card-title"><Link to={`/product/${props.product.slug}/${props.product.id}`}
                         style={{ textDecoration: 'none', color: 'black' }}
-                        >
-                        {props.product.title}
-                        </Link>
-                    </h4>
+                        >{props.product.title} </Link></h4>
                         {
                             (CurrencyData!='USD' && CurrencyData!='EUR') && <h5 className='card-title'>Price: {props.product.price} zł</h5>
                         }
