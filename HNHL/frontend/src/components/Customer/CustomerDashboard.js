@@ -39,7 +39,8 @@ function CustomerDashboard(props) {
             <div className='col-md-4 mb-2'>
               <div className='card' style={{ height: '100%' }}>
                 <div className='card-body text-center'>
-                  <h4>Total Orders</h4>
+                  <h4>Total</h4>
+                  <h5>Orders</h5>
                   <h4>
                     <Link to="/customer/orders">{countList.totalOrders}</Link>
                   </h4>
@@ -49,7 +50,8 @@ function CustomerDashboard(props) {
             <div className='col-md-4 mb-2'>
               <div className='card' style={{ height: '100%' }}>
                 <div className='card-body text-center'>
-                  <h4>Total Wishlist</h4>
+                  <h4>Total</h4>
+                  <h5>Wishlist</h5>
                   <h4>
                     <Link to="/customer/wishlist">{countList.totalWishList}</Link>
                   </h4>
@@ -59,7 +61,8 @@ function CustomerDashboard(props) {
             <div className='col-md-4 mb-2'>
               <div className='card' style={{ height: '100%' }}>
                 <div className='card-body text-center'>
-                  <h4>Total Addresses</h4>
+                  <h4>Total</h4>
+                  <h5>Addresses</h5>
                   <h4>
                     <Link to="/customer/addresses">{countList.totalAddress}</Link>
                   </h4>

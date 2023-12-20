@@ -52,7 +52,7 @@ function SellerDetail(){
                 <div className='col-9'>
                     <h2>{VendorData.user.username}</h2>
                     <h3>{VendorData.user.first_name} {VendorData.user.last_name}</h3>
-                    <p>Total Products:{VendorData.total_products}</p>
+                    <p>Total Products: {VendorData.total_products}</p>
                 </div>
             </div>
             <div className='row'>

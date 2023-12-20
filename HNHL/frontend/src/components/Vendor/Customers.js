@@ -43,32 +43,36 @@ function Customers(){
                         <VendorSidebar></VendorSidebar>
                     </div>
                     <div className='col-md-9 col-12 mb-2'>
-                        <div className='row'>
-                            <div className='table-responsive'>
-                                <table className='table table-bordered'>
+                        <div>
+                            <div className='table-responsive d-flex justify-content-center align-items-center' style={{ borderRadius: '10px' }}>
+                                    <table className='table' >
                                     <thead>
                                         <tr>
-                                            <th>#</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Mobile</th>
-                                            <th>Action</th>
+                                        
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Mobile</th>
+                                            <th scope="col">Action</th>
 
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {
                                             CustomerList.map((item,index)=><tr>
-                                            <td>{index+1}</td>
-                                            <td>
+                                            
+                                            <td class="align-middle">
                                                 {item.user.username}
                                             </td>
-                                            <td> {item.user.email}</td>
-                                            <td>{item.customer.mobile}</td>
+                                            <td class="align-middle"> {item.user.email}</td>
+                                            <td class="align-middle">{item.customer.mobile}</td>
                                 
-                                            <td>
+                                            <td class="align-middle">
+                                            <th>
                                                 <Link to={`/vendor/customer/${item.customer.id}/orderitems`} className='btn btn-primary btn-sm'>Orders</Link>
-                                                <button onClick={()=>showConfirm(item.customer.id)} className='btn btn-danger btn-sm ms-1'>Remove from list</button>
+                                            </th>
+                                            <th>
+                                                <button onClick={()=>showConfirm(item.customer.id)} className='btn btn-danger btn-sm ms-1'>Remove</button>
+                                            </th>
                                             </td>
                                         </tr>)
                                         }

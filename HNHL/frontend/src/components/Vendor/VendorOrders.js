@@ -6,6 +6,7 @@ import { useState,useEffect } from 'react';
 const baseUrl='http://127.0.0.1:8000/api/';
 
 function VendorOrders(){
+    const url='http://127.0.0.1:8000';
     const vendor_id=localStorage.getItem('vendor_id');
     const [OrderItems,setOrderItems]=useState([]);
 
@@ -43,30 +44,38 @@ function VendorOrders(){
                     <div className='col-md-3 col-12 mb-2'>
                         <VendorSidebar></VendorSidebar>
                     </div>
-                    <div className='col-md-9 col-12 mb-2'>
-                        <div className='row'>
-                            <div className='table-responsive'>
-                                <table className='table table-bordered'>
+                    <div className='col-md-9 col-12 '>
+                        <div>
+                            <div className='table-responsive d-flex justify-content-center align-items-center' style={{ borderRadius: '10px' }}>
+                                <table className='table' >
                                     <thead>
                                         <tr>
-                                            <th>#</th>
-                                            <th>Product</th>
-                                            <th>Price</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
+                                            <th scope="col">Image</th>
+                                            <th scope="col">Product</th>
+                                            <th scope="col">Price</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
 
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {
                                             OrderItems.map((item,index)=> <tr>
-                                        <td>{index+1}</td>
-                                        <td>
-                                            <Link><img src={item.product.image} className="img-thumbnail" width='80' alt="..."/></Link>
-                                        <p><Link>{item.product.title}</Link></p>
+                                        <td class="align-middle">
+                                        <div class="d-flex align-items-center">
+                                        <Link to={`/product/${item.product.slug}/${item.product.id}`}>
+                                        <img src={`${url}/${item.product.image}`} className="img-thumbnail" width='80' alt="..."/>
+                                        
+                                        </Link>
+                                        </div>
+
                                         </td>
-                                        <td> {item.product.price}</td>
-                                        <td>
+                                        <td class="align-middle">
+                                            
+                                            <p><Link>{item.product.title}</Link></p>
+                                        </td>
+                                        <td class="align-middle"> {item.product.price}</td>
+                                        <td class="align-middle">
                                             {
                                                 item.order.order_status && <span className='text-success'><i className='fa fa-check-circle'> </i> Completed</span>
                                             }
@@ -75,12 +84,12 @@ function VendorOrders(){
                                             }
                                         </td>
                                         
-                                       <td>
-                                        <div className="dropdown">
-                                                <button className="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                       <td >
+                                        <div className="dropdown " class="align-middle">
+                                                <button className="btn btn-primary dropdown-toggle " type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                     Change Status
                                                 </button>
-                                                <ul className="dropdown-menu">
+                                                <ul className="dropdown-menu ">
                                                     <li>
                                                         {
                                                             !item.order.order_status && <a className="dropdown-item" onClick={()=>changeOrderStatus(item.order.id,true)} href="#">Complete</a>
