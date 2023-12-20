@@ -9,30 +9,34 @@ function Reports(){
                     <div className='col-md-3 col-12 mb-2'>
                         <VendorSidebar></VendorSidebar>
                     </div>
-                    <div className='col-md-9 col-12 mb-2'>
+                    <div className='col-md-9 col-12'>
                         <div className='row'>
-                            <div className='col-md-4 mb-2'>
-                                <div className='card'>
-                                    <div className='card-body text-center'>
-                                        <h4>Daily Reports</h4>
+                            <div className='col-md-4 mb-1'>
+                                <div className='card text-center'>
+                                    
+                                        <h4>Daily</h4>
+                                        <h5>Reports</h5>
+                                        
                                         <h4><Link to='/vendor/daily-report' className='btn btn-info'>View</Link></h4>
-                                    </div>
+                                    
                                 </div>
                             </div>
-                            <div className='col-md-4 mb-2'>
-                                <div className='card'>
-                                    <div className='card-body text-center'>
-                                        <h4>Monthly Reports</h4>
+                            <div className='col-md-4 mb-1'>
+                                <div className='card text-center'>
+                                    
+                                        <h4>Monthly</h4>
+                                        <h5>Reports</h5>
                                         <h4><Link to='/vendor/monthly-report' className='btn btn-info'>View</Link></h4>
-                                    </div>
+                                    
                                 </div>
                             </div>
-                            <div className='col-md-4 mb-2'>
-                                <div className='card'>
-                                    <div className='card-body text-center'>
-                                        <h4>Yearly  Reports</h4>
+                            <div className='col-md-4 mb-1'>
+                                <div className='card text-center'>
+                                    
+                                        <h4>Yearly</h4>
+                                        <h5>Reports</h5>
                                         <h4><Link to='/vendor/yearly-report' className='btn btn-info'>View</Link></h4>
-                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>

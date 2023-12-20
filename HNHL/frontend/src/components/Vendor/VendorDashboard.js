@@ -41,7 +41,8 @@ function VendorDashboard(props) {
             <div className='col-md-4 mb-2'>
               <div className='card' style={{ height: '100%' }}>
                 <div className='card-body text-center'>
-                  <h4>Total Products</h4>
+                  <h4>Total</h4>
+                  <h6>Products</h6>
                   <h4>
                     <Link to='/vendor/products'>{vendorData.totalProducts}</Link>
                   </h4>
@@ -51,7 +52,8 @@ function VendorDashboard(props) {
             <div className='col-md-4 mb-2'>
               <div className='card' style={{ height: '100%' }}>
                 <div className='card-body text-center'>
-                  <h4>Total Orders</h4>
+                  <h4>Total</h4>
+                  <h6>Orders</h6>
                   <h4>
                     <Link to='/vendor/orders'>{vendorData.totalOrders}</Link>
                   </h4>
@@ -61,7 +63,8 @@ function VendorDashboard(props) {
             <div className='col-md-4 mb-2'>
               <div className='card' style={{ height: '100%' }}>
                 <div className='card-body text-center'>
-                  <h4>Total Customers</h4>
+                  <h4>Total</h4>
+                  <h6>Customers</h6>
                   <h4>
                     <Link to='/vendor/customers'>{vendorData.totalCustomers}</Link>
                   </h4>
