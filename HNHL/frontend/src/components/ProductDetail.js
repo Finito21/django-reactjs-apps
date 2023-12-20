@@ -41,6 +41,7 @@ function ProductDetail(){
     }
 
     function fetchData(baseurl){
+        fetch(baseurl + '/product/' + product_id)
         fetch(baseurl)
         .then((response) => response.json())
         .then((data) => {
@@ -51,6 +52,7 @@ function ProductDetail(){
     }
 
     function fetchRelatedData(baseurl){
+        fetch(baseurl + '/related-products/' + product_id)
         fetch(baseurl)
         .then((response)=>response.json())
         .then((data)=>{
@@ -175,18 +177,15 @@ function ProductDetail(){
                             })} 
                         </div>
                         <div className="carousel-inner">
-                            {productImgs.map((img,index)=>{
-                                if(index===0){
-                                    return <div className="carousel-item active">
-                                        <img src={img.image} className='img-thumbnail mb-5' alt={index}/>
-                                    </div>
-                                }else{
-                                    return <div className="carousel-item">
-                                        <img src={img.image} className="img-thumbnail mb-5" alt={index}/>
-                                    </div>
-                                }
-                            })}
-                          
+                        {productImgs.map((img, index) => {
+                            return (
+                            <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={index}>
+                                <div className="d-flex justify-content-center align-items-center">
+                                <img src={img.image} className="img-thumbnail mb-5" alt={index} />
+                                </div>
+                            </div>
+                            );
+                        })}
                         </div>
                         <button className="carousel-control-prev" type="button" data-bs-target="#productThumbnailSlider" data-bs-slide="prev">
                             <span className="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -215,30 +214,40 @@ function ProductDetail(){
                         CurrencyData == 'EUR' && <h5 className='card-title'>Price: {productData.eur_price} €</h5>
                     }
                     <p className='mt-3'>
-                        {!cartButtonClickStatus&&
-                            <button title="Add to Cart" type='button' onClick={cartAddButtonHandler} className='btn btn-primary'>
-                                <i className="fa-solid fa-cart-plus"></i>Add to Cart
-                                </button>
+                        {(userContext.login &&
+                        <>
+                            {!cartButtonClickStatus&&
+                                <button title="Add to Cart" type='button' onClick={cartAddButtonHandler} className='btn btn-primary'>
+                                    <i className="fa-solid fa-cart-plus"></i>Add to Cart
+                                    </button>
+                            }
+                            {cartButtonClickStatus&&
+                                <button title="Remove from Cart" type='button' onClick={cartRemoveButtonHandler} className='btn btn-warning'>
+                                    <i className="fa-solid fa-cart-plus"></i>Remove from Cart
+                                    </button>
+                            }
+                            {!ProductInWishlist && <button onClick={saveInWishList} title="Add to Wishlist" className='btn btn-danger ms-1'>
+                                <i className="fa fa-heart"></i>Wishlist</button>
+                            }
+                            {ProductInWishlist && <button title="Add to Wishlist" className='btn btn-danger ms-1 disabled'>
+                                <i className="fa fa-heart"></i>Wishlist</button>
+                            }
+                        </>
+                        )
                         }
-                        {cartButtonClickStatus&&
-                            <button title="Remove from Cart" type='button' onClick={cartRemoveButtonHandler} className='btn btn-warning'>
-                                <i className="fa-solid fa-cart-plus"></i>Remove from Cart
-                                </button>
-                        }
+                        {
+                        (userContext.login == null &&
+                        <>
                             
-
-                            {
-                                (userContext.login && !ProductInWishlist) && <button onClick={saveInWishList} title="Add to Wishlist" className='btn btn-danger ms-1'>
-                                <i className="fa fa-heart"></i>Wishlist</button>
-                            }    
-                            {
-                                userContext.login == null && <button title="Add to Wishlist" className='btn btn-danger ms-1 disabled'>
-                                <i className="fa fa-heart"></i>Wishlist</button>
-                            }    
-                             {
-                               (userContext.login && ProductInWishlist) && <button title="Add to Wishlist" className='btn btn-danger ms-1 disabled'>
-                                <i className="fa fa-heart"></i>Wishlist</button>
-                            }   
+                            <button title="Add to Cart" type='button' className='btn btn-success disabled'>
+                                <i className="fa-solid fa-cart-plus"></i>Add to Cart
+                            </button>
+                            
+                            <button title="Add to Wishlist" className='btn btn-danger ms-1 disabled'>
+                                <i className="fa fa-heart"></i>Wishlist
+                            </button>
+                        </> 
+                        )}  
                     </p>
                     <hr/>
                     <div className='producttags mt-4'>

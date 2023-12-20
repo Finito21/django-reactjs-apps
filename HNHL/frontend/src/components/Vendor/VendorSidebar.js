@@ -10,7 +10,7 @@ function VendorSidebar(){
             <Link to="/vendor/reports" className="list-group-item list-group-item-action">Reports</Link>
             <Link to="/vendor/vendor-profile" className="list-group-item list-group-item-action">Profile</Link>
             <Link to="/vendor/change-vendor-password" className="list-group-item list-group-item-action">Change Password</Link>
-            <Link href="#" className="list-group-item list-group-item-action text-danger">Logout</Link>
+            <Link to="/vendor/logout" className="list-group-item list-group-item-action text-danger">Logout</Link>
         
         </div>
     )

@@ -83,7 +83,7 @@ function HomeHeader(props){
     
             
                 <div className="col">
-                    <nav className="navbar navbar-collapse navbar-expand-lg navbar-dark bg-dark rounded">
+                    <nav className="navbar  navbar-expand-lg navbar-dark bg-dark rounded">
                         <ul className="navbar-nav mx-auto">
 
                             <li className="nav-item">
@@ -98,40 +98,44 @@ function HomeHeader(props){
                                 </Link>
                             </li>
 
-                            <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">My Account</a>
-                                
-                                <ul className="dropdown-menu">
-                                {userContext.login !== 'true' && (
-                                    <>
-                                    <li>
-                                        <Link className="dropdown-item" to="/customer/register">
-                                        Register
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className="dropdown-item" to="/customer/login">
-                                        Login
-                                        </Link>
-                                    </li>
-                                    </>
+                            {!checkVendor && (
+                                <>
+                                <li className="nav-item dropdown">
+                                    <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">My Account</a>
+                                    
+                                    <ul className="dropdown-menu">
+                                    {userContext.login !== 'true' && (
+                                        <>
+                                        <li>
+                                            <Link className="dropdown-item" to="/customer/register">
+                                            Register
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link className="dropdown-item" to="/customer/login">
+                                            Login
+                                            </Link>
+                                        </li>
+                                        </>
+                                    )}
+                                    {userContext.login === 'true' && (
+                                        <>
+                                        <li>
+                                            <Link className="dropdown-item" to="/customer/dashboard">
+                                            Dashboard
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link className="dropdown-item" to="/customer/logout">
+                                            Logout
+                                            </Link>
+                                        </li>
+                                        </>
+                                    )}
+                                    </ul>
+                                </li>
+                                </>
                                 )}
-                                {userContext.login === 'true' && (
-                                    <>
-                                    <li>
-                                        <Link className="dropdown-item" to="/customer/dashboard">
-                                        Dashboard
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className="dropdown-item" to="/customer/logout">
-                                        Logout
-                                        </Link>
-                                    </li>
-                                    </>
-                                )}
-                                </ul>
-                            </li>
 
                             {checkVendor && (
                                 <>
@@ -153,6 +157,9 @@ function HomeHeader(props){
                                 </li>
                                 </>
                                 )}
+
+                            {!checkVendor && (
+                            <>
     
                             <li className="nav-item">
                             {userContext.login == 'true' && (
@@ -170,6 +177,8 @@ function HomeHeader(props){
                                     </Link>
                                 </>)}
                             </li>
+                            </>
+                            )}
 
                             <li className='nav-item'>
                                 <div className='nav-link' >
@@ -203,7 +212,7 @@ function HomeHeader(props){
                 </div>
 
                 
-            </div>
+        </div>
 
            
         

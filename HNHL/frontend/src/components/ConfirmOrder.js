@@ -12,6 +12,7 @@ function ConfirmOrder(){
     const [orderId,setorderId]=useState('');
     const [orderAmount,setorderAmount]=useState(0);
     const userContext=useContext(UserContext);
+    var customer_id=localStorage.getItem('customer_id');
     const {cartData,setCartData}=useContext(CartContext);
     const {CurrencyData}=useContext(CurrencyContext);
 
@@ -26,6 +27,7 @@ function ConfirmOrder(){
     function addOrderInTable(){
      
         const customerId=localStorage.getItem('customer_id');
+        
 
         var total_amount=0;
         var total_usd_amount=0;
@@ -43,14 +45,17 @@ function ConfirmOrder(){
         const formData=new FormData();
         formData.append('customer',customerId);
         formData.append('total_amount',total_amount)
+        console.log(total_amount)
         formData.append('total_usd_amount',total_usd_amount)
+        console.log(total_usd_amount)
         formData.append('total_eur_amount',total_eur_amount)
+        console.log(total_eur_amount)
 
         axios.post(baseUrl + '/orders/', formData)
         .then(function(response){
             var orderId=response.data.id;
+            console.log(response.data.id)
             setorderId(orderId);
-            console.log(customerId)
 
             if(CurrencyData=='USD'){
                 setorderAmount(response.data.total_usd_amount);

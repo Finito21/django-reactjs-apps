@@ -7,9 +7,11 @@ import { useState,useEffect } from 'react';
 function VendorProducts(props){
     const baseUrl='http://127.0.0.1:8000/api/';
     const [ProductData,setProductData]=useState([]);
+    var vendor_id=localStorage.getItem('vendor_id');
 
     useEffect(() => {
-        fetchData(baseUrl+'products/');
+        
+        fetchData(baseUrl+'vendor-products/'+vendor_id);
     },[]);
 
     function fetchData(baseurl){

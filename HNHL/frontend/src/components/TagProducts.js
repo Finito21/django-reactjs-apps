@@ -18,29 +18,38 @@ function TagProducts(props){
 
 
         
-        function fetchData(baseurl){
+        function fetchData(baseurl) {
             fetch(baseurl)
-            .then((response) => response.json())
-            .then((data) => {
-                setProducts(data.results);
-                setTotalResults(data.count);
-            });
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data.results);
+                    setProducts(data.results);
+                    setTotalResults(data.count);
+                });
         }
-
-        function changeUrl(baseurl){
-            fetchData(baseurl);
-        }
-
-        var links=[];
-        var limit=1;
-        var totalLinks=totalResult/limit;
-        for(let i=1; i<=totalLinks; i++){
-            links.push(<li class="page-item"><Link onClick={()=>changeUrl(baseUrl+`/products/${tag}/?page=${i}`)}
-            to ={`/products/${tag}/?page=${i}`}
-            class="page-link">{i}</Link></li>)
-        }
-
         
+        function changeUrl(page) {
+            const newUrl = `${baseUrl}/products/${tag}/?page=${page}`;
+            fetchData(newUrl);
+        }
+        
+        var links = [];
+        var limit = 1;
+        var totalLinks = Math.ceil(totalResult / limit); // Calculate total pages
+        
+        for (let i = 1; i <= totalLinks; i++) {
+            links.push(
+                <li class="page-item" key={i}>
+                    <Link
+                        onClick={() => changeUrl(i)}
+                        to={`/products/${tag}/?page=${i}`}
+                        class="page-link"
+                    >
+                        {i}
+                    </Link>
+                </li>
+            );
+        }
     ////Sprawdzone/////////////////////////////////////////////////////////////////////////////////////////
     
 
@@ -48,23 +57,19 @@ function TagProducts(props){
 
     return(
         <section className='container'>
-            <h3 className='mb-4'>All Products</h3>
-            <div className='row mb-4'>
-                {
-                products.map((product) => <SingleProduct product={product}/>)
-                }
-                
-            </div>
-                
-                 
+        <h3 className='mb-4'>All Products</h3>
+        <div className='row mb-4'>
+            {
+            products.map((product) => <SingleProduct product={product}/>)
+            }
+            
+        </div>
+            
+             
 
 
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    {links}
-                </ul>
-            </nav>
-        </section>  
+        
+    </section>  
         )
 }
 export default TagProducts;

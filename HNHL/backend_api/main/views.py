@@ -38,6 +38,8 @@ class VendorProductList(generics.ListAPIView):
         qs = qs.filter(vendor__id=vendor_id).order_by('id')
         return qs
 
+from django.contrib.auth.hashers import make_password
+
 @csrf_exempt
 def vendor_register(request):
     if request.method == 'POST':
@@ -48,27 +50,32 @@ def vendor_register(request):
         mobile = request.POST.get('mobile')
         address = request.POST.get('address')
         password = request.POST.get('password')
+
+
+        # Hash the password
+        hashed_password = make_password(password)
+
         try:
             user = User.objects.create(
                 first_name=first_name,
                 last_name=last_name,
                 username=username,
                 email=email,
-                password=password,
+                password=hashed_password,  # Save the hashed password
             )
             if user:
                 try:
-                    vendor=models.Vendor.objects.create(user=user,mobile=mobile,address=address)
+                    vendor = models.Vendor.objects.create(user=user, mobile=mobile, address=address, profile_img = '../media/vendor_imgs/logo.svg')
                     msg = {
                         'bool': True,
                         'user': user.id,
-                        'vendor':vendor.id,
-                        'msg':'Thank you for your registration. You can login now.'
+                        'vendor': vendor.id,
+                        'msg': 'Thank you for your registration. You can log in now.'
                     }
                 except IntegrityError:
-                    msg={
+                    msg = {
                         'bool': False,
-                        'msg': 'Mobile already exist!!!'
+                        'msg': 'Mobile already exists!!!'
                     }
             else:
                 msg = {
@@ -76,13 +83,14 @@ def vendor_register(request):
                     'msg': 'Ooops... Something went wrong!!!'
                 }
         except IntegrityError:
-            msg={
+            msg = {
                 'bool': False,
-                'msg': 'Username already exist!!!'
+                'msg': 'Username already exists!!!'
             }
         return JsonResponse(msg)
     else:
         return JsonResponse({'error': 'Invalid request method'})
+
 
 @csrf_exempt 
 def vendor_change_password(request,vendor_id):
@@ -144,6 +152,7 @@ class TagProductList(generics.ListCreateAPIView):
         tag = self.kwargs['tag']
         qs = qs.filter(tags__icontains=tag)
         return qs
+    
     
 class RelatedProductList(generics.ListCreateAPIView):
     queryset = models.Product.objects.all()
@@ -208,38 +217,42 @@ def customer_register(request):
         email = request.POST.get('email')
         mobile = request.POST.get('mobile')
         password = request.POST.get('password')
+
+        # Hash the password
+        hashed_password = make_password(password)
+
         try:
             user = User.objects.create(
                 first_name=first_name,
                 last_name=last_name,
                 username=username,
                 email=email,
-                password=password,
+                password=hashed_password,  # Save the hashed password
             )
 
             if user:
                 try:
-                    customer=models.Customer.objects.create(user=user,mobile=mobile)
+                    customer = models.Customer.objects.create(user=user, mobile=mobile)
                     msg = {
                         'bool': True,
                         'user': user.id,
-                        'customer':customer.id,
-                        'msg':'Thank you for your registration. You can login now.'
+                        'customer': customer.id,
+                        'msg': 'Thank you for your registration. You can log in now.'
                     }
                 except IntegrityError:
-                    msg={
+                    msg = {
                         'bool': False,
-                        'msg': 'Mobile already exist!!!'
+                        'msg': 'Mobile already exists!!!'
                     }
             else:
                 msg = {
                     'bool': False,
-                    'msg': 'Ooops... Something went wrong!!!'
+                    'msg': 'Oops... Something went wrong!!!'
                 }
         except IntegrityError:
-            msg={
+            msg = {
                 'bool': False,
-                'msg': 'Username already exist!!!'
+                'msg': 'Username already exists!!!'
             }
         return JsonResponse(msg)
     else:

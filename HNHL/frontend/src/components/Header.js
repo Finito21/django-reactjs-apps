@@ -38,6 +38,9 @@ function Header(props){
                         <li className="nav-item">
                             <Link className="nav-link " aria-current="page" to="/categories" >Categories</Link>
                         </li>
+
+                        {!checkVendor && (
+                            <>
                         <li className="nav-item dropdown">
                             <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 My Account
@@ -57,6 +60,9 @@ function Header(props){
                                 }
                             </ul>
                             </li>
+                            </>
+                        )}
+                            
                             {
                             checkVendor &&
                                 <>
@@ -71,10 +77,15 @@ function Header(props){
                                     </li>
                                 </>
                             }
+
+                        {!checkVendor && (
+                            <>
                         
                         <li className="nav-item">
                             <Link className="nav-link " aria-current="page" to="/checkout" >My Cart ({cartItems})</Link>
                         </li>
+                        </>
+                        )}
                         <li className='nav-item'>
                             <div className='nav-link'>
                                 <select onChange={changeCurrency}>

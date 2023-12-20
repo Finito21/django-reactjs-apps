@@ -27,19 +27,9 @@ function CategoryProducts(props){
             });
         }
 
-        function changeUrl(baseurl){
-            fetchData(baseurl);
-        }
+      
 
-        var links=[];
-        var limit=1;
-        var totalLinks=totalResult/limit;
-        for(let i=1; i<=totalLinks; i++){
-            links.push(<li class="page-item"><Link onClick={()=>changeUrl(baseUrl+`/products/?category=${category_id}&page=${i}`)}
-            to ={`/category/${category_slug}/${category_id}/?page=${i}`}
-            class="page-link">{i}</Link></li>)
-        }
-
+       
         
     ////Sprawdzone/////////////////////////////////////////////////////////////////////////////////////////
     
@@ -59,11 +49,7 @@ function CategoryProducts(props){
                  
 
 
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    {links}
-                </ul>
-            </nav>
+            
         </section>  
         )
 }

@@ -6,6 +6,7 @@ const baseUrl='http://127.0.0.1:8000/api';
 
 function ChangeCustomerPassword(){
     var customer_id=localStorage.getItem('customer_id');
+    const [successMsg,setsuccessMsg]=useState('');
     const [PasswordData,setPasswordData]= useState({
         'password':'',
         'c_password':'',
@@ -31,6 +32,7 @@ function ChangeCustomerPassword(){
         axios.post(baseUrl + '/customer-change-password/'+customer_id, formData)
         .then(function (response) {
             console.log(response);
+            setsuccessMsg(response.data.msg);
         })
         .catch(function (error) {
             console.log(error);
@@ -49,6 +51,7 @@ function ChangeCustomerPassword(){
                     <div className='card'>
                         <h4 className='card-header'>ChangePassword</h4>
                         <div className='card-body'>
+                        {successMsg &&<p className="text-success">{successMsg}</p>}
                             <form>
                                 <div className='mb-3'>
                                     <label for="pwd" className='form-label'>New Password</label>

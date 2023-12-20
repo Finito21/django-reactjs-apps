@@ -1,11 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function CustomerRegister(props){
     const baseUrl = 'http://127.0.0.1:8000/api/';
     const [errorMsg, seterrorMsg] = useState('');
     const [successMsg,setsuccessMsg]=useState('');
+    const navigate = useNavigate();
     const [registerFormData, setRegisterFormData] = useState({
         "first_name": '',
         "last_name": '',
@@ -20,6 +21,9 @@ function CustomerRegister(props){
             [event.target.name]:event.target.value
         });
     }
+    const handleSwitchToggle = () => {
+        navigate('/vendor/register'); // Use navigate for navigation
+    };
 
     const submitHandler = (event) => {
         const formData=new FormData();
@@ -98,13 +102,11 @@ function CustomerRegister(props){
                                 </form>
                             </div>
                         </div>
-                        <div className="mt-3 d-flex justify-content-center">
-                        <ul className="list-unstyled">
-                            <li>Don you have an account? <Link to="/customer/login">Login</Link></li>
-                            <li>Are you a Seller? <Link to="/vendor/login">Seller Login</Link></li>
-                            <li>Want to be a Seller? <Link to="/vendor/register">Seller Register</Link></li>
-                        </ul>
-                    </div>
+                        <div className="switch d-flex align-items-center justify-content-center mt-3">
+                            <button type="button" className="btn btn-primary" onClick={handleSwitchToggle}>Register as Seller</button>
+                        </div>
+                        
+                    
                     </div>
                 </div>
                 

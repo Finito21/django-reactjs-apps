@@ -61,9 +61,11 @@ function App() {
   const location = useLocation();
 
   const isHomeRoute = location.pathname === '/';
-  const isCategoriesRoute=location.pathname === '/categories';
   const isAllProductsRoute=location.pathname === '/products';
   const isAllSellersRoute=location.pathname === '/sellers';
+  const isBlogRoute=location.pathname === '/blog';
+
+  const isCategoriesRoute=location.pathname === '/categories';
 
   const [cartData,setCartData]=useState(JSON.parse(checkCart));
   const [CurrencyData,setCurrencyData]=useState(currentCurrency);
@@ -71,7 +73,7 @@ function App() {
   return (
     <CurrencyContext.Provider value={{CurrencyData,setCurrencyData}}>
     <CartContext.Provider value={{cartData,setCartData}}>
-       <HomeHeader />
+    {(isHomeRoute||isCategoriesRoute||isAllProductsRoute||isAllSellersRoute||isBlogRoute) ? <HomeHeader /> : <Header />}
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/products' element={<AllProducts/>}/>

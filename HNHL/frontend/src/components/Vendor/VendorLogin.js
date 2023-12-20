@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
-import '../../Switcher.css';
+import '../../switcher.css'
+
 
 function VendorLogin(props) {
     const baseUrl = 'http://127.0.0.1:8000/api/';
@@ -10,16 +11,11 @@ function VendorLogin(props) {
         "password": ''
     });
 
-    const [switchChecked, setSwitchChecked] = useState(localStorage.getItem('switchChecked') === 'true');
-
 
     const navigate = useNavigate();  // Use useNavigate for navigation
 
     const handleSwitchToggle = () => {
-        const newSwitchChecked = !switchChecked;
-        setSwitchChecked(newSwitchChecked);
-        localStorage.setItem('switchChecked', newSwitchChecked.toString());
-        navigate(newSwitchChecked ? '/vendor/login' : '/customer/login'); // Use navigate for navigation
+        navigate('/customer/login'); // Use navigate for navigation
     };
     
 
@@ -92,11 +88,8 @@ function VendorLogin(props) {
                             </form>
                         </div>
                     </div>
-                    <div className="switch-container row align-items-center">
-                        <div className="col-lg-1 text-center">Client</div>
-                        <input type="checkbox" id="switch" onClick={handleSwitchToggle} checked={switchChecked} />
-                        <label className="switch-label col-lg-1" htmlFor="switch">Toggle</label>
-                        <div className="col-lg-1 text-center">Seller</div>
+                    <div className="switch d-flex align-items-center justify-content-center mt-3">
+                        <button type="button" className="btn btn-primary" onClick={handleSwitchToggle}>Login as Client</button>
                     </div>
                 </div>
             </div>

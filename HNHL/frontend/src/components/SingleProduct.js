@@ -6,50 +6,89 @@ import axios from "axios";
 
 function SingleProduct(props){
     const baseUrl='http://127.0.0.1:8000/api';
-    const [productData,setproductData]=useState([]);
     const { CurrencyData } = useContext(CurrencyContext);
     const { cartData, setCartData } = useContext(CartContext);
+    const [cartButtonClickStatus,setcartButtonClickStatus]=useState(false);
     const [ProductInWishlist,setProductInWishlist]=useState(false);
     const userContext=useContext(UserContext);
   
-    // Sprawdź, czy produkt jest w koszyku
-    const isProductInCart = cartData.some((cartItem) => cartItem.product.id === props.product.id);
+    
 
     useEffect(() => {
         checkProductInWishList(baseUrl + '/check-in-wishlist/',props.product.id);
-
+        checkProductInCart(props.product_id);
     },[]);
+
+
+    function checkProductInCart(product_id){
+        var previousCart=localStorage.getItem('cartData');
+        var cartJson=JSON.parse(previousCart);
+        if(cartJson!=null){
+            cartJson.map((cart)=>{
+                if(cart!=null && cart.product.id == product_id){
+                    setcartButtonClickStatus(true);
+                }
+            });
+        }
+    }
   
-    const addToCartHandler = () => {
-      const newCartItem = {
-        product: {
-          id: props.product.id,
-          title: props.product.title,
-          price: props.product.price,
-          usd_price: props.product.usd_price,
-          eur_price: props.product.eur_price,
-          image: props.product.image,
-        },
-        user: {
-          id: 1, // Pobierz rzeczywiste ID użytkownika, np. z kontekstu użytkownika
-        },
-        total_amount: 1,
-      };
+    const cartAddButtonHandler = ()=>{
+        var previousCart=localStorage.getItem('cartData');
+        var cartJson=JSON.parse(previousCart)
+        var cartData={
+            'product':{
+                'id':props.product.id,
+                'title':props.product.title,
+                'price':props.product.price,
+                'usd_price':props.product.usd_price,
+                'eur_price':props.product.eur_price,
+                'image':props.product.image,
+                'purchase_count':props.product.purchase_count
+            },
+            'user':{
+                'id':1
+            },
+            'total_amount':10
+        }
+        console.log(cartData)
+        if(cartJson!=null){
+            cartJson.push(cartData);
+            var cartString=JSON.stringify(cartJson);
+            localStorage.setItem('cartData',cartString);
+            setCartData(cartJson);
+        }else{
+            var newCartList=[];
+            newCartList.push(cartData);
+            var cartString=JSON.stringify(newCartList);
+            localStorage.setItem('cartData',cartString);
+        }
+        setcartButtonClickStatus(true);
+    }
   
-      setCartData((prevCartData) => [...prevCartData, newCartItem]);
-    };
-  
-    const removeFromCartHandler = () => {
-      // Usuń produkt z koszyka na podstawie jego ID
-      const updatedCart = cartData.filter((cartItem) => cartItem.product.id !== props.product.id);
-      setCartData(updatedCart);
-    };
+    const cartRemoveButtonHandler = ()=>{
+        var previousCart=localStorage.getItem('cartData');
+        var cartJson=JSON.parse(previousCart)
+        cartJson.map((cart,index)=>{
+            if(cart!=null && cart.product.id==props.product.id){
+                //delete cartJson[index];
+                cartJson.splice(index,1);
+            }
+        });
+        var cartString=JSON.stringify(cartJson);
+        localStorage.setItem('cartData',cartString)
+        setcartButtonClickStatus(false);
+        setCartData(cartJson);
+    }
+
+
+
+
   
     function saveInWishList(){
         const customerId=localStorage.getItem('customer_id');
         const formData=new FormData();
         formData.append('customer',customerId);
-        formData.append('product',productData.id);
+        formData.append('product',props.product.id);
 
         axios.post(baseUrl + '/wishlist/', formData)
         .then(function(response){
@@ -85,12 +124,12 @@ function SingleProduct(props){
   
 
     return(
-            <div className='col-12 col-md-3 mb-4'>
-                <div className="card">
+            <div className='col-12 col-md-3 mb-4' style={{minWidth: '250px'}}>
+                <div className="card"  >
                     <Link to={`/product/${props.product.slug}/${props.product.id}`}> 
                         <img src={props.product.image} className="card-img-top" alt="..." style={{ height: '250px', width: '100%', objectFit: 'contain' }}/>
                     </Link>
-                    <div className="card-body">
+                    <div className="card-body" style={{ height: '110px', width: '100%', objectFit: 'contain' }}>
                         <h4 className="card-title"><Link to={`/product/${props.product.slug}/${props.product.id}`}
                         style={{ textDecoration: 'none', color: 'black' }}
                         >{props.product.title} </Link></h4>
@@ -107,47 +146,39 @@ function SingleProduct(props){
                     <div className='card-footer'>
 
                     {(userContext.login &&
-                    <>
-
-                        {isProductInCart ? (
-                            <button title='Remove from cart' onClick={removeFromCartHandler} className='btn btn-warning btn-sm'>
-                                <i className='fa-solid fa-cart-plus'></i>
+                        <>
+                            {!cartButtonClickStatus&&
+                                <button title="Add to Cart" type='button' onClick={cartAddButtonHandler} className='btn btn-primary'>
+                                    <i className="fa-solid fa-cart-plus"></i>
+                                    </button>
+                            }
+                            {cartButtonClickStatus&&
+                                <button title="Remove from Cart" type='button' onClick={cartRemoveButtonHandler} className='btn btn-warning'>
+                                    <i className="fa-solid fa-cart-plus"></i>
+                                    </button>
+                            }
+                            {!ProductInWishlist && <button onClick={saveInWishList} title="Add to Wishlist" className='btn btn-danger ms-1'>
+                                <i className="fa fa-heart"></i></button>
+                            }
+                            {ProductInWishlist && <button title="Add to Wishlist" className='btn btn-danger ms-1 disabled'>
+                                <i className="fa fa-heart"></i></button>
+                            }
+                        </>
+                        )
+                        }
+                        {
+                        (userContext.login == null &&
+                        <>
+                            
+                            <button title="Add to Cart" type='button' className='btn btn-success disabled'>
+                                <i className="fa-solid fa-cart-plus"></i>
                             </button>
-                        ) : (
-                            <button title='Add to cart' onClick={addToCartHandler} className='btn btn-success btn-sm'>
-                            <i className='fa-solid fa-cart-plus'></i>
-                            </button>
-                        )}
-
-                        {!ProductInWishlist && 
-                            <button onClick={saveInWishList} title="Add to Wishlist" className='btn btn-danger ms-1'>
-                                <i className="fa fa-heart"></i>
-                            </button>
-                        } 
-                        {ProductInWishlist && 
+                            
                             <button title="Add to Wishlist" className='btn btn-danger ms-1 disabled'>
                                 <i className="fa fa-heart"></i>
                             </button>
-                            }   
-                    </>
-                    )}
-                    {(userContext.login == null &&
-                        <>
-                        <button title='Add to cart' className='btn btn-success btn-sm'>
-                            <Link className="nav-link" aria-current="page" to="/customer/login">
-                                <i className='fa-solid fa-cart-plus'></i>
-                            </Link>
-                        </button>
-
-                        <button title="Add to Wishlist" className='btn btn-danger btn-sm ms-1'>
-                            <Link className="nav-link" aria-current="page" to="/customer/login">
-                                <i className='fa-solid fa-heart'></i>
-                            </Link>
-                        </button>
-                        
-                        
-                        </>
-                    )}
+                        </> 
+                        )}  
 
                     </div>
                 </div>

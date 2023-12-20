@@ -1,6 +1,7 @@
 import CustomerSidebar from './CustomerSidebar';
 import { useState ,useEffect} from 'react';
 import axios from 'axios';
+import '../../CurrencySwitcher.css';
 
 const baseUrl='http://127.0.0.1:8000/api';
 
@@ -87,7 +88,7 @@ function CustomerProfile(){
 
 
     return(
-        <div className='container mt-4'>
+        <div className='container mt-1'>
                 <div className='row'>
                     <div className='col-md-3 col-12 mb-2'>
                         <CustomerSidebar></CustomerSidebar>

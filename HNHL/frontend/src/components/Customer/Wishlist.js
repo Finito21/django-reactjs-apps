@@ -46,47 +46,73 @@ function Wishlist(){
                     <div className='col-md-3 col-12 mb-2'>
                         <CustomerSidebar></CustomerSidebar>
                     </div>
-                    <div className='col-md-9 col-12 mb-2'>
-                        <div className='row'>
-                            <div className='table-responsive'>
-                                <table className='table table-bordered'>
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Product</th>
-                                            <th>Price</th>
-                                            <th>Action</th>
+                   
 
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            WishItems.map((item,index)=>{
-                                                return <tr id={`row${item.id}`}>
-                                                    <td>{index+1}</td>
-                                                    <td>
-                                                        <Link><img src={`${url}/${item.product.image}`} className="img-thumbnail" width='80' alt="..."/></Link>
-                                                        
-                                                    <p><Link>{item.product.title}</Link></p>
-                                                    </td>
-                                                    {
-                                                        CurrencyData == 'PLN' && <td> {item.product.price} zł</td>
-                                                    }
-                                                    {
-                                                        CurrencyData == 'USD' && <td> {item.product.usd_price} $</td>
-                                                    }
-                                                    {
-                                                        CurrencyData == 'EUR' && <td> {item.product.eur_price} €</td>
-                                                    }
-                                                    
-                                                    <td><button className='btn btn-danger btn-sm' onClick={()=>removeFromWishlist(item.id)}>Remove</button></td>
-                                                </tr>
-                                            })
-                                        }
-                                    </tbody>
-                                </table>
+                    <div className='col-md-9 col-12 mb-2'>
+                    <div class="container" >
+                        <div class="row d-flex justify-content-center align-items-center " >
+                        <div class="col">
+
+                            <div class="table-responsive"  style={{ borderRadius: '10px' }}>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col" class="h5">Your Wishlist</th>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {
+                                WishItems.map((item,index)=>{
+                                    return<tr id={`row${item.id}`}>
+                                    <th scope="row">
+                                    <div class="d-flex align-items-center">
+                                    <Link to={`/product/${item.product.slug}/${item.product.id}`}>
+                                        <img src={`${url}/${item.product.image}`} className="img-thumbnail" width='80' alt="..."/>
+                                    </Link>
+                                        
+                                    </div>
+                                    </th>
+                                    <td class="align-middle">
+                                    <div class="flex-column ms-4">
+                                        <p class="mb-2"><Link to={`/product/${item.product.slug}/${item.product.id}`}>{item.product.title}</Link></p>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle">
+
+                                    {
+                                    CurrencyData == 'PLN' && <td>{item.product.price}</td>
+                                    }
+                                    {
+                                        CurrencyData == 'USD' && <td>{item.product.usd_price}</td>
+                                    }
+                                    {
+                                        CurrencyData == 'EUR' && <td>{item.product.eur_price}</td>
+                                    }
+                                    
+                                    </td>
+                                    <td class="align-middle">
+                                    <button className='btn btn-danger btn-sm' onClick={()=>removeFromWishlist(item.id)}>Remove</button>
+
+                                    </td>
+                                </tr>
+                                })}
+
+                                
+                                </tbody>
+                            </table>
                             </div>
+
+                        
+                                
+                        
+                            
+
                         </div>
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>
