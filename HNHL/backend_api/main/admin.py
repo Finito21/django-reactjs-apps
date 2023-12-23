@@ -30,7 +30,7 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(models.Product,ProductAdmin)
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display=['id','customer','order_time','total_amount','total_usd_amount','total_eur_amount','order_status']
+   list_display=['id','customer','order_time','total_amount','total_usd_amount','total_eur_amount','order_status']
 admin.site.register(models.Order,OrderAdmin)
 
 class OrderItemsAdmin(admin.ModelAdmin):
@@ -40,6 +40,8 @@ admin.site.register(models.OrderItems,OrderItemsAdmin)
 class WishlistAdmin(admin.ModelAdmin):
     list_display=['id','product', 'customer']
 admin.site.register(models.Wishlist,WishlistAdmin)
+
+#admin.site.register(models.Order)
 
 
 

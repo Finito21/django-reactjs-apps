@@ -1,17 +1,15 @@
 import { useState } from 'react';
 import { useContext } from 'react';
 import { UserContext, CartContext, CurrencyContext } from '../Context';
-
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js"; 
 import axios from "axios";
-
 const baseUrl='http://127.0.0.1:8000/api';
-
 function ConfirmOrder(){
     const [ConfirmOrder,SetConfirmOrder]=useState(false);
     const [orderId,setorderId]=useState('');
     const [orderAmount,setorderAmount]=useState(0);
     const userContext=useContext(UserContext);
+    var customer_id=localStorage.getItem('customer_id');
     const {cartData,setCartData}=useContext(CartContext);
     const {CurrencyData}=useContext(CurrencyContext);
 
@@ -22,35 +20,39 @@ function ConfirmOrder(){
             addOrderInTable();
         }
     }
-
     function addOrderInTable(){
-     
+
         const customerId=localStorage.getItem('customer_id');
+
 
         var total_amount=0;
         var total_usd_amount=0;
         var total_eur_amount=0;
-
         var previousCart=localStorage.getItem('cartData');
         var cartJson=JSON.parse(previousCart);
-
         cartJson.map((cart,index)=>{
             total_amount+=parseFloat(cart.product.price)
             total_usd_amount+=parseFloat(cart.product.usd_price)
             total_eur_amount+=parseFloat(cart.product.eur_price)
         });
-
+        total_amount = total_amount.toFixed(2);
+        total_usd_amount = total_usd_amount.toFixed(2);
+        total_eur_amount = total_eur_amount.toFixed(2);
+        
         const formData=new FormData();
         formData.append('customer',customerId);
         formData.append('total_amount',total_amount)
+        console.log(total_amount)
         formData.append('total_usd_amount',total_usd_amount)
+        console.log(total_usd_amount)
         formData.append('total_eur_amount',total_eur_amount)
+        console.log(total_eur_amount)
 
         axios.post(baseUrl + '/orders/', formData)
         .then(function(response){
             var orderId=response.data.id;
+            console.log(response.data.id)
             setorderId(orderId);
-            console.log(customerId)
 
             if(CurrencyData=='USD'){
                 setorderAmount(response.data.total_usd_amount);
@@ -67,7 +69,6 @@ function ConfirmOrder(){
             console.log(error);
         });
     }
-
     function updateOrderStatus(order_status){
         axios.post(baseUrl + '/update-order-status/'+orderId)
         .then(function(response){
@@ -77,11 +78,9 @@ function ConfirmOrder(){
             window.location.href='/order/failure';
         })
     }
-
     function orderItems(orderId){
         var previousCart=localStorage.getItem('cartData');
         var cartJson=JSON.parse(previousCart);
-
         if(cartJson!=null){
             var sum=0;
             cartJson.map((cart,index)=>{
@@ -92,8 +91,6 @@ function ConfirmOrder(){
                 formData.append('price',cart.product.price);
                 formData.append('usd_price',cart.product.usd_price);
                 formData.append('eur_price',cart.product.eur_price);
-
-
                 axios.post(baseUrl+'/orderitems/',formData)
                 .then(function(response){
                     cartJson.splice(index,1);
@@ -106,7 +103,6 @@ function ConfirmOrder(){
             });
         }
     }
-
     return(
         <div className='container'>
             <div className='row mt-5'>

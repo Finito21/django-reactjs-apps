@@ -9,24 +9,7 @@ function Checkout(props){
     const {cartData,setCartData}=useContext(CartContext);
     const [cartButtonClickStatus,setcartButtonClickStatus]=useState(false);
     const [productData,setproductData]=useState([]);
-    const [AddressList,setAddressList]=useState([]);
     const {CurrencyData}=useContext(CurrencyContext);
-    var customer_id=localStorage.getItem('customer_id');
-    const showProceedToPayment = AddressList.some(address => address.default_address);
-
-
-
-    useEffect(()=>{
-        fetchData(baseUrl+'/customer/'+customer_id+'/address-list/');
-    },[]);
-
-    function fetchData(baseurl){
-        fetch(baseurl)
-        .then((response) => response.json())
-        .then((data) => {
-            setAddressList(data.results);
-        });
-    }
 
     if(cartData==null || cartData.length==0){
         var cartItems=0;
@@ -34,7 +17,6 @@ function Checkout(props){
         var cartItems=cartData.length;
     }
 
-    
     var sum=0;
     cartData.map((item,index)=>{
         if(CurrencyData=='PLN' || CurrencyData==undefined){
@@ -47,7 +29,6 @@ function Checkout(props){
             sum+=parseFloat(item.product.eur_price);
         }
     })
-
 
     const cartRemoveButtonHandler = (product_id)=>{
         var previousCart=localStorage.getItem('cartData');
@@ -63,6 +44,40 @@ function Checkout(props){
         setcartButtonClickStatus(false);
         setCartData(cartJson);
     }
+
+
+    const [AddressList,setAddressList]=useState([]);
+    var customer_id=localStorage.getItem('customer_id');
+    const showProceedToPayment = AddressList.some(address => address.default_address);
+
+    useEffect(()=>{
+        fetchData(baseUrl+'/customer/'+customer_id+'/address-list/');
+    },[]);
+
+    function fetchData(baseurl){
+        fetch(baseurl)
+        .then((response) => response.json())
+        .then((data) => {
+            setAddressList(data.results);
+        });
+    }
+    
+    function DefaultAddressHandler(address_id){
+        const formData=new FormData();
+        formData.append('address_id',address_id);
+
+        axios.post(baseUrl + '/mark-default-address/'+parseInt(address_id)+'/', formData)
+        .then(function (response) {
+            if(response.data.bool==true){
+                window.location.reload();
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
+
     function DefaultAddressHandler(address_id){
         const formData=new FormData();
         formData.append('address_id',address_id);
