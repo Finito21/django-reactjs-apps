@@ -29,6 +29,7 @@ function Checkout(props){
             sum+=parseFloat(item.product.eur_price);
         }
     })
+    sum = sum.toFixed(2);
 
     const cartRemoveButtonHandler = (product_id)=>{
         var previousCart=localStorage.getItem('cartData');
@@ -61,7 +62,7 @@ function Checkout(props){
             setAddressList(data.results);
         });
     }
-    
+
     function DefaultAddressHandler(address_id){
         const formData=new FormData();
         formData.append('address_id',address_id);

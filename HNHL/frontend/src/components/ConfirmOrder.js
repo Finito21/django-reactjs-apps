@@ -1,142 +1,153 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useContext } from 'react';
 import { UserContext, CartContext, CurrencyContext } from '../Context';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js"; 
 import axios from "axios";
+
 const baseUrl='http://127.0.0.1:8000/api';
-function ConfirmOrder(){
-    const [ConfirmOrder,SetConfirmOrder]=useState(false);
-    const [orderId,setorderId]=useState('');
-    const [orderAmount,setorderAmount]=useState(0);
-    const userContext=useContext(UserContext);
-    var customer_id=localStorage.getItem('customer_id');
-    const {cartData,setCartData}=useContext(CartContext);
-    const {CurrencyData}=useContext(CurrencyContext);
 
-    if(userContext.login==null){
-        window.location.href="/customer/login"
-    }else{
-        if(ConfirmOrder==false){
-            addOrderInTable();
-        }
-    }
-    function addOrderInTable(){
+function ConfirmOrder() {
+    const [orderId, setOrderId] = useState('');
+    const [orderAmount, setOrderAmount] = useState(0);
+    const [confirmOrder, setConfirmOrder] = useState(false);
 
-        const customerId=localStorage.getItem('customer_id');
+    const userContext = useContext(UserContext);
+    const { cartData, setCartData } = useContext(CartContext);
+    const { CurrencyData } = useContext(CurrencyContext);
 
-
-        var total_amount=0;
-        var total_usd_amount=0;
-        var total_eur_amount=0;
-        var previousCart=localStorage.getItem('cartData');
-        var cartJson=JSON.parse(previousCart);
-        cartJson.map((cart,index)=>{
-            total_amount+=parseFloat(cart.product.price)
-            total_usd_amount+=parseFloat(cart.product.usd_price)
-            total_eur_amount+=parseFloat(cart.product.eur_price)
-        });
-        total_amount = total_amount.toFixed(2);
-        total_usd_amount = total_usd_amount.toFixed(2);
-        total_eur_amount = total_eur_amount.toFixed(2);
-        
-        const formData=new FormData();
-        formData.append('customer',customerId);
-        formData.append('total_amount',total_amount)
-        console.log(total_amount)
-        formData.append('total_usd_amount',total_usd_amount)
-        console.log(total_usd_amount)
-        formData.append('total_eur_amount',total_eur_amount)
-        console.log(total_eur_amount)
-
-        axios.post(baseUrl + '/orders/', formData)
-        .then(function(response){
-            var orderId=response.data.id;
-            console.log(response.data.id)
-            setorderId(orderId);
-
-            if(CurrencyData=='USD'){
-                setorderAmount(response.data.total_usd_amount);
-            }else if(CurrencyData=='EUR'){
-                setorderAmount(response.data.total_eur_amount);
-            }else{
-                setorderAmount(response.data.total_amount);
+    useEffect(() => {
+        // Nie zalogowany to wysyła do logowania
+        if (userContext.login == null) {
+            window.location.href = "/customer/login";
+        } else {
+            // Jeśli zalogowany to wywołanie funkcji addOrder in table dodanie zamówienia
+            if (confirmOrder === false) {
+                addOrderInTable();
             }
-            orderItems(orderId);
-            SetConfirmOrder(true);
-            console.log(CurrencyData)
-        })
-        .catch(function(error){
-            console.log(error);
-        });
-    }
-    function updateOrderStatus(order_status){
-        axios.post(baseUrl + '/update-order-status/'+orderId)
-        .then(function(response){
-            window.location.href='/order/success';
-        })
-        .catch(function(error){
-            window.location.href='/order/failure';
-        })
-    }
-    function orderItems(orderId){
-        var previousCart=localStorage.getItem('cartData');
-        var cartJson=JSON.parse(previousCart);
-        if(cartJson!=null){
-            var sum=0;
-            cartJson.map((cart,index)=>{
-                const formData=new FormData();
-                formData.append('order',orderId);
-                formData.append('product',cart.product.id);
-                formData.append('qty',1);
-                formData.append('price',cart.product.price);
-                formData.append('usd_price',cart.product.usd_price);
-                formData.append('eur_price',cart.product.eur_price);
-                axios.post(baseUrl+'/orderitems/',formData)
-                .then(function(response){
-                    cartJson.splice(index,1);
-                    localStorage.setItem('cartData',JSON.stringify(cartJson));
-                    setCartData(cartJson);
-                })
-                .catch(function(error){
-                    console.log(error);
-                });
+        }
+    }, [userContext.login, confirmOrder]);
+
+    // Dodawanie produktów do Zamówienia (orderitems)
+    function orderItems(orderId) {
+        var previousCart = localStorage.getItem('cartData');
+        var cartJson = JSON.parse(previousCart);
+
+        if (cartJson != null) {
+            cartJson.forEach((cart, index) => {
+                const formData = new FormData();
+                formData.append('order', orderId);
+                formData.append('product', cart.product.id);
+                formData.append('qty', 1);
+                formData.append('price', cart.product.price);
+                formData.append('usd_price', cart.product.usd_price);
+                formData.append('eur_price', cart.product.eur_price);
+
+                axios.post(baseUrl + '/orderitems/', formData)
+                    .then(function(response) {
+                        cartJson.splice(index, cartData.length);
+                        localStorage.setItem('cartData', JSON.stringify(cartJson));
+                        setCartData(cartJson);
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
             });
         }
     }
-    return(
+
+    function addOrderInTable() {
+        const customerId = localStorage.getItem('customer_id');
+
+        // Ustawienie cen w różnych walutach
+        var totalAmount = 0;
+        var totalUsdAmount = 0;
+        var totalEurAmount = 0;
+
+        var previousCart = localStorage.getItem('cartData');
+        var cartJson = JSON.parse(previousCart);
+
+        cartJson.forEach((cart, index) => {
+            totalAmount += parseFloat(cart.product.price);
+            totalUsdAmount += parseFloat(cart.product.usd_price);
+            totalEurAmount += parseFloat(cart.product.eur_price);
+        });
+
+        totalAmount = totalAmount.toFixed(2);
+        totalUsdAmount = totalUsdAmount.toFixed(2);
+        totalEurAmount = totalEurAmount.toFixed(2);
+
+        // Dodanie Customer ID i wartości cen do formData
+        const formData = new FormData();
+        formData.append('customer', customerId);
+        formData.append('total_amount', totalAmount);
+        formData.append('total_usd_amount', totalUsdAmount);
+        formData.append('total_eur_amount', totalEurAmount);
+
+        // Dodanie do zamówionych
+        axios.post(baseUrl + '/orders/', formData)
+            .then(function(response) {
+                setOrderId(response.data.id);
+
+                // Ustawienie całkowitej ceny zamówienia w zależności od waluty
+                if (CurrencyData === 'USD') {
+                    setOrderAmount(response.data.total_usd_amount);
+                } else if (CurrencyData === 'EUR') {
+                    setOrderAmount(response.data.total_eur_amount);
+                } else {
+                    setOrderAmount(response.data.total_amount);
+                }
+
+                // Dodanie produktów do zamówienia
+                orderItems(response.data.id);
+
+                setConfirmOrder(true);
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+    }
+
+    function updateOrderStatus() {
+        axios.post(baseUrl + '/update-order-status/' + orderId)
+            .then(function(response) {
+                window.location.href = '/order/success';
+            })
+            .catch(function(error) {
+                window.location.href = '/order/failure';
+            });
+    }
+
+    return (
         <div className='container'>
             <div className='row mt-5'>
                 <div className='col-6 offset-3'>
                     <div className='card py-3 text-center'>
                         <h3><i className="fa fa-check-circle text-success"></i>Your Order has been confirmed</h3>
                         <h5>ORDER ID: {orderId}</h5>
+                        <h5>Price: {orderAmount}</h5>
                     </div>
-                    <div className='card p-3 mt-4'>      
-                        <PayPalScriptProvider options={{ "client-id": "AbaaQ1EeoO_JeUq_Yu5ZaVTbfVvaYceYVpPndM6PXmaxVrY4c0r9U6KdQrLvvDO7GbQmKPzIFHLwDqja" }}> 
-                        <PayPalButtons className='mt-3'  
-                        
-                            createOrder={(data,actions)=>{
-                                console.log(orderAmount)
-                                return actions.order.create({
-                                    purchase_units: [
-                                        {
-                                            amount: {
-                                                currency_code:'USD',
-                                                value: orderAmount,
+                    <div className='card p-3 mt-4'>
+                        <PayPalScriptProvider options={{ "client-id": "AbaaQ1EeoO_JeUq_Yu5ZaVTbfVvaYceYVpPndM6PXmaxVrY4c0r9U6KdQrLvvDO7GbQmKPzIFHLwDqja" }}>
+                            <PayPalButtons className='mt-3'
+                                createOrder={(data, actions) => {
+                                    return actions.order.create({
+                                        purchase_units: [
+                                            {
+                                                amount: {
+                                                    currency_code: 'USD',
+                                                    value: orderAmount,
+                                                },
                                             },
-                                        },
-                                    ],
-                                });
-                            }}
-                            onApprove={(data,actions)=>{
-                                return actions.order.capture().then((details)=>{
-                                    const name=details.payer.name.given_name;
-                                    //alert(`Transaction completed by ${name}`);
-                                    //SetOrderStatus(true);
-                                    updateOrderStatus(true);
-                                });
-                            }}
-                        /> 
+                                        ],
+                                    });
+                                }}
+                                onApprove={(data, actions) => {
+                                    return actions.order.capture().then((details) => {
+                                        const name = details.payer.name.given_name;
+                                        updateOrderStatus();
+                                    });
+                                }}
+                            />
                         </PayPalScriptProvider>
                     </div>
                 </div>
@@ -144,4 +155,5 @@ function ConfirmOrder(){
         </div>
     )
 }
+
 export default ConfirmOrder;
