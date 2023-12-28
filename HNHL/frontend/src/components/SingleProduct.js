@@ -11,6 +11,7 @@ function SingleProduct(props){
     const [cartButtonClickStatus,setcartButtonClickStatus]=useState(false);
     const [ProductInWishlist,setProductInWishlist]=useState(false);
     const userContext=useContext(UserContext);
+    const customerId = localStorage.getItem('customer_id');
   
     
 
@@ -21,7 +22,7 @@ function SingleProduct(props){
 
 
     function checkProductInCart(product_id){
-        var previousCart=localStorage.getItem('cartData');
+        var previousCart=localStorage.getItem(`cartData_${customerId}`);
         var cartJson=JSON.parse(previousCart);
         if(cartJson!=null){
             cartJson.map((cart)=>{
@@ -33,7 +34,7 @@ function SingleProduct(props){
     }
   
     const cartAddButtonHandler = ()=>{
-        var previousCart=localStorage.getItem('cartData');
+        var previousCart=localStorage.getItem(`cartData_${customerId}`);
         var cartJson=JSON.parse(previousCart)
         var cartData={
             'product':{
@@ -54,19 +55,19 @@ function SingleProduct(props){
         if(cartJson!=null){
             cartJson.push(cartData);
             var cartString=JSON.stringify(cartJson);
-            localStorage.setItem('cartData',cartString);
+            localStorage.setItem(`cartData_${customerId}`,cartString);
             setCartData(cartJson);
         }else{
             var newCartList=[];
             newCartList.push(cartData);
             var cartString=JSON.stringify(newCartList);
-            localStorage.setItem('cartData',cartString);
+            localStorage.setItem(`cartData_${customerId}`,cartString);
         }
         setcartButtonClickStatus(true);
     }
   
     const cartRemoveButtonHandler = ()=>{
-        var previousCart=localStorage.getItem('cartData');
+        var previousCart=localStorage.getItem(`cartData_${customerId}`);
         var cartJson=JSON.parse(previousCart)
         cartJson.map((cart,index)=>{
             if(cart!=null && cart.product.id==props.product.id){
@@ -75,7 +76,7 @@ function SingleProduct(props){
             }
         });
         var cartString=JSON.stringify(cartJson);
-        localStorage.setItem('cartData',cartString)
+        localStorage.setItem(`cartData_${customerId}`,cartString)
         setcartButtonClickStatus(false);
         setCartData(cartJson);
     }

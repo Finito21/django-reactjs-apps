@@ -35,7 +35,7 @@ function Checkout(props){
     sum = sum.toFixed(2);
 
     const cartRemoveButtonHandler = (product_id)=>{
-        var previousCart=localStorage.getItem('cartData');
+        var previousCart=localStorage.getItem(`cartData_${customer_id}`);
         var cartJson=JSON.parse(previousCart)
         cartJson.map((cart,index)=>{
             if(cart!=null && cart.product.id==product_id){
@@ -44,7 +44,7 @@ function Checkout(props){
             }
         });
         var cartString=JSON.stringify(cartJson);
-        localStorage.setItem('cartData',cartString)
+        localStorage.setItem(`cartData_${customer_id}`,cartString)
         setcartButtonClickStatus(false);
         setCartData(cartJson);
     }

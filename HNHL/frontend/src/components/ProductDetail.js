@@ -17,6 +17,7 @@ function ProductDetail(){
     const [ProductInWishlist,setProductInWishlist]=useState(false);
     const {cartData,setCartData}=useContext(CartContext);
     const userContext=useContext(UserContext);
+    const customerId = localStorage.getItem('customer_id');
 
     const {CurrencyData}=useContext(CurrencyContext);
 
@@ -29,7 +30,7 @@ function ProductDetail(){
     },[]);
 
     function checkProductInCart(product_id){
-        var previousCart=localStorage.getItem('cartData');
+        var previousCart=localStorage.getItem(`cartData_${customerId}`);
         var cartJson=JSON.parse(previousCart);
         if(cartJson!=null){
             cartJson.map((cart)=>{
@@ -70,7 +71,7 @@ function ProductDetail(){
 
         ///////////////////////////////////////////////////////////////////////////////////////////
     const cartAddButtonHandler = ()=>{
-        var previousCart=localStorage.getItem('cartData');
+        var previousCart=localStorage.getItem(`cartData_${customerId}`);
         var cartJson=JSON.parse(previousCart)
         var cartData={
             'product':{
@@ -90,13 +91,13 @@ function ProductDetail(){
         if(cartJson!=null){
             cartJson.push(cartData);
             var cartString=JSON.stringify(cartJson);
-            localStorage.setItem('cartData',cartString);
+            localStorage.setItem(`cartData_${customerId}`,cartString);
             setCartData(cartJson);
         }else{
             var newCartList=[];
             newCartList.push(cartData);
             var cartString=JSON.stringify(newCartList);
-            localStorage.setItem('cartData',cartString);
+            localStorage.setItem(`cartData_${customerId}`,cartString);
         }
         setcartButtonClickStatus(true);
     }
@@ -104,7 +105,7 @@ function ProductDetail(){
 
 
     const cartRemoveButtonHandler = ()=>{
-        var previousCart=localStorage.getItem('cartData');
+        var previousCart=localStorage.getItem(`cartData_${customerId}`);
         var cartJson=JSON.parse(previousCart)
         cartJson.map((cart,index)=>{
             if(cart!=null && cart.product.id==productData.id){
@@ -113,7 +114,7 @@ function ProductDetail(){
             }
         });
         var cartString=JSON.stringify(cartJson);
-        localStorage.setItem('cartData',cartString)
+        localStorage.setItem(`cartData_${customerId}`,cartString)
         setcartButtonClickStatus(false);
         setCartData(cartJson);
     }
@@ -216,16 +217,11 @@ function ProductDetail(){
                     <p className='mt-3'>
                         {(userContext.login &&
                         <>
-                            {!cartButtonClickStatus&&
-                                <button title="Add to Cart" type='button' onClick={cartAddButtonHandler} className='btn btn-primary'>
-                                    <i className="fa-solid fa-cart-plus"></i>Add to Cart
-                                    </button>
-                            }
-                            {cartButtonClickStatus&&
-                                <button title="Remove from Cart" type='button' onClick={cartRemoveButtonHandler} className='btn btn-warning'>
-                                    <i className="fa-solid fa-cart-plus"></i>Remove from Cart
-                                    </button>
-                            }
+                            
+                            <button title="Remove from Cart" type='button' onClick={cartRemoveButtonHandler} className='btn btn-warning'>
+                                <i className="fa-solid fa-cart-plus"></i>Remove from Cart
+                                </button>
+                            
                             {!ProductInWishlist && <button onClick={saveInWishList} title="Add to Wishlist" className='btn btn-danger ms-1'>
                                 <i className="fa fa-heart"></i>Wishlist</button>
                             }

@@ -24,7 +24,7 @@ function AddressList(){
         const formData=new FormData();
         formData.append('address_id',address_id);
 
-        axios.post(baseUrl + '/mark-default-address/'+parseInt(address_id)+'/', formData)
+        axios.post(baseUrl + '/mark-default-address/'+parseInt(customer_id)+'/', formData)
         .then(function (response) {
             if(response.data.bool==true){
                 window.location.reload();

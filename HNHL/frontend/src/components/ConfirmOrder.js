@@ -15,6 +15,7 @@ function ConfirmOrder() {
     const userContext = useContext(UserContext);
     const { cartData, setCartData } = useContext(CartContext);
     const { CurrencyData } = useContext(CurrencyContext);
+    const customerId = localStorage.getItem('customer_id');
 
     useEffect(() => {
         // Nie zalogowany to wysyła do logowania
@@ -31,7 +32,7 @@ function ConfirmOrder() {
 
     // Dodawanie produktów do Zamówienia (orderitems)
     function orderItems(orderId) {
-        var previousCart = localStorage.getItem('cartData');
+        var previousCart = localStorage.getItem(`cartData_${customerId}`);
         var cartJson = JSON.parse(previousCart);
 
         if (cartJson != null) {
@@ -54,7 +55,7 @@ function ConfirmOrder() {
                 axios.post(baseUrl + '/orderitems/', formData)
                     .then(function(response) {
                         cartJson.splice(index, cartData.length);
-                        localStorage.setItem('cartData', JSON.stringify(cartJson));
+                        localStorage.setItem(`cartData_${customerId}`, JSON.stringify(cartJson));
                         setCartData(cartJson);
                         console.log('usunęło z koszyka')
                     })
@@ -78,7 +79,7 @@ function ConfirmOrder() {
         var totalUsdAmount = 0;
         var totalEurAmount = 0;
 
-        var previousCart = localStorage.getItem('cartData');
+        var previousCart = localStorage.getItem(`cartData_${customerId}`);
         var cartJson = JSON.parse(previousCart);
 
         cartJson.forEach((cart, index) => {

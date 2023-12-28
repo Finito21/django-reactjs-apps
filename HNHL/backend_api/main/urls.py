@@ -53,7 +53,7 @@ urlpatterns= [
     path('order/<int:pk>/', views.OrderDetail.as_view()),
     path('delete-customer-orders/<int:customer_id>/', views.delete_customer_orders,name='delete_customer_orders'),
     path('delete-customer-order/<int:order_id>/', views.delete_customer_order,name='delete_customer_order'),
-    path('order-modify/<int:pk>/', views.OrderModify.as_view()),
+    path('order-modify/<int:pk>/', views.OrderItemModify.as_view()),
     path('orderitems/', views.OrderItemList.as_view()),
     path('customer/<int:pk>/orderitems/', views.CustomerOrderItemList.as_view()),
     path('update-order-status/<int:order_id>', views.update_order_status,name='update_order_status'),

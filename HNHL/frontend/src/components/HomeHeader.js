@@ -26,7 +26,7 @@ function HomeHeader(props){
 
 
           const cartAddButtonHandler = ()=>{
-            var previousCart=localStorage.getItem('cartData');
+            var previousCart=localStorage.getItem(`cartData_${customerId}`);
             var cartJson=JSON.parse(previousCart)
             var cartData={
                 'product':{
@@ -45,19 +45,19 @@ function HomeHeader(props){
             if(cartJson!=null){
                 cartJson.push(cartData);
                 var cartString=JSON.stringify(cartJson);
-                localStorage.setItem('cartData',cartString);
+                localStorage.setItem(`cartData_${customerId}`,cartString);
                 setCartData(cartJson);
             }else{
                 var newCartList=[];
                 newCartList.push(cartData);
                 var cartString=JSON.stringify(newCartList);
-                localStorage.setItem('cartData',cartString);
+                localStorage.setItem(`cartData_${customerId}`,cartString);
             }
             setcartButtonClickStatus(true);
         }
 
           const cartRemoveButtonHandler = ()=>{
-            var previousCart=localStorage.getItem('cartData');
+            var previousCart=localStorage.getItem(`cartData_${customerId}`);
             var cartJson=JSON.parse(previousCart)
             cartJson.map((cart,index)=>{
                 if(cart!=null && cart.product.id==productData.id){
@@ -66,7 +66,7 @@ function HomeHeader(props){
                 }
             });
             var cartString=JSON.stringify(cartJson);
-            localStorage.setItem('cartData',cartString)
+            localStorage.setItem(`cartData_${customerId}`,cartString)
             setcartButtonClickStatus(false);
             setCartData(cartJson);
         }

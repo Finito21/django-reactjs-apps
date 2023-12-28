@@ -38,7 +38,7 @@ class VendorProductList(generics.ListAPIView):
         qs = qs.filter(vendor__id=vendor_id).order_by('id')
         return qs
 
-from django.contrib.auth.hashers import make_password
+
 
 @csrf_exempt
 def vendor_register(request):
@@ -497,18 +497,18 @@ class CustomerAddressList(generics.ListAPIView):
         return qs
     
 @csrf_exempt
-def mark_default_address(request,pk):
-    if request.method=="POST":
-        address_id=request.POST.get('address_id')
-        models.CustomerAddress.objects.all().update(default_address=False)
-        res=models.CustomerAddress.objects.filter(id=address_id).update(default_address=True)
-        msg={
-                'bool': False
-            }
+def mark_default_address(request, pk):
+    if request.method == "POST":
+        address_id = request.POST.get("address_id")
+        models.CustomerAddress.objects.filter(customer__id=pk).update(
+            default_address=False
+        )
+        res = models.CustomerAddress.objects.filter(id=address_id).update(
+            default_address=True
+        )
+        msg = {"bool": False}
         if res:
-            msg={
-                'bool':True
-            }
+            msg = {"bool": True}
     return JsonResponse(msg)
 
 def customer_dashboard(request,pk):

@@ -22,6 +22,7 @@ function CustomerOrders(){
             .then((data) => {
                 setOrderItems(data.results);
             });
+            
     }
 
     function showConfirm(order_id){
@@ -38,9 +39,9 @@ function CustomerOrders(){
         }
     }
 
-    function changeDeliveryStatus(order_id, status) {
+    function changeDeliveryStatus(order_item_id, status) {
         console.log('weszło')
-        fetch(baseUrl + 'order-modify/' + order_id + '/', {
+        fetch(baseUrl + 'order-modify/' + order_item_id + '/', {
             method: "PATCH",
             headers: {
                 'Accept': 'application/json',
@@ -52,6 +53,7 @@ function CustomerOrders(){
                 if (response.status == 200) {
                     fetchData(baseUrl + 'vendor/' + vendor_id + '/orderitems/');
                 }
+                window.location.reload()
             });
     }
 
@@ -110,22 +112,22 @@ function CustomerOrders(){
                                                 </button>
                                                 <ul className="dropdown-menu">
                                                     <li>
-                                                        <a className="dropdown-item" onClick={() => changeDeliveryStatus(item.order.id, 'delivered')} href="#">
+                                                        <a className="dropdown-item" onClick={() => changeDeliveryStatus(item.id, 'delivered')} href="#">
                                                             Delivered
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a className="dropdown-item" onClick={() => changeDeliveryStatus(item.order.id, 'sent')} href="#">
+                                                        <a className="dropdown-item" onClick={() => changeDeliveryStatus(item.id, 'sent')} href="#">
                                                             Sent
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a className="dropdown-item" onClick={() => changeDeliveryStatus(item.order.id, 'preparation')} href="#">
+                                                        <a className="dropdown-item" onClick={() => changeDeliveryStatus(item.id, 'preparation')} href="#">
                                                             Preparation
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a className="dropdown-item" onClick={() => changeDeliveryStatus(item.order.id, 'processing')} href="#">
+                                                        <a className="dropdown-item" onClick={() => changeDeliveryStatus(item.id, 'processing')} href="#">
                                                             Processing
                                                         </a>
                                                     </li>
