@@ -21,9 +21,10 @@ urlpatterns= [
     path('vendor/<int:pk>/orderitems/', views.VendorOrderItemList.as_view()),
     path('vendor/<int:pk>/customers/', views.VendorCustomerList.as_view()),
     path('vendor/<int:pk>/daily-report/', views.VendorDailyReport.as_view()),
-     path('vendor/<int:vendor_id>/orderitem/<int:pk>/', views.VendorOrderItemDetails.as_view(), name='vendor-orderitem-details'),
-     path('vendor/<int:vendor_id>/customer/<int:customer_id>/orderitems/<int:order_id>/', views.VendorCustomerOrderItemList.as_view(), name='vendor-customer-orderitem-list'),
-
+    path('vendor/<int:vendor_id>/orderitem/<int:pk>/', views.VendorOrderItemDetails.as_view(), name='vendor-orderitem-details'),
+    path('vendor/<int:vendor_id>/orders/',views.OrderCustomerList.as_view(),name='vendor-customer-order-list'),
+    path('vendor/<int:vendor_id>/customer/<int:customer_id>/orderitems/<int:order_id>/',views.VendorCustomerOrderItemList.as_view(),
+    name='vendor-customer-orderitem-list'),
 
     # Product URLS
     path('products/', views.ProductList.as_view()),
@@ -51,6 +52,7 @@ urlpatterns= [
     path('orders/', views.OrderList.as_view()),
     path('order/<int:pk>/', views.OrderDetail.as_view()),
     path('delete-customer-orders/<int:customer_id>/', views.delete_customer_orders,name='delete_customer_orders'),
+    path('delete-customer-order/<int:order_id>/', views.delete_customer_order,name='delete_customer_order'),
     path('order-modify/<int:pk>/', views.OrderModify.as_view()),
     path('orderitems/', views.OrderItemList.as_view()),
     path('customer/<int:pk>/orderitems/', views.CustomerOrderItemList.as_view()),

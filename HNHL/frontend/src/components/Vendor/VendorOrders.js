@@ -1,116 +1,95 @@
-
 import VendorSidebar from './VendorSidebar';
+import { useState, useEffect } from 'react';
 import logo from '../../logo.svg';
-import {Link} from 'react-router-dom';
-import { useState,useEffect } from 'react';
-const baseUrl='http://127.0.0.1:8000/api/';
+import { Link } from 'react-router-dom';
 
-function VendorOrders(){
-    const url='http://127.0.0.1:8000';
-    const vendor_id=localStorage.getItem('vendor_id');
-    const [OrderItems,setOrderItems]=useState([]);
+const baseUrl = 'http://127.0.0.1:8000/api/';
+
+function VendorOrders() {
+    const vendor_id = localStorage.getItem('vendor_id');
+    const [OrderList, setOrderList] = useState([]);
 
     useEffect(() => {
-        fetchData(baseUrl+'vendor/'+vendor_id+'/orderitems/');
-    },[]);
+        fetchData(baseUrl + `vendor/${vendor_id}/orders/`);
+    }, []);
+    
 
-    function fetchData(baseurl){
+    function fetchData(baseurl) {
         fetch(baseurl)
-        .then((response) => response.json())
-        .then((data) => {
-            setOrderItems(data.results);
-        });
+            .then((response) => response.json())
+            .then((data) => {
+                setOrderList(data.results);
+                console.log(data.results);
+            });
+    }
+    function showConfirm(order_id){
+        var _confirm=window.confirm('Are you sure to delete this order?');
+        if(_confirm){
+            fetch(baseUrl+'delete-customer-order/'+order_id,{
+                method:'DELETE'
+            })
+            .then((response)=> {
+                if(response.status==204){
+                    fetchData(baseUrl+'vendor/'+vendor_id+'/orders')
+                }
+                
+                window.location.reload();
+            });
+        }
     }
 
-    function changeOrderStatus(order_id,status){
-        fetch(baseUrl+'order-modify/'+ order_id + '/',{
-            method:"PATCH",
-            headers:{
-                'Accept':'application/json',
-                'Content-type':'application/json',
-            },
-            body: JSON.stringify({order_status:status})
-        })
-        .then(function(response){
-            if(response.status==200){
-                fetchData(baseUrl+'vendor/'+vendor_id+'/orderitems/');
-            }
-        });
-    }
-
-    return(
-            <div className='container mt-4'>
-                <div className='row'>
-                    <div className='col-md-3 col-12 mb-2'>
-                        <VendorSidebar></VendorSidebar>
-                    </div>
-                    <div className='col-md-9 col-12 '>
-                        <div>
-                            <div className='table-responsive d-flex justify-content-center align-items-center' style={{ borderRadius: '10px' }}>
-                                <table className='table' >
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Image</th>
-                                            <th scope="col">Product</th>
-                                            <th scope="col">Price</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Action</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            OrderItems.map((item,index)=> <tr>
-                                        <td class="align-middle">
-                                        <div class="d-flex align-items-center">
-                                        <Link to={`/product/${item.product.slug}/${item.product.id}`}>
-                                        <img src={`${url}/${item.product.image}`} className="img-thumbnail" width='80' alt="..."/>
-                                        
-                                        </Link>
-                                        </div>
-
-                                        </td>
-                                        <td class="align-middle">
-                                            
-                                            <p><Link>{item.product.title}</Link></p>
-                                        </td>
-                                        <td class="align-middle"> {item.product.price}</td>
-                                        <td class="align-middle">
-                                            {
-                                                item.order.order_status && <span className='text-success'><i className='fa fa-check-circle'> </i> Completed</span>
-                                            }
-                                            {
-                                                !item.order.order_status && <span className='text-warning'><i className='fa fa-spinner'> </i> Pending</span>
-                                            }
-                                        </td>
-                                        
-                                       <td >
-                                        <div className="dropdown " class="align-middle">
-                                                <button className="btn btn-primary dropdown-toggle " type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    Change Status
-                                                </button>
-                                                <ul className="dropdown-menu ">
-                                                    <li>
-                                                        {
-                                                            !item.order.order_status && <a className="dropdown-item" onClick={()=>changeOrderStatus(item.order.id,true)} href="#">Complete</a>
-                                                        }
-                                                        {
-                                                            item.order.order_status && <a className="dropdown-item" onClick={()=>changeOrderStatus(item.order.id,false)} href="#">Pending</a>
-                                                        }
+    return (
+        <div className='container mt-4'>
+            <div className='row'>
+                <div className='col-md-3 col-12 mb-2'>
+                    <VendorSidebar></VendorSidebar>
+                </div>
+                <div className='col-md-9 col-12 mb-2'>
+                    <div>
+                        <div
+                            className='table-responsive d-flex justify-content-center align-items-center'
+                            style={{ borderRadius: '10px' }}
+                        >
+                            <table className='table'>
+                                <thead>
+                                    <tr>
+                                        <th scope='col'>Order Id</th>
+                                        <th scope='col'>Address</th>
+                                        <th scope='col'>Customer Email</th>
+                                        <th scope='col'>Customer Mobile</th>
+                                        <th scope='col'>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {OrderList.map((item, index) => (
+                                        <tr key={index}>
+                                            <td className='align-middle'>{item.id}</td>
+                                            <td class="align-middle">
+                                                {item.customer.customer_addresses.map(address => address.default_address ? address.address : null)}
+                                            </td>
+                                            <td className='align-middle'>{item.customer.user.email}</td>
+                                            <td className='align-middle'>{item.customer.mobile}</td>
+                                            <td className='align-middle'>
+                                                <th>
+                                                <Link
+                                                        to={`/vendor/${vendor_id}/customer/${item.customer.id}/orderitems/${item.id}`}
+                                                        className='btn btn-primary btn-sm'
+                                                    >
+                                                        Details
+                                                    </Link>
+                                                </th>
                                                 
-                                                    </li>
-                                                </ul>
-                                            </div>  
-                                       </td>
-                                        </tr>)
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-        )
-    }
-    export default VendorOrders;
+        </div>
+    );
+}
+
+export default VendorOrders;

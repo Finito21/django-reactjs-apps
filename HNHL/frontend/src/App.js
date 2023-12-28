@@ -32,6 +32,7 @@ import UpdateAddress from './components/Customer/UpdateAddress';
 import ConfirmOrder from './components/ConfirmOrder';
 import OrderSuccess from './components/OrderSuccess';
 import OrderFailure from './components/OrderFailure';
+import Customers from './components/Vendor/Customers'
 
 import VendorRegister from './components/Vendor/VendorRegister';
 import VendorLogin from './components/Vendor/VendorLogin';
@@ -41,7 +42,6 @@ import VendorProducts from './components/Vendor/VendorProducts';
 import AddProduct from './components/Vendor/AddProduct';
 import UpdateProduct from './components/Vendor/UpdateProduct';
 import VendorOrders from './components/Vendor/VendorOrders';
-import Customers from './components/Vendor/Customers';
 import CustomerOrders from './components/Vendor/CustomerOrders';
 import Reports from './components/Vendor/Reports';
 import VendorProfile from './components/Vendor/VendorProfile';
@@ -113,14 +113,14 @@ function App() {
         <Route path='/vendor/dashboard' element={<VendorDashbaord/>}/>
         <Route path='/vendor/products' element={<VendorProducts/>}/>
         <Route path='/vendor/update-product/:product_id' element={<UpdateProduct/>}/>
+        <Route path='/vendor/customers' element={<Customers/>}/>
         <Route path='/vendor/add-product' element={<AddProduct/>}/>
         <Route path='/vendor/daily-report' element={<DailyReport/>}/>
         <Route path='/vendor/monthly-report' element={<MonthlyReport/>}/>
         <Route path='/vendor/yearly-report' element={<YearlyReport/>}/>
 
-        <Route path='/vendor/orders' element={<VendorOrders/>}/>
 
-        <Route path='/vendor/customers' element={<Customers/>}/>
+        <Route path='/vendor/orders' element={<VendorOrders/>}/>
         <Route path='/vendor/:vendor_id/customer/:customer_id/orderitems/:order_id' element={<CustomerOrders/>}/>
         
         

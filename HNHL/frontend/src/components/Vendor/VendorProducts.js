@@ -28,11 +28,9 @@ function VendorProducts(props){
             fetch(baseUrl+'product/'+product_id,{
                 method:'DELETE'
             })
-            .then((response) => {
-                if (response.status === 204) {
-                    fetchData(baseUrl + 'products/');
-                    // Reload the current window after deletion
-                    window.location.reload();
+            .then((response)=> {
+                if(response.status==204){
+                    fetchData(baseUrl+'products/')
                 }
             });
         }
@@ -83,7 +81,7 @@ function VendorProducts(props){
                                                 <Link to={`/vendor/update-product/${product.id}`} className='btn btn-primary ms-1'>Edit</Link>
                                                 </th>
                                                 <th>
-                                                <Link className='btn btn-danger ms-1' onClick={()=>showConfirm(product.id)}>Delete</Link>
+                                                <Link to={'/vendor/products/'} className='btn btn-danger ms-1' onClick={()=>showConfirm(product.id)}>Delete</Link>
                                                 </th>
                                             </td>
                                             </tr>)

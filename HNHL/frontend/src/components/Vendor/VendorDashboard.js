@@ -40,9 +40,14 @@ function VendorDashboard(props) {
           <div className='row'>
             <div className='col-md-4 mb-2'>
               <div className='card' style={{ height: '100%' }}>
-                <div className='card-body text-center'>
-                  <h4>Total</h4>
-                  <h6>Products</h6>
+                <div className='card-body text-center d-flex flex-column justify-content-between'>
+                  <div>
+                    <h4>TOTAL</h4>
+                    <h6>NUMBER</h6>
+                    <h6>OF</h6>
+                    <h6>YOUR</h6>
+                    <h6>PRODUCT</h6>
+                  </div>
                   <h4>
                     <Link to='/vendor/products'>{vendorData.totalProducts}</Link>
                   </h4>
@@ -51,9 +56,14 @@ function VendorDashboard(props) {
             </div>
             <div className='col-md-4 mb-2'>
               <div className='card' style={{ height: '100%' }}>
-                <div className='card-body text-center'>
-                  <h4>Total</h4>
-                  <h6>Orders</h6>
+                <div className='card-body text-center d-flex flex-column justify-content-between'>
+                  <div>
+                    <h4>TOTAL</h4>
+                    <h6>NUMBER</h6>
+                    <h6>OF</h6>
+                    <h6>ORDERED</h6>
+                    <h6>PRODUCT</h6>
+                  </div>
                   <h4>
                     <Link to='/vendor/orders'>{vendorData.totalOrders}</Link>
                   </h4>
@@ -62,9 +72,14 @@ function VendorDashboard(props) {
             </div>
             <div className='col-md-4 mb-2'>
               <div className='card' style={{ height: '100%' }}>
-                <div className='card-body text-center'>
-                  <h4>Total</h4>
-                  <h6>Customers</h6>
+                <div className='card-body text-center d-flex flex-column justify-content-between'>
+                  <div>
+                    <h4>TOTAL</h4>
+                    <h6>NUMBER</h6>
+                    <h6>OF</h6>
+                    <h6>YOUR</h6>
+                    <h6>CLIENT</h6>
+                  </div>
                   <h4>
                     <Link to='/vendor/customers'>{vendorData.totalCustomers}</Link>
                   </h4>
@@ -76,6 +91,7 @@ function VendorDashboard(props) {
       </div>
     </div>
   );
+  
 }
 
 export default VendorDashboard;

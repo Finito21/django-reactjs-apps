@@ -275,6 +275,20 @@ class OrderList(generics.ListCreateAPIView):
     def post(self,request, *args,**kwargs):
         print(request.POST)
         return super().post(request, *args,**kwargs)
+    
+
+    
+class OrderCustomerList(generics.ListCreateAPIView):
+    serializer_class = serializers.OrderSerializer
+
+    def get_queryset(self):
+        # Get the vendor_id from the URL parameters
+        vendor_id = self.kwargs['vendor_id']
+
+        # Filter orders that have at least one product from the specified vendor
+        qs = models.Order.objects.filter(order_items__product__vendor__id=vendor_id).distinct()
+
+        return qs
 
 class OrderItemList(generics.ListCreateAPIView):
     queryset = models.OrderItems.objects.all()
@@ -325,9 +339,14 @@ class VendorCustomerOrderItemList(generics.ListAPIView):
     def get_queryset(self):
         vendor_id = self.kwargs['vendor_id']
         customer_id = self.kwargs['customer_id']
-        order_id = self.kwargs['order_id']  # Dodaj tę linijkę
-        return models.OrderItems.objects.filter(order__id=order_id, product__vendor__id=vendor_id, order__customer__id=customer_id)
+        order_id = self.kwargs['order_id']
 
+        # Fetch and filter orders based on vendor, customer, and order IDs
+        return models.OrderItems.objects.filter(
+            order__id=order_id,
+            product__vendor__id=vendor_id,
+            order__customer__id=customer_id
+        )
 class OrderDetail(generics.ListAPIView):
     serializer_class = serializers.OrderDetailSerializer
 
@@ -388,6 +407,19 @@ def update_order_status(request, order_id):
 def delete_customer_orders(request, customer_id):
     if request.method=="DELETE":
         orders=models.Order.objects.filter(customer__id=customer_id).delete()
+        msg={
+                'bool': False,
+            }
+        if orders:
+            msg={
+                'bool':True,
+            }
+    return JsonResponse(msg)
+
+@csrf_exempt
+def delete_customer_order(request,order_id):
+    if request.method=="DELETE":
+        orders = models.Order.objects.filter(id=order_id).delete()
         msg={
                 'bool': False,
             }
@@ -500,17 +532,21 @@ class ProductImgDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.ProductImage.objects.all()
     serializer_class = serializers.ProductImageSerializer
 
-def vendor_dashboard(request,pk):
-    vendor_id=pk
-    totalProducts=models.Product.objects.filter(vendor__id=vendor_id).count()
-    totalOrders=models.OrderItems.objects.filter(product__vendor__id=vendor_id).count()
-    totalCustomers=models.OrderItems.objects.filter(product__vendor__id=vendor_id).values('order__customer').count()
-    msg={
-            'totalProducts':totalProducts,
-            'totalOrders':totalOrders,
-            'totalCustomers':totalCustomers,
+def vendor_dashboard(request, pk):
+    vendor_id = pk
+    totalProducts = models.Product.objects.filter(vendor__id=vendor_id).count()
+    totalOrders = models.OrderItems.objects.filter(product__vendor__id=vendor_id).values('order__customer').count()
+    
 
-        }
+    
+    # Zlicz unikalnych klientów
+    totalCustomers = models.OrderItems.objects.filter(product__vendor__id=vendor_id).values('order__customer').distinct().count()
+    
+    msg = {
+        'totalProducts': totalProducts,
+        'totalOrders': totalOrders,
+        'totalCustomers': totalCustomers,
+    }
     return JsonResponse(msg)
 
 class VendorDailyReport(generics.ListAPIView):
@@ -523,3 +559,15 @@ class VendorDailyReport(generics.ListAPIView):
         qs = qs.filter(product__vendor__id=vendor_id).annotate(Count('id'))
         return qs
     
+class VendorOrderList(generics.ListAPIView):
+    serializer_class = serializers.OrderSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        vendor_id = self.kwargs['pk']
+        qs = qs.filter(vendor__id=vendor_id)
+        return qs
+
+
+
+       
