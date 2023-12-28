@@ -125,7 +125,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.OrderItems
-        fields = ['id', 'order', 'product', 'qty', 'price', 'usd_price', 'eur_price', 'customer_address']
+        fields = ['id', 'order', 'product', 'qty', 'price', 'usd_price', 'eur_price', 'customer_address', 'delivery_status']
 
     def to_representation(self, instance):
         response = super().to_representation(instance)

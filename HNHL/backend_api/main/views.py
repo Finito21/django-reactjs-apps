@@ -386,9 +386,22 @@ class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.CategoryDetailSerializer
     # permission_classes = [permissions.IsAuthenticated]
 
-class OrderModify(generics.RetrieveUpdateAPIView):
-    queryset = models.Order.objects.all()
-    serializer_class = serializers.OrderSerializer
+class OrderItemModify(generics.RetrieveUpdateAPIView):
+    queryset = models.OrderItems.objects.all()
+    serializer_class = serializers.OrderItemSerializer
+
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        delivery_status = request.data.get('delivery_status')
+
+        if delivery_status:
+            instance.delivery_status = delivery_status
+            instance.save()
+
+            serializer = self.get_serializer(instance)
+            return Response(serializer.data)
+
+        return Response({'detail': 'No valid data provided for update.'}, status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
 def update_order_status(request, order_id):

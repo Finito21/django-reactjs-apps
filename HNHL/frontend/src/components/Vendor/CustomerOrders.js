@@ -38,20 +38,21 @@ function CustomerOrders(){
         }
     }
 
-    function changeOrderStatus(order_id,status){
-        fetch(baseUrl+'order-modify/'+ order_id + '/',{
-            method:"PATCH",
-            headers:{
-                'Accept':'application/json',
-                'Content-type':'application/json',
+    function changeDeliveryStatus(order_id, status) {
+        console.log('weszło')
+        fetch(baseUrl + 'order-modify/' + order_id + '/', {
+            method: "PATCH",
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json',
             },
-            body: JSON.stringify({order_status:status})
+            body: JSON.stringify({ delivery_status: status })
         })
-        .then(function(response){
-            if(response.status==200){
-                fetchData(baseUrl+'vendor/'+vendor_id+'/orderitems/');
-            }
-        });
+            .then(function (response) {
+                if (response.status == 200) {
+                    fetchData(baseUrl + 'vendor/' + vendor_id + '/orderitems/');
+                }
+            });
     }
 
     return(
@@ -86,33 +87,51 @@ function CustomerOrders(){
                                         </td>
                                         <td class="align-middle">{item.product.title}</td>
                                         <td class="align-middle"> {item.product.price}</td>
-                                        <td class="align-middle">
+                                        
+                                        <td className="align-middle">
                                             {
-                                                item.order.order_status && <span className='text-success'><i className='fa fa-check-circle'> </i> Completed</span>
+                                                item.delivery_status === 'delivered' && <span className='text-success'><i className='fa fa-check-circle'> </i> Delivered</span>
                                             }
                                             {
-                                                !item.order.order_status && <span className='text-warning'><i className='fa fa-spinner'> </i> Pending</span>
+                                                item.delivery_status === 'sent' && <span className='text-warning'><i className='fa fa-spinner'> </i> Sent</span>
+                                            }
+                                            {
+                                                item.delivery_status === 'preparation' && <span className='text-primary'><i className='fa fa-cogs'> </i> Preparation</span>
+                                            }
+                                            {
+                                                item.delivery_status === 'processing' && <span className='text-info'><i className='fa fa-clock'> </i> Processing</span>
                                             }
                                         </td>
-                                        
-                                       <td class="align-middle">
-                                        <div className="dropdown">
+
+                                        <td className="align-middle">
+                                            <div className="dropdown">
                                                 <button className="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                     Change Status
                                                 </button>
                                                 <ul className="dropdown-menu">
                                                     <li>
-                                                        {
-                                                            !item.order.order_status && <a className="dropdown-item" onClick={()=>changeOrderStatus(item.order.id,true)} href="#">Complete</a>
-                                                        }
-                                                        {
-                                                            item.order.order_status && <a className="dropdown-item" onClick={()=>changeOrderStatus(item.order.id,false)} href="#">Pending</a>
-                                                        }
-                                                
+                                                        <a className="dropdown-item" onClick={() => changeDeliveryStatus(item.order.id, 'delivered')} href="#">
+                                                            Delivered
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a className="dropdown-item" onClick={() => changeDeliveryStatus(item.order.id, 'sent')} href="#">
+                                                            Sent
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a className="dropdown-item" onClick={() => changeDeliveryStatus(item.order.id, 'preparation')} href="#">
+                                                            Preparation
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a className="dropdown-item" onClick={() => changeDeliveryStatus(item.order.id, 'processing')} href="#">
+                                                            Processing
+                                                        </a>
                                                     </li>
                                                 </ul>
-                                            </div>  
-                                       </td>
+                                            </div>
+                                        </td>
                                         </tr>)
                                         }
                                     </tbody>
