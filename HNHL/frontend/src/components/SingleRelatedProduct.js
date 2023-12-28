@@ -10,6 +10,7 @@ function SingleRelatedProduct(props) {
   const [cartButtonClickStatus,setcartButtonClickStatus]=useState(false);
   const [ProductInWishlist,setProductInWishlist]=useState(false);
   const userContext=useContext(UserContext);
+  const navigate = useNavigate();
 
   
 

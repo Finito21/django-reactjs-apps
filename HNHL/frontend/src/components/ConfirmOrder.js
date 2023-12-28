@@ -4,12 +4,13 @@ import { UserContext, CartContext, CurrencyContext } from '../Context';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js"; 
 import axios from "axios";
 
-const baseUrl='http://127.0.0.1:8000/api';
+const baseUrl = 'http://127.0.0.1:8000/api';
 
 function ConfirmOrder() {
     const [orderId, setOrderId] = useState('');
     const [orderAmount, setOrderAmount] = useState(0);
     const [confirmOrder, setConfirmOrder] = useState(false);
+    const [paymentError, setPaymentError] = useState(null);
 
     const userContext = useContext(UserContext);
     const { cartData, setCartData } = useContext(CartContext);
@@ -26,6 +27,7 @@ function ConfirmOrder() {
             }
         }
     }, [userContext.login, confirmOrder]);
+    
 
     // Dodawanie produktów do Zamówienia (orderitems)
     function orderItems(orderId) {
@@ -42,11 +44,19 @@ function ConfirmOrder() {
                 formData.append('usd_price', cart.product.usd_price);
                 formData.append('eur_price', cart.product.eur_price);
 
+                console.log(orderId)
+                console.log(cart.product.id)
+                console.log(cart.product.price)
+                console.log(cart.product.usd_price)
+                console.log(cart.product.eur_price)
+              
+
                 axios.post(baseUrl + '/orderitems/', formData)
                     .then(function(response) {
                         cartJson.splice(index, cartData.length);
                         localStorage.setItem('cartData', JSON.stringify(cartJson));
                         setCartData(cartJson);
+                        console.log('usunęło z koszyka')
                     })
                     .catch(function(error) {
                         console.log(error);
@@ -56,7 +66,12 @@ function ConfirmOrder() {
     }
 
     function addOrderInTable() {
+        if (orderId && !confirmOrder) {
+            return;
+        }
+
         const customerId = localStorage.getItem('customer_id');
+        console.log(customerId)
 
         // Ustawienie cen w różnych walutach
         var totalAmount = 0;
@@ -75,6 +90,10 @@ function ConfirmOrder() {
         totalAmount = totalAmount.toFixed(2);
         totalUsdAmount = totalUsdAmount.toFixed(2);
         totalEurAmount = totalEurAmount.toFixed(2);
+        console.log(totalAmount)
+        console.log(totalUsdAmount)
+        console.log(totalEurAmount)
+
 
         // Dodanie Customer ID i wartości cen do formData
         const formData = new FormData();
@@ -85,75 +104,84 @@ function ConfirmOrder() {
 
         // Dodanie do zamówionych
         axios.post(baseUrl + '/orders/', formData)
-            .then(function(response) {
-                setOrderId(response.data.id);
+        .then(function(response) {
+            setOrderId(response.data.id);
 
-                // Ustawienie całkowitej ceny zamówienia w zależności od waluty
-                if (CurrencyData === 'USD') {
-                    setOrderAmount(response.data.total_usd_amount);
-                } else if (CurrencyData === 'EUR') {
-                    setOrderAmount(response.data.total_eur_amount);
-                } else {
-                    setOrderAmount(response.data.total_amount);
-                }
+            
+            setOrderAmount(response.data.total_usd_amount);
+           
 
-                // Dodanie produktów do zamówienia
-                orderItems(response.data.id);
+            orderItems(response.data.id);
 
-                setConfirmOrder(true);
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
+            setConfirmOrder(true);
+        })
+        .catch(function(error) {
+            console.log(error);
+            setPaymentError("There was an error processing the payment. Please try again.");
+        });
     }
 
     function updateOrderStatus() {
+        // Sprawdź, czy zamówienie zostało już zatwierdzone
+        if (!confirmOrder) {
+            return;
+        }
+
         axios.post(baseUrl + '/update-order-status/' + orderId)
             .then(function(response) {
                 window.location.href = '/order/success';
             })
             .catch(function(error) {
+                console.log(error);
                 window.location.href = '/order/failure';
             });
     }
+
 
     return (
         <div className='container'>
             <div className='row mt-5'>
                 <div className='col-6 offset-3'>
                     <div className='card py-3 text-center'>
-                        <h3><i className="fa fa-check-circle text-success"></i>Your Order has been confirmed</h3>
-                        <h5>ORDER ID: {orderId}</h5>
-                        <h5>Price: {orderAmount}</h5>
+                        {paymentError ? (
+                            <h3>Error Processing Payment</h3>
+                        ) : (
+                            <>
+                                <h3><i className="fa fa-check-circle text-success"></i>Your Order has been confirmed</h3>
+                                <h5>ORDER ID: {orderId}</h5>
+                                <h5>Price: {orderAmount} $</h5>
+                            </>
+                        )}
                     </div>
                     <div className='card p-3 mt-4'>
-                        <PayPalScriptProvider options={{ "client-id": "AbaaQ1EeoO_JeUq_Yu5ZaVTbfVvaYceYVpPndM6PXmaxVrY4c0r9U6KdQrLvvDO7GbQmKPzIFHLwDqja" }}>
-                            <PayPalButtons className='mt-3'
-                                createOrder={(data, actions) => {
-                                    return actions.order.create({
-                                        purchase_units: [
-                                            {
-                                                amount: {
-                                                    currency_code: 'USD',
-                                                    value: orderAmount,
+                        {orderAmount>0&&
+                            <PayPalScriptProvider options={{ "client-id": "AbaaQ1EeoO_JeUq_Yu5ZaVTbfVvaYceYVpPndM6PXmaxVrY4c0r9U6KdQrLvvDO7GbQmKPzIFHLwDqja" }}>
+                                <PayPalButtons className='mt-3'
+                                    createOrder={(data, actions) => {
+                                        return actions.order.create({
+                                            purchase_units: [
+                                                {
+                                                    amount: {
+                                                        currency_code: 'USD',
+                                                        value: orderAmount,
+                                                    },
                                                 },
-                                            },
-                                        ],
-                                    });
-                                }}
-                                onApprove={(data, actions) => {
-                                    return actions.order.capture().then((details) => {
-                                        const name = details.payer.name.given_name;
-                                        updateOrderStatus();
-                                    });
-                                }}
-                            />
-                        </PayPalScriptProvider>
+                                            ],
+                                        });
+                                    }}
+                                    onApprove={(data, actions) => {
+                                        return actions.order.capture().then((details) => {
+                                            const name = details.payer.name.given_name;
+                                            updateOrderStatus();
+                                        });
+                                    }}
+                                />
+                            </PayPalScriptProvider>}
                     </div>
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default ConfirmOrder;

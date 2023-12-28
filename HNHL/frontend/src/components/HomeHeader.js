@@ -158,25 +158,15 @@ function HomeHeader(props){
                                 </>
                                 )}
 
-                            {!checkVendor && (
+                            {(!checkVendor && userContext.login == 'true') && (
                             <>
-    
-                            <li className="nav-item">
-                            {userContext.login == 'true' && (
-                                <>
-                                    <Link className="nav-link" aria-current="page" to="/checkout">
-                                        My Cart ({cartItems})
-                                    </Link>
-                                </>
-                            )}
-
-                            {userContext.login !== 'true' && (
-                                <>
-                                    <Link className="nav-link" aria-current="page" to="/customer/login">
-                                        My Cart ({cartItems})
-                                    </Link>
-                                </>)}
-                            </li>
+                                <li className="nav-item">
+                                    <>
+                                        <Link className="nav-link" aria-current="page" to="/checkout">
+                                            My Cart ({cartItems})
+                                        </Link>
+                                    </>
+                                </li>
                             </>
                             )}
 

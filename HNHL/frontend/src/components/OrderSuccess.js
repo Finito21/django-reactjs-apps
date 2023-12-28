@@ -9,7 +9,7 @@ function OrderSuccess(){
                     <div className='card'>
                         <div className='card-body text-center'>
                             <p><i className='fa fa-check-circle text-success fa-3x'></i></p>
-                            <h3 className='text-success'>Thanks for the Ordes</h3>
+                            <h3 className='text-success'>Thanks for the Order</h3>
                             <p className='mt-4'>
                                 <Link to='/' className='btn btn-primary'>Home</Link>
                                 <Link to='/customer/dashboard' className='btn btn-secondary ms-2'>Dashboard</Link>

@@ -58,11 +58,22 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super(ProductDetailSerializer,self).__init__(*args, **kwargs)
         #self.Meta.depth = 1
+        
+class CustomerAddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=models.CustomerAddress
+        fields=['id','customer','address','default_address']
+
+    def __init__(self, *args, **kwargs):
+        super(CustomerAddressSerializer,self).__init__(*args, **kwargs)
+
 
 class CustomerSerializer(serializers.ModelSerializer):
+    customer_addresses = CustomerAddressSerializer(many=True, read_only=True)
+
     class Meta:
-        model=models.Customer
-        fields=['id','user','mobile']
+        model = models.Customer
+        fields = ['id', 'user', 'mobile', 'customer_addresses']
 
     def __init__(self, *args, **kwargs):
         super(CustomerSerializer,self).__init__(*args, **kwargs)
@@ -107,19 +118,21 @@ class OrderDetailSerializer(serializers.ModelSerializer):
         super(OrderDetailSerializer,self).__init__(*args, **kwargs)
         self.Meta.depth = 1
 
-class OrderItemSerializer(serializers.ModelSerializer):
-    # order=OrderDetailSerializer()
-    # product=ProductDetailSerializer()
-    class Meta:
-        model=models.OrderItems
-        fields=['id','order','product','qty','price','usd_price','eur_price']
 
-    def to_representation(self,instance):
-        response=super().to_representation(instance) 
-        response['order']=OrderSerializer(instance.order).data
-        response['customer']=CustomerSerializer(instance.order.customer).data
-        response['user']=UserSerializer(instance.order.customer.user).data
-        response['product']=ProductDetailSerializer(instance.product).data
+
+class OrderItemSerializer(serializers.ModelSerializer):
+    customer_address = CustomerAddressSerializer(source='order.customer.customer_addresses.filter(default_address=True).first()', read_only=True)
+
+    class Meta:
+        model = models.OrderItems
+        fields = ['id', 'order', 'product', 'qty', 'price', 'usd_price', 'eur_price', 'customer_address']
+
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        response['order'] = OrderSerializer(instance.order).data
+        response['customer'] = CustomerSerializer(instance.order.customer).data
+        response['user'] = UserSerializer(instance.order.customer.user).data
+        response['product'] = ProductDetailSerializer(instance.product).data
         return response
     
 
@@ -130,13 +143,7 @@ class OrdersSerializer(serializers.ModelSerializer):
         fields=['id','order','product','qty','price','usd_price','eur_price']
 
 
-class CustomerAddressSerializer(serializers.ModelSerializer):
-    class Meta:
-        model=models.CustomerAddress
-        fields=['id','customer','address','default_address']
 
-    def __init__(self, *args, **kwargs):
-        super(CustomerAddressSerializer,self).__init__(*args, **kwargs)
 
 class ProductRatingSerializer(serializers.ModelSerializer):
     class Meta:

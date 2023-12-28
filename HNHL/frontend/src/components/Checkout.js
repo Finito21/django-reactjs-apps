@@ -5,11 +5,14 @@ import { CartContext,CurrencyContext } from '../Context';
 import axios from 'axios';
 
 function Checkout(props){
+    
     const baseUrl='http://127.0.0.1:8000/api';
     const {cartData,setCartData}=useContext(CartContext);
     const [cartButtonClickStatus,setcartButtonClickStatus]=useState(false);
     const [productData,setproductData]=useState([]);
     const {CurrencyData}=useContext(CurrencyContext);
+    console.log(cartData)
+    console.log(CartContext)
 
     if(cartData==null || cartData.length==0){
         var cartItems=0;

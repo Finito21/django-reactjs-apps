@@ -28,9 +28,11 @@ function VendorProducts(props){
             fetch(baseUrl+'product/'+product_id,{
                 method:'DELETE'
             })
-            .then((response)=> {
-                if(response.status==204){
-                    fetchData(baseUrl+'products/')
+            .then((response) => {
+                if (response.status === 204) {
+                    fetchData(baseUrl + 'products/');
+                    // Reload the current window after deletion
+                    window.location.reload();
                 }
             });
         }
@@ -58,7 +60,6 @@ function VendorProducts(props){
                                                 <th scope="col">PLN price</th>
                                                 <th scope="col">USD price</th>
                                                 <th scope="col">EUR price</th>
-                                                <th scope="col">Status</th>
                                                 <th scope="col">Actions</th>
                                             </tr>
                                         </thead>
@@ -76,20 +77,13 @@ function VendorProducts(props){
                                             <td class="align-middle">{product.price} zł</td>
                                             <td class="align-middle">{product.usd_price} $</td>
                                             <td class="align-middle">{product.eur_price} €</td>
-                                            <td class="align-middle">
-                                                {
-                                                    !product.publish_status && 'Pending'
-                                                }
-                                                {
-                                                    product.publish_status && <span class='text-success'>Published</span>
-                                                }
-                                            </td>
+                                            
                                             <td class="align-middle">
                                                 <th>
                                                 <Link to={`/vendor/update-product/${product.id}`} className='btn btn-primary ms-1'>Edit</Link>
                                                 </th>
                                                 <th>
-                                                <Link to={'/vendor/products/'} className='btn btn-danger ms-1' onClick={()=>showConfirm(product.id)}>Delete</Link>
+                                                <Link className='btn btn-danger ms-1' onClick={()=>showConfirm(product.id)}>Delete</Link>
                                                 </th>
                                             </td>
                                             </tr>)

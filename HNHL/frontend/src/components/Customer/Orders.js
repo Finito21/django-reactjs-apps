@@ -43,16 +43,23 @@ function Orders(){
                             <table class="table">
                                 <thead>
                                 <tr>
+                                    
                                     <th scope="col" class="h5">Your Orders</th>
                                     <th scope="col">Product</th>
                                     <th scope="col">Price</th>
-                                    <th scope="col">Status</th>
+                                    <th scope="col">Paid</th>
+                                    <th scope="col">Order ID</th>
+                                    
                                 </tr>
                                 </thead>
                                 <tbody>
+                                    
                                 {
                                 OrderItems.map((item,index)=>{
                                     return<tr>
+
+                                    
+                                        
                                     <th scope="row">
                                     <div class="d-flex align-items-center">
                                     <Link to={`/product/${item.product.slug}/${item.product.id}`}>
@@ -89,6 +96,11 @@ function Orders(){
                                                             }
                                                         </span>
                                     </td>
+
+                                    <td class="align-middle">
+                                        {item.order.id}
+                                    </td>
+                                    
                                 </tr>
                                 })}
 

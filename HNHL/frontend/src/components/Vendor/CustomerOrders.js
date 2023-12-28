@@ -1,24 +1,27 @@
 
 import VendorSidebar from './VendorSidebar';
 import logo from '../../logo.svg';
-import {Link} from 'react-router-dom';
+import {Link,useParams} from 'react-router-dom';
 import { useState,useEffect } from 'react';
 const baseUrl='http://127.0.0.1:8000/api/';
 
 function CustomerOrders(){
-    const vendor_id=localStorage.getItem('vendor_id');
-    const [OrderItems,setOrderItems]=useState([]);
+    
+    const vendor_id = localStorage.getItem('vendor_id');
+    const { customer_id, order_id } = useParams();  // Dodaj order_id do hooka
+    const [OrderItems, setOrderItems] = useState([]);
+    console.log('test')
 
     useEffect(() => {
-        fetchData(baseUrl+'vendor/'+vendor_id+'/orderitems/');
-    },[]);
+        fetchData(`${baseUrl}vendor/${vendor_id}/customer/${customer_id}/orderitems/${order_id}`);
+    }, [customer_id, order_id]);
 
-    function fetchData(baseurl){
+    function fetchData(baseurl) {
         fetch(baseurl)
-        .then((response) => response.json())
-        .then((data) => {
-            setOrderItems(data.results);
-        });
+            .then((response) => response.json())
+            .then((data) => {
+                setOrderItems(data.results);
+            });
     }
 
     function showConfirm(order_id){

@@ -304,6 +304,11 @@ class VendorOrderItemList(generics.ListAPIView):
         qs = qs.filter(product__vendor__id=vendor_id)
         return qs
     
+class VendorOrderItemDetails(generics.RetrieveAPIView):
+    queryset = models.OrderItems.objects.all()
+    serializer_class = serializers.OrderItemSerializer
+    
+  
 class VendorCustomerList(generics.ListAPIView):
     queryset = models.OrderItems.objects.all()
     serializer_class = serializers.OrderItemSerializer
@@ -315,15 +320,13 @@ class VendorCustomerList(generics.ListAPIView):
         return qs
     
 class VendorCustomerOrderItemList(generics.ListAPIView):
-    queryset = models.OrderItems.objects.all()
     serializer_class = serializers.OrderItemSerializer
 
     def get_queryset(self):
-        qs = super().get_queryset()
         vendor_id = self.kwargs['vendor_id']
         customer_id = self.kwargs['customer_id']
-        qs = qs.filter(order__customer__id=customer_id,product__vendor__id=vendor_id)
-        return qs
+        order_id = self.kwargs['order_id']  # Dodaj tę linijkę
+        return models.OrderItems.objects.filter(order__id=order_id, product__vendor__id=vendor_id, order__customer__id=customer_id)
 
 class OrderDetail(generics.ListAPIView):
     serializer_class = serializers.OrderDetailSerializer

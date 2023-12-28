@@ -88,7 +88,7 @@ function UpdateProduct(){
             if (response.status==200) {
                 
                 setErrorMsg('');
-                setSuccessMsg(response.statusText);
+                setSuccessMsg('Product updated successfully! ');
 
                 if(IsMultipleProductImagesSelected){
                     for(let i=0;i < ProductImgs.length;i++){
@@ -108,7 +108,7 @@ function UpdateProduct(){
                 
             } else {
                 setSuccessMsg('');
-                setErrorMsg(response.statusText);
+                setErrorMsg('Product did not updated successfully!');
             }
         })
         .catch(function (error) {

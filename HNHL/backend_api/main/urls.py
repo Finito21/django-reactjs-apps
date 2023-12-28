@@ -20,8 +20,9 @@ urlpatterns= [
     path('vendor/register/', views.vendor_register,name='vendor_register'),
     path('vendor/<int:pk>/orderitems/', views.VendorOrderItemList.as_view()),
     path('vendor/<int:pk>/customers/', views.VendorCustomerList.as_view()),
-    path('vendor/<int:vendor_id>/customer/<int:customer_id>/orderitems/', views.VendorCustomerOrderItemList.as_view()),
     path('vendor/<int:pk>/daily-report/', views.VendorDailyReport.as_view()),
+     path('vendor/<int:vendor_id>/orderitem/<int:pk>/', views.VendorOrderItemDetails.as_view(), name='vendor-orderitem-details'),
+     path('vendor/<int:vendor_id>/customer/<int:customer_id>/orderitems/<int:order_id>/', views.VendorCustomerOrderItemList.as_view(), name='vendor-customer-orderitem-list'),
 
 
     # Product URLS

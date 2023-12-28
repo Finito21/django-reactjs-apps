@@ -19,6 +19,7 @@ function Customers(){
         .then((response) => response.json())
         .then((data) => {
             setCustomerList(data.results);
+            console.log(data.results)
         });
     }
      function showConfirm(customer_id){
@@ -50,6 +51,7 @@ function Customers(){
                                         <tr>
                                         
                                             <th scope="col">Name</th>
+                                            <th scope="col">address</th>
                                             <th scope="col">Email</th>
                                             <th scope="col">Mobile</th>
                                             <th scope="col">Action</th>
@@ -57,18 +59,24 @@ function Customers(){
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        
                                         {
                                             CustomerList.map((item,index)=><tr>
                                             
                                             <td class="align-middle">
                                                 {item.user.username}
                                             </td>
+                                            <td class="align-middle">
+                                                {item.customer.customer_addresses.map(address => address.default_address ? address.address : null)}
+                                            </td>
+                                            
+                                            
                                             <td class="align-middle"> {item.user.email}</td>
                                             <td class="align-middle">{item.customer.mobile}</td>
                                 
                                             <td class="align-middle">
                                             <th>
-                                                <Link to={`/vendor/customer/${item.customer.id}/orderitems`} className='btn btn-primary btn-sm'>Orders</Link>
+                                                <Link to={`/vendor/${item.product.vendor}/customer/${item.customer.id}/orderitems/${item.order.id}`} className='btn btn-primary btn-sm'>Orders</Link>
                                             </th>
                                             <th>
                                                 <button onClick={()=>showConfirm(item.customer.id)} className='btn btn-danger btn-sm ms-1'>Remove</button>

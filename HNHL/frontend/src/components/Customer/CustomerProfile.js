@@ -6,6 +6,7 @@ import '../../CurrencySwitcher.css';
 const baseUrl='http://127.0.0.1:8000/api';
 
 function CustomerProfile(){
+    const [SuccessMsg,setSuccessMsg]=useState('');
     
     const [ProfileData,setProfileData]= useState({
         'user_id':'',
@@ -67,6 +68,7 @@ function CustomerProfile(){
         })
         .then(function (response) {
             console.log(response);
+            setSuccessMsg('Profile updated successfully!');
         })
         .catch(function (error) {
             console.log(error);
@@ -80,6 +82,7 @@ function CustomerProfile(){
         axios.put(baseUrl + '/user/'+ProfileData.user_id+'/', formUserData)
         .then(function (response) {
             console.log(response)
+            setSuccessMsg('Profile updated successfully!');
         })
         .catch(function (error) {
             console.log(error);
@@ -97,6 +100,7 @@ function CustomerProfile(){
                         <div className='card'>
                             <h4 className='card-header'>Update profile</h4>
                             <div className='card-body'>
+                            {SuccessMsg && <p className="text-success">{SuccessMsg}</p>}
                                 <form>
                                     <div className='mb-3'>
                                         <label for="firstName" className='form-label'>First Name</label>

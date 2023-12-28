@@ -121,7 +121,9 @@ function App() {
         <Route path='/vendor/orders' element={<VendorOrders/>}/>
 
         <Route path='/vendor/customers' element={<Customers/>}/>
-        <Route path='/vendor/customer/:customer_id/orderitems' element={<CustomerOrders/>}/>
+        <Route path='/vendor/:vendor_id/customer/:customer_id/orderitems/:order_id' element={<CustomerOrders/>}/>
+        
+        
         <Route path='/vendor/reports' element={<Reports/>}/>
         <Route path='/vendor/vendor-profile' element={<VendorProfile/>}/>
         <Route path='/vendor/change-vendor-password' element={<ChangeVendorPassword/>}/>
