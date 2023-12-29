@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('main', '0012_product_image_product_tags_productimage'),
+        ("main", "0012_product_image_product_tags_productimage"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='customer',
-            name='mobile',
+            model_name="customer",
+            name="mobile",
             field=models.PositiveBigIntegerField(unique=True),
         ),
     ]

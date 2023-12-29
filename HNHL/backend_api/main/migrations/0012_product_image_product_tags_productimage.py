@@ -5,28 +5,42 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('main', '0011_product_slug'),
+        ("main", "0011_product_slug"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='product',
-            name='image',
-            field=models.ImageField(null=True, upload_to='product_imgs/'),
+            model_name="product",
+            name="image",
+            field=models.ImageField(null=True, upload_to="product_imgs/"),
         ),
         migrations.AddField(
-            model_name='product',
-            name='tags',
+            model_name="product",
+            name="tags",
             field=models.TextField(null=True),
         ),
         migrations.CreateModel(
-            name='ProductImage',
+            name="ProductImage",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('image', models.ImageField(null=True, upload_to='product_imgs/')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='product_imgs', to='main.product')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("image", models.ImageField(null=True, upload_to="product_imgs/")),
+                (
+                    "product",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="product_imgs",
+                        to="main.product",
+                    ),
+                ),
             ],
         ),
     ]

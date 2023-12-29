@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('main', '0028_vendor_mobile_vendor_profile_img'),
+        ("main", "0028_vendor_mobile_vendor_profile_img"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='product',
-            name='publish_status',
+            model_name="product",
+            name="publish_status",
             field=models.BooleanField(default=False),
         ),
     ]

@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('main', '0031_remove_product_purchase_count'),
+        ("main", "0031_remove_product_purchase_count"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='productcategory',
-            name='category_img',
-            field=models.ImageField(null=True, upload_to='category_imgs/'),
+            model_name="productcategory",
+            name="category_img",
+            field=models.ImageField(null=True, upload_to="category_imgs/"),
         ),
     ]

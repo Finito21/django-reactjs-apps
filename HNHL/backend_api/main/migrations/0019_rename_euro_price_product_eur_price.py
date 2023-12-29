@@ -4,15 +4,14 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('main', '0018_remove_orderitems_usd_price_product_euro_price'),
+        ("main", "0018_remove_orderitems_usd_price_product_euro_price"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='product',
-            old_name='euro_price',
-            new_name='eur_price',
+            model_name="product",
+            old_name="euro_price",
+            new_name="eur_price",
         ),
     ]

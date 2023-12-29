@@ -1,19 +1,18 @@
-import React from 'react';
-import {BrowserRouter as Router} from 'react-router-dom';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import {UserContext} from './Context';
+import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { UserContext } from "./Context";
 
-
-const checkCustomer=localStorage.getItem('customer_login');
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const checkCustomer = localStorage.getItem("customer_login");
+const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <>
     <Router>
-      <UserContext.Provider value={{'login':checkCustomer}}>
+      <UserContext.Provider value={{ login: checkCustomer }}>
         <App />
       </UserContext.Provider>
     </Router>

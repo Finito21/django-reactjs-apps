@@ -4,18 +4,17 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('main', '0025_alter_productcategory_options'),
+        ("main", "0025_alter_productcategory_options"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='customeraddress',
-            options={'verbose_name_plural': 'Customer Addresses'},
+            name="customeraddress",
+            options={"verbose_name_plural": "Customer Addresses"},
         ),
         migrations.AlterModelOptions(
-            name='orderitems',
-            options={'verbose_name_plural': 'Order Items'},
+            name="orderitems",
+            options={"verbose_name_plural": "Order Items"},
         ),
     ]

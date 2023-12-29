@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('main', '0026_alter_customeraddress_options_and_more'),
+        ("main", "0026_alter_customeraddress_options_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='customer',
-            name='profile_img',
-            field=models.ImageField(null=True, upload_to='customer_imgs/'),
+            model_name="customer",
+            name="profile_img",
+            field=models.ImageField(null=True, upload_to="customer_imgs/"),
         ),
     ]

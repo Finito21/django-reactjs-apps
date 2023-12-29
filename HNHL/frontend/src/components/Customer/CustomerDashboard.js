@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import CustomerSidebar from './CustomerSidebar';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import CustomerSidebar from "./CustomerSidebar";
 
 function CustomerDashboard(props) {
-  const baseUrl = 'http://127.0.0.1:8000/api';
-  const customerId = localStorage.getItem('customer_id');
+  const baseUrl = "http://127.0.0.1:8000/api";
+  const customerId = localStorage.getItem("customer_id");
 
   const [countList, setCountList] = useState({
     totalOrders: 0,
@@ -29,16 +29,16 @@ function CustomerDashboard(props) {
   }
 
   return (
-    <div className='container mt-4'>
-      <div className='row'>
-        <div className='col-md-3 col-12 mb-2'>
+    <div className="container mt-4">
+      <div className="row">
+        <div className="col-md-3 col-12 mb-2">
           <CustomerSidebar />
         </div>
-        <div className='col-md-9 col-12 mb-2'>
-          <div className='row'>
-            <div className='col-md-4 mb-2'>
-              <div className='card' style={{ height: '100%' }}>
-                <div className='card-body text-center'>
+        <div className="col-md-9 col-12 mb-2">
+          <div className="row">
+            <div className="col-md-4 mb-2">
+              <div className="card" style={{ height: "100%" }}>
+                <div className="card-body text-center">
                   <h4>Total</h4>
                   <h5>Orders</h5>
                   <h4>
@@ -47,24 +47,28 @@ function CustomerDashboard(props) {
                 </div>
               </div>
             </div>
-            <div className='col-md-4 mb-2'>
-              <div className='card' style={{ height: '100%' }}>
-                <div className='card-body text-center'>
+            <div className="col-md-4 mb-2">
+              <div className="card" style={{ height: "100%" }}>
+                <div className="card-body text-center">
                   <h4>Total</h4>
                   <h5>Wishlist</h5>
                   <h4>
-                    <Link to="/customer/wishlist">{countList.totalWishList}</Link>
+                    <Link to="/customer/wishlist">
+                      {countList.totalWishList}
+                    </Link>
                   </h4>
                 </div>
               </div>
             </div>
-            <div className='col-md-4 mb-2'>
-              <div className='card' style={{ height: '100%' }}>
-                <div className='card-body text-center'>
+            <div className="col-md-4 mb-2">
+              <div className="card" style={{ height: "100%" }}>
+                <div className="card-body text-center">
                   <h4>Total</h4>
                   <h5>Addresses</h5>
                   <h4>
-                    <Link to="/customer/addresses">{countList.totalAddress}</Link>
+                    <Link to="/customer/addresses">
+                      {countList.totalAddress}
+                    </Link>
                   </h4>
                 </div>
               </div>

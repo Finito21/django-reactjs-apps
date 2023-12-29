@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('main', '0021_order_total_amount'),
+        ("main", "0021_order_total_amount"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order',
-            name='total_eur_amount',
+            model_name="order",
+            name="total_eur_amount",
             field=models.DecimalField(decimal_places=2, default=0, max_digits=10),
         ),
         migrations.AddField(
-            model_name='order',
-            name='total_usd_amount',
+            model_name="order",
+            name="total_usd_amount",
             field=models.DecimalField(decimal_places=2, default=0, max_digits=10),
         ),
     ]

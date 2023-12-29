@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('main', '0032_productcategory_category_img'),
+        ("main", "0032_productcategory_category_img"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='order',
-            name='order_status',
+            model_name="order",
+            name="order_status",
             field=models.BooleanField(default=False),
         ),
     ]

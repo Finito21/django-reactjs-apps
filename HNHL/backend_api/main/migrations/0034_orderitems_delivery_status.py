@@ -4,15 +4,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('main', '0033_order_status'),
+        ("main", "0033_order_status"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='orderitems',
-            name='delivery_status',
-            field=models.CharField(choices=[('processing', 'Processing'), ('preparation', 'Preparation'), ('sent', 'Sent'), ('delivered', 'Delivered')], default='processing', max_length=20),
+            model_name="orderitems",
+            name="delivery_status",
+            field=models.CharField(
+                choices=[
+                    ("processing", "Processing"),
+                    ("preparation", "Preparation"),
+                    ("sent", "Sent"),
+                    ("delivered", "Delivered"),
+                ],
+                default="processing",
+                max_length=20,
+            ),
         ),
     ]

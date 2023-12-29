@@ -4,14 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('main', '0024_alter_wishlist_options'),
+        ("main", "0024_alter_wishlist_options"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='productcategory',
-            options={'verbose_name_plural': 'Product Categories'},
+            name="productcategory",
+            options={"verbose_name_plural": "Product Categories"},
         ),
     ]

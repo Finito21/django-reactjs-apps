@@ -4,14 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('main', '0023_wishlist'),
+        ("main", "0023_wishlist"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='wishlist',
-            options={'verbose_name_plural': 'Wish List'},
+            name="wishlist",
+            options={"verbose_name_plural": "Wish List"},
         ),
     ]

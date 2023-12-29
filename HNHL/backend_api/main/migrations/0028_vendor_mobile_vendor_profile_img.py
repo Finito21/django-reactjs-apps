@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('main', '0027_customer_profile_img'),
+        ("main", "0027_customer_profile_img"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='vendor',
-            name='mobile',
+            model_name="vendor",
+            name="mobile",
             field=models.PositiveBigIntegerField(null=True, unique=True),
         ),
         migrations.AddField(
-            model_name='vendor',
-            name='profile_img',
-            field=models.ImageField(null=True, upload_to='vendor_imgs/'),
+            model_name="vendor",
+            name="profile_img",
+            field=models.ImageField(null=True, upload_to="vendor_imgs/"),
         ),
     ]
