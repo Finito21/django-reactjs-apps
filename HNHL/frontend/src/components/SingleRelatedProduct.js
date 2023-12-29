@@ -110,7 +110,7 @@ function SingleRelatedProduct(props) {
             src={props.product.image}
             className="card-img-top"
             alt="..."
-            style={{ cursor: "pointer" }}
+            style={{ height: "300px", width: "100%", objectFit: "contain" }}
           />
         </div>
         <div className="card-body">

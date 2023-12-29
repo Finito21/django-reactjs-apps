@@ -14,6 +14,7 @@ function Header(props) {
 
   // Calculate the number of items in the cart
   var cartItems = cartData ? cartData.length : 0;
+  console.log(cartData);
 
   // Function to handle currency change
   const changeCurrency = (e) => {

@@ -52,7 +52,9 @@ import YearlyReport from "./components/Vendor/YearlyReport";
 
 import { CartContext, CurrencyContext } from "./Context";
 import { useState } from "react";
-const checkCart = localStorage.getItem("cartData");
+const customerId = localStorage.getItem("customer_id");
+
+const checkCart = localStorage.getItem(`cartData_${customerId}`);
 
 const currentCurrency = localStorage.getItem("currency");
 

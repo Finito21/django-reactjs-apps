@@ -8,6 +8,7 @@ const baseUrl = "http://127.0.0.1:8000/api/";
 function Customers() {
   // Retrieve vendor_id from local storage
   const vendor_id = localStorage.getItem("vendor_id");
+  console.log(vendor_id);
 
   // State variable to store the list of unique customers
   const [customerList, setCustomerList] = useState([]);

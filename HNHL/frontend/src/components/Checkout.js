@@ -66,30 +66,12 @@ function Checkout(props) {
 
     axios
       .post(
-        baseUrl + "/mark-default-address/" + parseInt(address_id) + "/",
+        baseUrl + "/mark-default-address/" + parseInt(customer_id) + "/",
         formData
       )
       .then(function (response) {
         if (response.data.bool == true) {
-          window.location.reload();
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
-
-  function DefaultAddressHandler(address_id) {
-    const formData = new FormData();
-    formData.append("address_id", address_id);
-
-    axios
-      .post(
-        baseUrl + "/mark-default-address/" + parseInt(address_id) + "/",
-        formData
-      )
-      .then(function (response) {
-        if (response.data.bool == true) {
+          // Reload the page after successfully marking the default address
           window.location.reload();
         }
       })

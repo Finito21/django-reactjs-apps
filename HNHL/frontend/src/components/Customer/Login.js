@@ -109,7 +109,7 @@ function Login(props) {
                   onClick={submitHandler}
                   className="btn btn-primary"
                 >
-                  Submit
+                  Login
                 </button>
               </form>
             </div>

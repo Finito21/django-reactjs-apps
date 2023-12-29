@@ -202,7 +202,7 @@ function VendorRegister(props) {
                   onClick={submitHandler}
                   className="btn btn-primary"
                 >
-                  Submit
+                  Register
                 </button>
               </form>
             </div>

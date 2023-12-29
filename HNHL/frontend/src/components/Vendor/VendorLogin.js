@@ -121,7 +121,7 @@ function VendorLogin(props) {
                   onClick={submitHandler}
                   className="btn btn-primary"
                 >
-                  Submit
+                  Login
                 </button>
               </form>
             </div>
