@@ -28,11 +28,11 @@ function Checkout(props) {
   });
   sum = sum.toFixed(2);
 
-  const cartRemoveButtonHandler = (product_id) => {
+  const cartRemoveButtonHandler = (position) => {
     var previousCart = localStorage.getItem(`cartData_${customer_id}`);
     var cartJson = JSON.parse(previousCart);
     cartJson.map((cart, index) => {
-      if (cart != null && cart.product.id == product_id) {
+      if (cart != null && index == position) {
         //delete cartJson[index];
         cartJson.splice(index, 1);
       }
@@ -162,9 +162,7 @@ function Checkout(props) {
                               <button
                                 title="Remove from Cart"
                                 type="button"
-                                onClick={() =>
-                                  cartRemoveButtonHandler(item.product.id)
-                                }
+                                onClick={() => cartRemoveButtonHandler(index)}
                                 className="btn btn-warning"
                               >
                                 <i className="fa-solid fa-cart-plus"></i>Remove

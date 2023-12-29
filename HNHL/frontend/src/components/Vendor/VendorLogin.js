@@ -1,24 +1,33 @@
+// Importing necessary modules
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
+import { useNavigate } from "react-router-dom";
 import "../../switcher.css";
 
+// Component for handling vendor login
 function VendorLogin(props) {
+  // Defining the base URL for API requests
   const baseUrl = "http://127.0.0.1:8000/api/";
+
+  // State for managing login form data
   const [loginFormData, setLoginFormData] = useState({
     username: "",
     password: "",
   });
 
-  const navigate = useNavigate(); // Use useNavigate for navigation
+  // Hook for navigation in React Router
+  const navigate = useNavigate();
 
+  // Function to toggle between vendor and customer login
   const handleSwitchToggle = () => {
-    navigate("/customer/login"); // Use navigate for navigation
+    navigate("/customer/login");
   };
 
+  // States for form error and error message
   const [formError, setFormError] = useState(false);
-  const [errorMsg, seterrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
+  // Function to handle input changes in the login form
   const inputHandler = (event) => {
     setLoginFormData({
       ...loginFormData,
@@ -26,6 +35,7 @@ function VendorLogin(props) {
     });
   };
 
+  // Function to handle form submission
   const submitHandler = (event) => {
     const formData = new FormData();
     formData.append("username", loginFormData.username);
@@ -34,15 +44,20 @@ function VendorLogin(props) {
     axios
       .post(baseUrl + "vendor/login/", formData)
       .then(function (response) {
-        if (response.data.bool == false) {
+        if (response.data.bool === false) {
           setFormError(true);
-          seterrorMsg(response.data.msg);
+          setErrorMsg(response.data.msg);
         } else {
+          // Storing vendor information in local storage upon successful login
           localStorage.setItem("vendor_id", response.data.id);
           localStorage.setItem("vendor_login", true);
           localStorage.setItem("vendor_username", response.data.user);
+
+          // Resetting form error states
           setFormError(false);
-          seterrorMsg("");
+          setErrorMsg("");
+
+          // Redirecting to the vendor dashboard
           window.location.href = "/vendor/dashboard";
         }
       })
@@ -51,14 +66,17 @@ function VendorLogin(props) {
       });
   };
 
+  // Checking if the vendor is already logged in and redirecting if true
   const checkVendor = localStorage.getItem("vendor_login");
   if (checkVendor) {
     window.location.href = "/vendor/dashboard";
   }
 
+  // Enabling the submit button only if both username and password are provided
   const buttonEnable =
-    loginFormData.username != "" && loginFormData.password != "";
+    loginFormData.username !== "" && loginFormData.password !== "";
 
+  // Rendering the vendor login component
   return (
     <div className="container mt-4">
       <div className="row">
@@ -108,6 +126,7 @@ function VendorLogin(props) {
               </form>
             </div>
           </div>
+          {/* Switch button to toggle between vendor and customer login */}
           <div className="switch d-flex align-items-center justify-content-center mt-3">
             <button
               type="button"
@@ -123,4 +142,5 @@ function VendorLogin(props) {
   );
 }
 
+// Exporting the VendorLogin component as the default export
 export default VendorLogin;

@@ -1,18 +1,27 @@
+// Importing VendorSidebar component for the vendor's sidebar navigation
 import VendorSidebar from "./VendorSidebar";
+
+// Importing necessary hooks and assets for state and UI
 import { useState, useEffect } from "react";
-import logo from "../../logo.svg";
 import { Link } from "react-router-dom";
 
+// Defining the base URL for API requests
 const baseUrl = "http://127.0.0.1:8000/api/";
 
+// Functional component for displaying and managing vendor orders
 function VendorOrders() {
+  // Retrieving vendor ID from local storage
   const vendor_id = localStorage.getItem("vendor_id");
+
+  // State for storing the list of orders
   const [OrderList, setOrderList] = useState([]);
 
+  // useEffect hook to fetch order data when the component mounts
   useEffect(() => {
     fetchData(baseUrl + `vendor/${vendor_id}/orders/`);
   }, []);
 
+  // Function to fetch order data from the API
   function fetchData(baseurl) {
     fetch(baseurl)
       .then((response) => response.json())
@@ -21,29 +30,18 @@ function VendorOrders() {
         console.log(data.results);
       });
   }
-  function showConfirm(order_id) {
-    var _confirm = window.confirm("Are you sure to delete this order?");
-    if (_confirm) {
-      fetch(baseUrl + "delete-customer-order/" + order_id, {
-        method: "DELETE",
-      }).then((response) => {
-        if (response.status == 204) {
-          fetchData(baseUrl + "vendor/" + vendor_id + "/orders");
-        }
 
-        window.location.reload();
-      });
-    }
-  }
-
+  // Rendering the component with order data displayed in a table
   return (
     <div className="container mt-4">
       <div className="row">
         <div className="col-md-3 col-12 mb-2">
+          {/* Displaying the vendor sidebar */}
           <VendorSidebar></VendorSidebar>
         </div>
         <div className="col-md-9 col-12 mb-2">
           <div>
+            {/* Table to display order information */}
             <div
               className="table-responsive d-flex justify-content-center align-items-center"
               style={{ borderRadius: "10px" }}
@@ -61,8 +59,9 @@ function VendorOrders() {
                 <tbody>
                   {OrderList.map((item, index) => (
                     <tr key={index}>
+                      {/* Displaying order details */}
                       <td className="align-middle">{item.id}</td>
-                      <td class="align-middle">
+                      <td className="align-middle">
                         {item.customer.customer_addresses.map((address) =>
                           address.default_address ? address.address : null
                         )}
@@ -71,6 +70,7 @@ function VendorOrders() {
                         {item.customer.user.email}
                       </td>
                       <td className="align-middle">{item.customer.mobile}</td>
+                      {/* Link to navigate to order details */}
                       <td className="align-middle">
                         <th>
                           <Link
@@ -93,4 +93,5 @@ function VendorOrders() {
   );
 }
 
+// Exporting the VendorOrders component as the default export
 export default VendorOrders;

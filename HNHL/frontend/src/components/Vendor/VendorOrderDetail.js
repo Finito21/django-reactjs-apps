@@ -1,22 +1,31 @@
+// VendorOrderDetail.js
 import VendorSidebar from "./VendorSidebar";
-import logo from "../../logo.svg";
 import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+
 const baseUrl = "http://127.0.0.1:8000/api/";
 
-function CustomerOrders() {
+function VendorOrderDetail() {
+  // Define the base URL for image links
   const url = "http://127.0.0.1:8000";
-  const vendor_id = localStorage.getItem("vendor_id");
-  const { customer_id, order_id } = useParams(); // Dodaj order_id do hooka
-  const [OrderItems, setOrderItems] = useState([]);
-  console.log("test");
 
+  // Retrieve vendor_id from local storage
+  const vendor_id = localStorage.getItem("vendor_id");
+
+  // Retrieve customer_id and order_id from route parameters
+  const { customer_id, order_id } = useParams();
+
+  // State variable to store the order items
+  const [OrderItems, setOrderItems] = useState([]);
+
+  // Fetch order items data on component mount or when customer_id and order_id change
   useEffect(() => {
     fetchData(
       `${baseUrl}vendor/${vendor_id}/customer/${customer_id}/orderitems/${order_id}`
     );
   }, [customer_id, order_id]);
 
+  // Function to fetch order items data from the API
   function fetchData(baseurl) {
     fetch(baseurl)
       .then((response) => response.json())
@@ -25,21 +34,22 @@ function CustomerOrders() {
       });
   }
 
+  // Function to confirm and delete an order
   function showConfirm(order_id) {
     var _confirm = window.confirm("Are you sure to delete this order?");
     if (_confirm) {
       fetch(baseUrl + "delete-customer-orders/" + order_id, {
         method: "DELETE",
       }).then((response) => {
-        if (response.status == 204) {
-          fetchData(baseUrl + "vendor/customer/" + customer_id + "/");
+        if (response.status === 204) {
+          fetchData(baseUrl + `vendor/customer/${customer_id}/`);
         }
       });
     }
   }
 
+  // Function to change the delivery status of an order item
   function changeDeliveryStatus(order_item_id, status) {
-    console.log("weszło");
     fetch(baseUrl + "order-modify/" + order_item_id + "/", {
       method: "PATCH",
       headers: {
@@ -48,17 +58,19 @@ function CustomerOrders() {
       },
       body: JSON.stringify({ delivery_status: status }),
     }).then(function (response) {
-      if (response.status == 200) {
+      if (response.status === 200) {
         fetchData(baseUrl + "vendor/" + vendor_id + "/orderitems/");
       }
       window.location.reload();
     });
   }
 
+  // Render the component
   return (
     <div className="container mt-4">
       <div className="row">
         <div className="col-md-3 col-12 mb-2">
+          {/* Render the VendorSidebar component */}
           <VendorSidebar></VendorSidebar>
         </div>
         <div className="col-md-9 col-12 ">
@@ -80,22 +92,22 @@ function CustomerOrders() {
                 </thead>
                 <tbody>
                   {OrderItems.map((item, index) => (
-                    <tr>
-                      <td class="align-middle">{index + 1}</td>
-                      <td class="align-middle">
-                        <div class="d-flex align-items-center">
+                    <tr key={index}>
+                      <td className="align-middle">{index + 1}</td>
+                      <td className="align-middle">
+                        <div className="d-flex align-items-center">
                           <Link>
                             <img
                               src={`${url}/${item.product.image}`}
                               className="img-thumbnail"
                               width="80"
-                              alt="..."
+                              alt="Product"
                             />
                           </Link>
                         </div>
                       </td>
-                      <td class="align-middle">{item.product.title}</td>
-                      <td class="align-middle"> {item.product.price}</td>
+                      <td className="align-middle">{item.product.title}</td>
+                      <td className="align-middle"> {item.product.price}</td>
 
                       <td className="align-middle">
                         {item.delivery_status === "delivered" && (
@@ -189,4 +201,6 @@ function CustomerOrders() {
     </div>
   );
 }
-export default CustomerOrders;
+
+// Export the VendorOrderDetail component as the default export
+export default VendorOrderDetail;

@@ -1,9 +1,14 @@
+// Importing necessary dependencies from React and Axios
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// Functional component for vendor registration
 function VendorRegister(props) {
+  // Setting the base URL for API requests
   const baseUrl = "http://127.0.0.1:8000/api/";
+
+  // States for error and success messages, and form data
   const [errorMsg, seterrorMsg] = useState("");
   const [successMsg, setsuccessMsg] = useState("");
   const navigate = useNavigate();
@@ -17,16 +22,20 @@ function VendorRegister(props) {
     password: "",
   });
 
+  // Handler for input changes in the form
   const inputHandler = (event) => {
     setRegisterFormData({
       ...registerFormData,
       [event.target.name]: event.target.value,
     });
   };
+
+  // Handler for switching to the customer registration page
   const handleSwitchToggle = () => {
     navigate("/customer/register"); // Use navigate for navigation
   };
 
+  // Handler for form submission
   const submitHandler = (event) => {
     const formData = new FormData();
     formData.append("first_name", registerFormData.first_name);
@@ -62,15 +71,17 @@ function VendorRegister(props) {
       });
   };
 
+  // Checking if all required fields are filled for enabling the submit button
   const buttonEnable =
-    registerFormData.first_name != "" &&
-    registerFormData.last_name != "" &&
-    registerFormData.username != "" &&
-    registerFormData.email != "" &&
-    registerFormData.mobile != "" &&
-    registerFormData.address != "" &&
-    registerFormData.password != "";
+    registerFormData.first_name !== "" &&
+    registerFormData.last_name !== "" &&
+    registerFormData.username !== "" &&
+    registerFormData.email !== "" &&
+    registerFormData.mobile !== "" &&
+    registerFormData.address !== "" &&
+    registerFormData.password !== "";
 
+  // Rendering the vendor registration form
   return (
     <div className="container mt-4">
       <div className="row">
@@ -84,8 +95,10 @@ function VendorRegister(props) {
               {successMsg && <p className="text-success">{successMsg}</p>}
               {errorMsg && <p className="text-danger">{errorMsg}</p>}
               <form>
+                {/* Form fields for registration */}
+                {/* First Name */}
                 <div className="mb-3">
-                  <label for="firstName" className="form-label">
+                  <label htmlFor="firstName" className="form-label">
                     First Name
                   </label>
                   <input
@@ -97,8 +110,9 @@ function VendorRegister(props) {
                     id="firstName"
                   />
                 </div>
+                {/* Last Name */}
                 <div className="mb-3">
-                  <label for="lastName" className="form-label">
+                  <label htmlFor="lastName" className="form-label">
                     Last Name
                   </label>
                   <input
@@ -110,9 +124,9 @@ function VendorRegister(props) {
                     id="lastName"
                   />
                 </div>
-
+                {/* Username */}
                 <div className="mb-3">
-                  <label for="username" className="form-label">
+                  <label htmlFor="username" className="form-label">
                     Username
                   </label>
                   <input
@@ -124,8 +138,9 @@ function VendorRegister(props) {
                     id="username"
                   />
                 </div>
+                {/* Email */}
                 <div className="mb-3">
-                  <label for="email" className="form-label">
+                  <label htmlFor="email" className="form-label">
                     Email
                   </label>
                   <input
@@ -137,8 +152,9 @@ function VendorRegister(props) {
                     id="email"
                   />
                 </div>
+                {/* Mobile */}
                 <div className="mb-3">
-                  <label for="mobile" className="form-label">
+                  <label htmlFor="mobile" className="form-label">
                     Mobile
                   </label>
                   <input
@@ -150,23 +166,23 @@ function VendorRegister(props) {
                     id="mobile"
                   />
                 </div>
+                {/* Address */}
                 <div className="mb-3">
-                  <div className="mb-3">
-                    <label for="address" className="form-label">
-                      Address
-                    </label>
-                    <textarea
-                      onChange={inputHandler}
-                      name="address"
-                      value={registerFormData.address}
-                      className="form-control"
-                      id="address"
-                    />
-                  </div>
+                  <label htmlFor="address" className="form-label">
+                    Address
+                  </label>
+                  <textarea
+                    onChange={inputHandler}
+                    name="address"
+                    value={registerFormData.address}
+                    className="form-control"
+                    id="address"
+                  />
                 </div>
+                {/* Password */}
                 <div className="mb-3">
                   <div className="mb-3">
-                    <label for="pwd" className="form-label">
+                    <label htmlFor="pwd" className="form-label">
                       Password
                     </label>
                     <input
@@ -179,6 +195,7 @@ function VendorRegister(props) {
                     />
                   </div>
                 </div>
+                {/* Submit Button */}
                 <button
                   type="button"
                   disabled={!buttonEnable}
@@ -190,6 +207,7 @@ function VendorRegister(props) {
               </form>
             </div>
           </div>
+          {/* Switch to Customer Registration Button */}
           <div className="switch d-flex align-items-center justify-content-center mt-3">
             <button
               type="button"
@@ -204,4 +222,6 @@ function VendorRegister(props) {
     </div>
   );
 }
+
+// Exporting the VendorRegister component as the default export
 export default VendorRegister;

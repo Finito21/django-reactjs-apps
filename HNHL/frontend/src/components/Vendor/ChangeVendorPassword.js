@@ -1,16 +1,25 @@
+// ChangeVendorPassword.js
 import VendorSidebar from "./VendorSidebar";
 import { useState } from "react";
 import axios from "axios";
+
+// Define the base URL for API requests
 const baseUrl = "http://127.0.0.1:8000/api";
 
 function ChangeVendorPassword() {
+  // Retrieve vendor_id from local storage
   var vendor_id = localStorage.getItem("vendor_id");
+
+  // State to manage password input data
   const [PasswordData, setPasswordData] = useState({
     password: "",
     c_password: "",
   });
+
+  // State to manage confirmation error
   const [ConfirmError, setConfirmError] = useState(false);
 
+  // Handle input changes for password fields
   const inputHandler = (event) => {
     setPasswordData({
       ...PasswordData,
@@ -18,39 +27,48 @@ function ChangeVendorPassword() {
     });
   };
 
+  // Handle form submission
   const submitHandler = (event) => {
-    if (PasswordData.password == PasswordData.c_password) {
-      setConfirmError(false);
+    // Check if passwords match
+    if (PasswordData.password === PasswordData.c_password) {
+      setConfirmError(false); // If matched, clear the confirmation error
     } else {
-      setConfirmError(true);
+      setConfirmError(true); // If not matched, set the confirmation error
     }
+
+    // Prepare form data for API request
     const formData = new FormData();
     formData.append("password", PasswordData.password);
 
+    // Send a POST request to change the vendor's password
     axios
       .post(baseUrl + "/vendor-change-password/" + vendor_id, formData)
       .then(function (response) {
-        console.log(response);
+        console.log(response); // Log the response from the API
       })
       .catch(function (error) {
-        console.log(error);
+        console.log(error); // Log any errors that occur during the request
       });
   };
 
+  // Render the component
   return (
     <div className="container mt-4">
       <div className="row">
+        {/* VendorSidebar component for navigation */}
         <div className="col-md-3 col-12 mb-2">
           <VendorSidebar></VendorSidebar>
         </div>
 
+        {/* Main content for changing vendor password */}
         <div className="col-md-9 col-12 mb-2">
           <div className="card">
-            <h4 className="card-header">ChangePassword</h4>
+            <h4 className="card-header">Change Password</h4>
             <div className="card-body">
               <form>
+                {/* Input for new password */}
                 <div className="mb-3">
-                  <label for="pwd" className="form-label">
+                  <label htmlFor="pwd" className="form-label">
                     New Password
                   </label>
                   <input
@@ -62,8 +80,10 @@ function ChangeVendorPassword() {
                     id="pwd"
                   />
                 </div>
+
+                {/* Input for confirming new password */}
                 <div className="mb-3">
-                  <label for="cpwd" className="form-label">
+                  <label htmlFor="cpwd" className="form-label">
                     Confirm Password
                   </label>
                   <input
@@ -76,6 +96,7 @@ function ChangeVendorPassword() {
                   />
                 </div>
 
+                {/* Button to submit the form */}
                 <button
                   type="button"
                   onClick={submitHandler}
@@ -91,4 +112,6 @@ function ChangeVendorPassword() {
     </div>
   );
 }
+
+// Export the ChangeVendorPassword component as the default export
 export default ChangeVendorPassword;

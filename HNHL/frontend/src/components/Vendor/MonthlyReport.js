@@ -3,15 +3,21 @@ import { useState, useEffect } from "react";
 import Chart from "react-apexcharts";
 
 const baseUrl = "http://127.0.0.1:8000/api/";
+
 function MonthlyReport() {
+  // Retrieve vendor_id from local storage
   const vendor_id = localStorage.getItem("vendor_id");
+
+  // State variables to store dates and data for the chart
   const [Dates, setDates] = useState([]);
   const [Data, setData] = useState([]);
 
-  function fetch_monthly_orders(baseurl) {
+  // Function to fetch monthly orders data from the API
+  function fetchMonthlyOrders(baseurl) {
     fetch(baseurl)
       .then((response) => response.json())
       .then((data) => {
+        // Set the dates and data for the chart
         setDates(data.show_chart_monthly_orders.dates);
         setData(data.show_chart_monthly_orders.data);
         console.log(data.show_chart_monthly_orders.dates);
@@ -19,10 +25,12 @@ function MonthlyReport() {
       });
   }
 
+  // Fetch monthly orders data on component mount
   useEffect(() => {
-    fetch_monthly_orders(baseUrl + "vendor/" + vendor_id + "/");
+    fetchMonthlyOrders(baseUrl + "vendor/" + vendor_id + "/");
   }, []);
 
+  // Chart configuration options
   const chartOptions = {
     options: {
       chart: {
@@ -39,6 +47,8 @@ function MonthlyReport() {
       },
     ],
   };
+
+  // Chart element to be rendered
   const chartElement = (
     <Chart
       options={chartOptions.options}
@@ -48,17 +58,22 @@ function MonthlyReport() {
     />
   );
 
+  // Render the component
   return (
     <div className="container mt-4">
       <div className="row">
         <div className="col-md-3 col-12 mb-2">
+          {/* Render the VendorSidebar component */}
           <VendorSidebar></VendorSidebar>
         </div>
         <div className="col-md-9 col-12 mb-2">
+          {/* Render the chart element */}
           <div className="row">{chartElement}</div>
         </div>
       </div>
     </div>
   );
 }
+
+// Export the MonthlyReport component as the default export
 export default MonthlyReport;

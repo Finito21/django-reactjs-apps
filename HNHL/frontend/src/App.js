@@ -42,7 +42,7 @@ import VendorProducts from "./components/Vendor/VendorProducts";
 import AddProduct from "./components/Vendor/AddProduct";
 import UpdateProduct from "./components/Vendor/UpdateProduct";
 import VendorOrders from "./components/Vendor/VendorOrders";
-import CustomerOrders from "./components/Vendor/CustomerOrders";
+import VendorOrderDetail from "./components/Vendor/VendorOrderDetail";
 import Reports from "./components/Vendor/Reports";
 import VendorProfile from "./components/Vendor/VendorProfile";
 import ChangeVendorPassword from "./components/Vendor/ChangeVendorPassword";
@@ -83,33 +83,38 @@ function App() {
         )}
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/products" element={<AllProducts />} />
-          <Route path="/sellers" element={<AllSellers />} />
           <Route path="/blog" element={<Blog />} />
 
+          {/*Products */}
+          <Route path="/products" element={<AllProducts />} />
+          <Route
+            path="/product/:product_slug/:product_id"
+            element={<ProductDetail />}
+          />
+
+          {/*Categories*/}
           <Route path="/categories" element={<Categories />} />
           <Route
             path="/category/:category_slug/:category_id"
             element={<CategoryProducts />}
           />
+
+          {/*Tags*/}
           <Route path="/products/:tag" element={<TagProducts />} />
 
-          <Route
-            path="/product/:product_slug/:product_id"
-            element={<ProductDetail />}
-          />
+          {/*Sellers*/}
+          <Route path="/sellers" element={<AllSellers />} />
           <Route
             path="/seller/:seller_username/:seller_id"
             element={<SellerDetail />}
           />
-          <Route path="/checkout" element={<Checkout />} />
 
+          {/*Customer*/}
           <Route path="/customer/register" element={<CustomerRegister />} />
           <Route path="/customer/login" element={<Login />} />
           <Route path="/customer/logout" element={<CustomerLogout />} />
 
           <Route path="/customer/dashboard" element={<CustomerDashboard />} />
-
           <Route path="/customer/orders" element={<Orders />} />
           <Route path="/customer/wishlist" element={<Wishlist />} />
           <Route
@@ -127,32 +132,34 @@ function App() {
             element={<UpdateAddress />}
           />
 
+          {/*Order*/}
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="/confirm-order" element={<ConfirmOrder />} />
           <Route path="/order/success" element={<OrderSuccess />} />
           <Route path="/order/failure" element={<OrderFailure />} />
 
+          {/*Vendor*/}
           <Route path="/vendor/register" element={<VendorRegister />} />
           <Route path="/vendor/login" element={<VendorLogin />} />
           <Route path="/vendor/logout" element={<VendorLogout />} />
+
           <Route path="/vendor/dashboard" element={<VendorDashbaord />} />
           <Route path="/vendor/products" element={<VendorProducts />} />
+          <Route path="/vendor/add-product" element={<AddProduct />} />
           <Route
             path="/vendor/update-product/:product_id"
             element={<UpdateProduct />}
           />
-          <Route path="/vendor/customers" element={<Customers />} />
-          <Route path="/vendor/add-product" element={<AddProduct />} />
-          <Route path="/vendor/daily-report" element={<DailyReport />} />
-          <Route path="/vendor/monthly-report" element={<MonthlyReport />} />
-          <Route path="/vendor/yearly-report" element={<YearlyReport />} />
-
           <Route path="/vendor/orders" element={<VendorOrders />} />
           <Route
             path="/vendor/:vendor_id/customer/:customer_id/orderitems/:order_id"
-            element={<CustomerOrders />}
+            element={<VendorOrderDetail />}
           />
-
+          <Route path="/vendor/customers" element={<Customers />} />
           <Route path="/vendor/reports" element={<Reports />} />
+          <Route path="/vendor/daily-report" element={<DailyReport />} />
+          <Route path="/vendor/monthly-report" element={<MonthlyReport />} />
+          <Route path="/vendor/yearly-report" element={<YearlyReport />} />
           <Route path="/vendor/vendor-profile" element={<VendorProfile />} />
           <Route
             path="/vendor/change-vendor-password"

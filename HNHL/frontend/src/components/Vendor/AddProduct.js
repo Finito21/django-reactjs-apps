@@ -1,13 +1,30 @@
+// Comment: Importing VendorSidebar from a local file
 import VendorSidebar from "./VendorSidebar";
+
+// Comment: Importing useState and useEffect from React
 import { useState, useEffect } from "react";
+
+// Comment: Importing axios for handling HTTP requests
 import axios from "axios";
+
+// Comment: Constant containing the base API URL
 const baseUrl = "http://127.0.0.1:8000/api/";
 
+// Comment: Functional component AddProduct
 function AddProduct() {
+  // Comment: Retrieving the vendor ID from local storage
   const vendor_id = localStorage.getItem("vendor_id");
+
+  // Comment: State to store error message
   const [ErrorMsg, setErrorMsg] = useState("");
+
+  // Comment: State to store success message
   const [SuccessMsg, setSuccessMsg] = useState("");
+
+  // Comment: State to store category data
   const [CategoryData, setCategoryData] = useState([]);
+
+  // Comment: State to store product data
   const [ProductData, setProductData] = useState({
     category: "",
     vendor: "",
@@ -21,16 +38,18 @@ function AddProduct() {
     image: "",
   });
 
-  const [ImgUploadErrorMsg, setImgUploadErrorMsg] = useState("");
-  const [ImgUploadSuccessMsg, setImgUploadSuccessMsg] = useState("");
+  // Comment: State to store product images
   const [ProductImgs, setProductImgs] = useState([]);
 
+  // Comment: Handling changes in text input values
   const inputHandler = (event) => {
     setProductData({
       ...ProductData,
       [event.target.name]: event.target.value,
     });
   };
+
+  // Comment: Handling file selection
   const fileHandler = (event) => {
     setProductData({
       ...ProductData,
@@ -38,6 +57,7 @@ function AddProduct() {
     });
   };
 
+  // Comment: Handling selection of multiple files
   const multipleFilesHandler = (event) => {
     var files = event.target.files;
     if (files.length > 0) {
@@ -45,6 +65,7 @@ function AddProduct() {
     }
   };
 
+  // Comment: Handling form submission
   const submitHandler = () => {
     const formData = new FormData();
     formData.append("vendor", ProductData.vendor);
@@ -106,6 +127,7 @@ function AddProduct() {
       });
   };
 
+  // Comment: Fetching category data from the server on component render
   useEffect(() => {
     setProductData({
       ...ProductData,
@@ -114,6 +136,7 @@ function AddProduct() {
     fetchData(baseUrl + "categories/");
   }, []);
 
+  // Comment: Function to fetch data from the server
   function fetchData(baseurl) {
     fetch(baseurl)
       .then((response) => response.json())
@@ -122,6 +145,7 @@ function AddProduct() {
       });
   }
 
+  // Comment: Rendering the component
   return (
     <div className="container mt-4">
       <div className="row">
@@ -135,8 +159,9 @@ function AddProduct() {
               {SuccessMsg && <p className="text-success">{SuccessMsg}</p>}
               {ErrorMsg && <p className="text-danger">{ErrorMsg}</p>}
               <form>
+                {/* Category selection */}
                 <div className="mb-3">
-                  <label for="Title" className="form-label">
+                  <label htmlFor="Title" className="form-label">
                     Category
                   </label>
                   <select
@@ -145,13 +170,16 @@ function AddProduct() {
                     onChange={inputHandler}
                   >
                     {CategoryData.map((item, index) => (
-                      <option value={item.id}>{item.title}</option>
+                      <option key={index} value={item.id}>
+                        {item.title}
+                      </option>
                     ))}
                   </select>
                 </div>
 
+                {/* Title input */}
                 <div className="mb-3">
-                  <label for="Title" className="form-label">
+                  <label htmlFor="Title" className="form-label">
                     Title
                   </label>
                   <input
@@ -164,8 +192,9 @@ function AddProduct() {
                   />
                 </div>
 
+                {/* Slug input */}
                 <div className="mb-3">
-                  <label for="Slug" className="form-label">
+                  <label htmlFor="Slug" className="form-label">
                     {" "}
                     Slug
                   </label>
@@ -179,8 +208,9 @@ function AddProduct() {
                   />
                 </div>
 
+                {/* PLN Price input */}
                 <div className="mb-3">
-                  <label for="PLN_Price" className="form-label">
+                  <label htmlFor="PLN_Price" className="form-label">
                     PLN Price
                   </label>
                   <input
@@ -193,8 +223,9 @@ function AddProduct() {
                   />
                 </div>
 
+                {/* USD Price input */}
                 <div className="mb-3">
-                  <label for="USD_Price" className="form-label">
+                  <label htmlFor="USD_Price" className="form-label">
                     USD Price
                   </label>
                   <input
@@ -207,8 +238,9 @@ function AddProduct() {
                   />
                 </div>
 
+                {/* EUR Price input */}
                 <div className="mb-3">
-                  <label for="EUR_Price" className="form-label">
+                  <label htmlFor="EUR_Price" className="form-label">
                     EUR Price
                   </label>
                   <input
@@ -221,8 +253,9 @@ function AddProduct() {
                   />
                 </div>
 
+                {/* Detail textarea */}
                 <div className="mb-3">
-                  <label for="Detail" className="form-label">
+                  <label htmlFor="Detail" className="form-label">
                     Detail
                   </label>
                   <textarea
@@ -235,8 +268,9 @@ function AddProduct() {
                   />
                 </div>
 
+                {/* Tags textarea */}
                 <div className="mb-3">
-                  <label for="Tags" className="form-label">
+                  <label htmlFor="Tags" className="form-label">
                     Tags
                   </label>
                   <textarea
@@ -249,9 +283,10 @@ function AddProduct() {
                   />
                 </div>
 
+                {/* Featured Image input */}
                 <div className="mb-3">
                   <div className="mb-3">
-                    <label for="ProductImg" className="form-label">
+                    <label htmlFor="ProductImg" className="form-label">
                       Featured Image
                     </label>
                     <input
@@ -263,9 +298,11 @@ function AddProduct() {
                     />
                   </div>
                 </div>
+
+                {/* Product Images input */}
                 <div className="mb-3">
                   <div className="mb-3">
-                    <label for="Product_Imgs" className="form-label">
+                    <label htmlFor="Product_Imgs" className="form-label">
                       Product Images
                     </label>
                     <input
@@ -279,6 +316,7 @@ function AddProduct() {
                   </div>
                 </div>
 
+                {/* Button to submit the form */}
                 <button
                   type="button"
                   onClick={submitHandler}
@@ -294,4 +332,6 @@ function AddProduct() {
     </div>
   );
 }
+
+// Comment: Exporting the AddProduct component
 export default AddProduct;

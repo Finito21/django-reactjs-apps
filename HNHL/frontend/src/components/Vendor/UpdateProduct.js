@@ -3,19 +3,18 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 const baseUrl = "http://127.0.0.1:8000/api/";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 function UpdateProduct() {
+  // Retrieve product_id from the URL parameters
   const { product_id } = useParams();
+
+  // Retrieve vendor_id from local storage
   const vendor_id = localStorage.getItem("vendor_id");
 
-  const [IsImageDelated, setIsImageDelated] = useState(false);
-
+  // State variables for managing form data and UI states
   const [IsFeatureImageSelected, setIsFeatureImageSelected] = useState(false);
   const [IsMultipleProductImagesSelected, setIsMultipleProductImagesSelected] =
     useState(false);
-
   const [ErrorMsg, setErrorMsg] = useState("");
   const [SuccessMsg, setSuccessMsg] = useState("");
   const [CategoryData, setCategoryData] = useState([]);
@@ -32,15 +31,17 @@ function UpdateProduct() {
     image: "",
     product_imgs: "",
   });
-
   const [ProductImgs, setProductImgs] = useState([]);
 
+  // Handler for input changes in the form
   const inputHandler = (event) => {
     setProductData({
       ...ProductData,
       [event.target.name]: event.target.value,
     });
   };
+
+  // Handler for file input changes (e.g., feature image)
   const fileHandler = (event) => {
     setProductData({
       ...ProductData,
@@ -52,6 +53,7 @@ function UpdateProduct() {
     }
   };
 
+  // Handler for multiple file input changes (e.g., product images)
   const multipleFilesHandler = (event) => {
     var files = event.target.files;
     if (files.length > 0) {
@@ -60,6 +62,7 @@ function UpdateProduct() {
     }
   };
 
+  // Handler for form submission
   const submitHandler = () => {
     const formData = new FormData();
     formData.append("vendor", ProductData.vendor);
@@ -112,6 +115,7 @@ function UpdateProduct() {
       });
   };
 
+  // Fetch category data and initial product data on component mount
   useEffect(() => {
     setProductData({
       ...ProductData,
@@ -121,6 +125,7 @@ function UpdateProduct() {
     fetchProductData(baseUrl + "product/" + product_id);
   }, []);
 
+  // Function to fetch category data from the API
   function fetchData(baseurl) {
     fetch(baseurl)
       .then((response) => response.json())
@@ -129,6 +134,7 @@ function UpdateProduct() {
       });
   }
 
+  // Function to delete an image
   function deleteImage(image_id) {
     axios
       .delete(baseUrl + "product-img/" + image_id + "/")
@@ -142,6 +148,7 @@ function UpdateProduct() {
       });
   }
 
+  // Function to fetch product data from the API
   function fetchProductData(baseurl) {
     fetch(baseurl)
       .then((response) => response.json())
@@ -162,10 +169,12 @@ function UpdateProduct() {
       });
   }
 
+  // Render the component
   return (
     <div className="container mt-4">
       <div className="row">
         <div className="col-md-3 col-12 mb-2">
+          {/* Render the VendorSidebar component */}
           <VendorSidebar></VendorSidebar>
         </div>
         <div className="col-md-9 col-12 mb-2">
@@ -175,6 +184,7 @@ function UpdateProduct() {
               {SuccessMsg && <p className="text-success">{SuccessMsg}</p>}
               {ErrorMsg && <p className="text-danger">{ErrorMsg}</p>}
               <form>
+                {/* Form fields */}
                 <div className="mb-3">
                   <label for="Title" className="form-label">
                     Category
@@ -293,7 +303,7 @@ function UpdateProduct() {
                     id="Tags"
                   />
                 </div>
-
+                {/* Featured Image Input */}
                 <div className="mb-3">
                   <div className="mb-3">
                     <label for="ProductImg" className="form-label">
@@ -313,6 +323,8 @@ function UpdateProduct() {
                     />
                   </div>
                 </div>
+
+                {/* Product Images Input */}
                 <div className="mb-3">
                   <div className="mb-3">
                     <label for="Product_Imgs" className="form-label">
@@ -326,6 +338,7 @@ function UpdateProduct() {
                       className="form-control"
                       id="Product_Imgs"
                     />
+                    {/* Render existing product images */}
                     <>
                       {ProductData.product_imgs &&
                         ProductData.product_imgs.map((img, index) => (
@@ -359,6 +372,7 @@ function UpdateProduct() {
                   </div>
                 </div>
 
+                {/* Submit Button */}
                 <button
                   type="button"
                   onClick={submitHandler}
@@ -374,4 +388,6 @@ function UpdateProduct() {
     </div>
   );
 }
+
+// Export the UpdateProduct component as the default export
 export default UpdateProduct;
