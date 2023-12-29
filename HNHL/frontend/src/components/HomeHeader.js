@@ -1,76 +1,33 @@
+// Import necessary dependencies and assets
 import { Link } from "react-router-dom";
-import { useState, useContext, useEffect } from "react";
+import { useContext } from "react";
 import { UserContext, CartContext, CurrencyContext } from "../Context";
 import logo from "../logo.svg";
 
+// Define the HomeHeader component for the header section on the home page
 function HomeHeader(props) {
+  // Get user context, cart data, vendor status, and currency context
   const userContext = useContext(UserContext);
   const { cartData } = useContext(CartContext);
-
   const checkVendor = localStorage.getItem("vendor_login");
-
   const { CurrencyData, setCurrencyData } = useContext(CurrencyContext);
-  if (cartData == null) {
-    var cartItems = 0;
-  } else {
-    var cartItems = cartData.length;
-  }
 
+  // Initialize cart items count based on cart data
+  let cartItems = cartData ? cartData.length : 0;
+
+  // Function to handle currency change
   const changeCurrency = (e) => {
     var _currency = e.target.value;
     localStorage.setItem("currency", _currency);
     setCurrencyData(_currency);
   };
 
-  const cartAddButtonHandler = () => {
-    var previousCart = localStorage.getItem(`cartData_${customerId}`);
-    var cartJson = JSON.parse(previousCart);
-    var cartData = {
-      product: {
-        id: productData.id,
-        title: productData.title,
-        price: productData.price,
-        usd_price: productData.usd_price,
-        eur_price: productData.eur_price,
-        image: productData.image,
-      },
-      user: {
-        id: 1,
-      },
-      total_amount: 10,
-    };
-    if (cartJson != null) {
-      cartJson.push(cartData);
-      var cartString = JSON.stringify(cartJson);
-      localStorage.setItem(`cartData_${customerId}`, cartString);
-      setCartData(cartJson);
-    } else {
-      var newCartList = [];
-      newCartList.push(cartData);
-      var cartString = JSON.stringify(newCartList);
-      localStorage.setItem(`cartData_${customerId}`, cartString);
-    }
-    setcartButtonClickStatus(true);
-  };
-
-  const cartRemoveButtonHandler = () => {
-    var previousCart = localStorage.getItem(`cartData_${customerId}`);
-    var cartJson = JSON.parse(previousCart);
-    cartJson.map((cart, index) => {
-      if (cart != null && cart.product.id == productData.id) {
-        //delete cartJson[index];
-        cartJson.splice(index, 1);
-      }
-    });
-    var cartString = JSON.stringify(cartJson);
-    localStorage.setItem(`cartData_${customerId}`, cartString);
-    setcartButtonClickStatus(false);
-    setCartData(cartJson);
-  };
+  // Render the header section with logo, navigation, and other elements
   return (
     <div className="container text-center">
       <div className="row">
         <div className="col">
+          {/* Logo linking to the home page */}
           <Link to="/">
             <img src={logo} alt="Logo" width="250" height="250" />
           </Link>
@@ -78,7 +35,9 @@ function HomeHeader(props) {
       </div>
 
       <div className="col">
+        {/* Navigation bar with links and dropdowns */}
         <nav className="navbar  navbar-expand-lg navbar-dark bg-dark rounded">
+          {/* Navigation links */}
           <ul className="navbar-nav mx-auto">
             <li className="nav-item">
               <Link className="nav-link" aria-current="page" to="/">
@@ -92,6 +51,7 @@ function HomeHeader(props) {
               </Link>
             </li>
 
+            {/* My Account dropdown for customers */}
             {!checkVendor && (
               <>
                 <li className="nav-item dropdown">
@@ -105,6 +65,7 @@ function HomeHeader(props) {
                     My Account
                   </a>
 
+                  {/* Dropdown menu options */}
                   <ul className="dropdown-menu">
                     {userContext.login !== "true" && (
                       <>
@@ -145,6 +106,7 @@ function HomeHeader(props) {
               </>
             )}
 
+            {/* Vendor Panel dropdown for vendors */}
             {checkVendor && (
               <>
                 <li className="nav-item dropdown">
@@ -158,6 +120,7 @@ function HomeHeader(props) {
                     Vendor Panel
                   </a>
 
+                  {/* Dropdown menu options for vendors */}
                   <ul className="dropdown-menu">
                     <li>
                       <Link className="dropdown-item" to="/vendor/dashboard">
@@ -174,10 +137,11 @@ function HomeHeader(props) {
               </>
             )}
 
+            {/* My Cart link for customers */}
             {!checkVendor && userContext.login == "true" && (
               <>
-                <li className="nav-item">
-                  <>
+                {cartItems > 0 && (
+                  <li className="nav-item">
                     <Link
                       className="nav-link"
                       aria-current="page"
@@ -185,14 +149,24 @@ function HomeHeader(props) {
                     >
                       My Cart ({cartItems})
                     </Link>
-                  </>
-                </li>
+                  </li>
+                )}
+
+                {!(cartItems > 0) && (
+                  <li className="nav-item">
+                    <Link className="nav-link" aria-current="page">
+                      My Cart ({cartItems})
+                    </Link>
+                  </li>
+                )}
               </>
             )}
 
+            {/* Currency selection dropdown */}
             <li className="nav-item">
               <div className="nav-link">
                 <select onChange={changeCurrency} border-radius="0.25">
+                  {/* Options for currency selection */}
                   {CurrencyData != "USD" && CurrencyData != "EUR" && (
                     <>
                       <option value="PLN" selected>
@@ -229,4 +203,6 @@ function HomeHeader(props) {
     </div>
   );
 }
+
+// Export the HomeHeader component as the default export
 export default HomeHeader;

@@ -3,10 +3,17 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function CustomerRegister(props) {
+  // Base URL for API
   const baseUrl = "http://127.0.0.1:8000/api/";
+
+  // State variables for error and success messages
   const [errorMsg, seterrorMsg] = useState("");
   const [successMsg, setsuccessMsg] = useState("");
+
+  // Use useNavigate for navigation
   const navigate = useNavigate();
+
+  // State variable for form data
   const [registerFormData, setRegisterFormData] = useState({
     first_name: "",
     last_name: "",
@@ -15,25 +22,31 @@ function CustomerRegister(props) {
     password: "",
   });
 
+  // Handler for input changes
   const inputHandler = (event) => {
     setRegisterFormData({
       ...registerFormData,
       [event.target.name]: event.target.value,
     });
   };
+
+  // Handler for switching to vendor registration
   const handleSwitchToggle = () => {
     navigate("/vendor/register"); // Use navigate for navigation
   };
 
+  // Handler for form submission
   const submitHandler = (event) => {
+    event.preventDefault();
     const formData = new FormData();
     formData.append("first_name", registerFormData.first_name);
     formData.append("last_name", registerFormData.last_name);
     formData.append("username", registerFormData.username);
     formData.append("email", registerFormData.email);
-    formData.append("mobile", registerFormData.mobile);
+    formData.append("mobile", registerFormData.mobile); // Mobile field added to FormData
     formData.append("password", registerFormData.password);
 
+    // API call to register customer
     axios
       .post(baseUrl + "customer/register/", formData)
       .then(function (response) {
@@ -41,6 +54,7 @@ function CustomerRegister(props) {
           seterrorMsg(response.data.msg);
           setsuccessMsg("");
         } else {
+          // Clear form data on successful registration
           setRegisterFormData({
             first_name: "",
             last_name: "",
@@ -57,13 +71,14 @@ function CustomerRegister(props) {
       });
   };
 
+  // Enable submit button when all fields are filled
   const buttonEnable =
-    registerFormData.first_name != "" &&
-    registerFormData.last_name != "" &&
-    registerFormData.username != "" &&
-    registerFormData.email != "" &&
-    registerFormData.mobile != "" &&
-    registerFormData.password != "";
+    registerFormData.first_name !== "" &&
+    registerFormData.last_name !== "" &&
+    registerFormData.username !== "" &&
+    registerFormData.email !== "" &&
+    registerFormData.mobile !== "" && // Mobile field included
+    registerFormData.password !== "";
 
   return (
     <div className="container mt-4">
@@ -78,8 +93,9 @@ function CustomerRegister(props) {
               {successMsg && <p className="text-success">{successMsg}</p>}
               {errorMsg && <p className="text-danger">{errorMsg}</p>}
               <form>
+                {/* Input for first name */}
                 <div className="mb-3">
-                  <label for="firstName" className="form-label">
+                  <label htmlFor="firstName" className="form-label">
                     First Name
                   </label>
                   <input
@@ -91,8 +107,9 @@ function CustomerRegister(props) {
                     id="firstName"
                   />
                 </div>
+                {/* Input for last name */}
                 <div className="mb-3">
-                  <label for="lastName" className="form-label">
+                  <label htmlFor="lastName" className="form-label">
                     Last Name
                   </label>
                   <input
@@ -104,9 +121,9 @@ function CustomerRegister(props) {
                     id="lastName"
                   />
                 </div>
-
+                {/* Input for username */}
                 <div className="mb-3">
-                  <label for="username" className="form-label">
+                  <label htmlFor="username" className="form-label">
                     Username
                   </label>
                   <input
@@ -118,8 +135,9 @@ function CustomerRegister(props) {
                     id="username"
                   />
                 </div>
+                {/* Input for email */}
                 <div className="mb-3">
-                  <label for="email" className="form-label">
+                  <label htmlFor="email" className="form-label">
                     Email
                   </label>
                   <input
@@ -131,8 +149,9 @@ function CustomerRegister(props) {
                     id="email"
                   />
                 </div>
+                {/* Input for mobile */}
                 <div className="mb-3">
-                  <label for="mobile" className="form-label">
+                  <label htmlFor="mobile" className="form-label">
                     Mobile
                   </label>
                   <input
@@ -144,21 +163,21 @@ function CustomerRegister(props) {
                     id="mobile"
                   />
                 </div>
+                {/* Input for password */}
                 <div className="mb-3">
-                  <div className="mb-3">
-                    <label for="pwd" className="form-label">
-                      Password
-                    </label>
-                    <input
-                      type="password"
-                      onChange={inputHandler}
-                      name="password"
-                      value={registerFormData.password}
-                      className="form-control"
-                      id="pwd"
-                    />
-                  </div>
+                  <label htmlFor="pwd" className="form-label">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    onChange={inputHandler}
+                    name="password"
+                    value={registerFormData.password}
+                    className="form-control"
+                    id="pwd"
+                  />
                 </div>
+                {/* Submit button */}
                 <button
                   type="button"
                   disabled={!buttonEnable}
@@ -170,6 +189,7 @@ function CustomerRegister(props) {
               </form>
             </div>
           </div>
+          {/* Switch button to register as a seller */}
           <div className="switch d-flex align-items-center justify-content-center mt-3">
             <button
               type="button"
@@ -184,4 +204,5 @@ function CustomerRegister(props) {
     </div>
   );
 }
+
 export default CustomerRegister;

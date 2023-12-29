@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext, CartContext, CurrencyContext } from "../Context";
 
 function SingleRelatedProduct(props) {
+  // Base URL for API requests
   const baseUrl = "http://127.0.0.1:8000/api";
+
+  // Contexts for user, cart, and currency data
   const { CurrencyData } = useContext(CurrencyContext);
   const { cartData, setCartData } = useContext(CartContext);
   const [ProductInWishlist, setProductInWishlist] = useState(false);
@@ -12,13 +15,13 @@ function SingleRelatedProduct(props) {
   const navigate = useNavigate();
   const customerId = localStorage.getItem("customer_id");
 
-  useEffect(() => {
-    checkProductInWishList(baseUrl + "/check-in-wishlist/", props.product.id);
-  }, []);
-
+  // Handler function to add a product to the cart
   const cartAddButtonHandler = () => {
+    // Retrieve and parse the existing cart data from local storage
     var previousCart = localStorage.getItem(`cartData_${customerId}`);
     var cartJson = JSON.parse(previousCart);
+
+    // Create cart data for the current product
     var cartData = {
       product: {
         id: props.product.id,
@@ -34,7 +37,8 @@ function SingleRelatedProduct(props) {
       },
       total_amount: 10,
     };
-    console.log(cartData);
+
+    // Update cart data in local storage and state
     if (cartJson != null) {
       cartJson.push(cartData);
       var cartString = JSON.stringify(cartJson);
@@ -48,8 +52,8 @@ function SingleRelatedProduct(props) {
     }
   };
 
+  // Function to save a product in the user's wishlist
   function saveInWishList() {
-    const customerId = localStorage.getItem("customer_id");
     const formData = new FormData();
     formData.append("customer", customerId);
     formData.append("product", props.product.id);
@@ -65,8 +69,9 @@ function SingleRelatedProduct(props) {
         console.log(error);
       });
   }
+
+  // Function to check if a product is in the user's wishlist
   function checkProductInWishList(baseUrl, product_id) {
-    const customerId = localStorage.getItem("customer_id");
     const formData = new FormData();
     formData.append("customer", customerId);
     formData.append("product", product_id);
@@ -85,6 +90,12 @@ function SingleRelatedProduct(props) {
       });
   }
 
+  // Check if the product is in the user's wishlist when the component mounts
+  useEffect(() => {
+    checkProductInWishList(baseUrl + "/check-in-wishlist/", props.product.id);
+  }, []);
+
+  // Render a card displaying the related product information
   return (
     <div className="col-4 offset-4 mb-4">
       <div className="card">
@@ -94,6 +105,7 @@ function SingleRelatedProduct(props) {
             window.location.reload();
           }}
         >
+          {/* Product image with a clickable link to the product details */}
           <img
             src={props.product.image}
             className="card-img-top"
@@ -102,6 +114,7 @@ function SingleRelatedProduct(props) {
           />
         </div>
         <div className="card-body">
+          {/* Product title with a clickable link to the product details */}
           <h4 className="card-title">
             <div
               onClick={() => {
@@ -113,6 +126,7 @@ function SingleRelatedProduct(props) {
               {props.product.title}
             </div>
           </h4>
+          {/* Display price based on the selected currency */}
           {CurrencyData !== "USD" && CurrencyData !== "EUR" && (
             <h5 className="card-title">Price: {props.product.price} zł</h5>
           )}
@@ -124,8 +138,10 @@ function SingleRelatedProduct(props) {
           )}
         </div>
         <div className="card-footer">
+          {/* Display add to cart and wishlist buttons based on user login status */}
           {userContext.login && (
             <>
+              {/* Add to cart button */}
               <button
                 title="Add to Cart"
                 type="button"
@@ -135,6 +151,7 @@ function SingleRelatedProduct(props) {
                 <i className="fa-solid fa-cart-plus"></i>
               </button>
 
+              {/* Add to wishlist button */}
               {!ProductInWishlist && (
                 <button
                   onClick={saveInWishList}
@@ -154,8 +171,10 @@ function SingleRelatedProduct(props) {
               )}
             </>
           )}
+          {/* Display disabled buttons for non-logged-in users */}
           {userContext.login == null && (
             <>
+              {/* Disabled add to cart button */}
               <button
                 title="Add to Cart"
                 type="button"
@@ -164,6 +183,7 @@ function SingleRelatedProduct(props) {
                 <i className="fa-solid fa-cart-plus"></i>
               </button>
 
+              {/* Disabled add to wishlist button */}
               <button
                 title="Add to Wishlist"
                 className="btn btn-danger ms-1 disabled"
@@ -178,4 +198,5 @@ function SingleRelatedProduct(props) {
   );
 }
 
+// Export the SingleRelatedProduct component as the default export
 export default SingleRelatedProduct;

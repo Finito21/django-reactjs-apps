@@ -301,7 +301,12 @@ class CustomerOrderItemList(generics.ListAPIView):
         qs = super().get_queryset()
         customer_id = self.kwargs["pk"]
         qs = qs.filter(order__customer__id=customer_id)
+        if "fetch_limit" in self.request.GET:
+            limit = int(self.request.GET["fetch_limit"])
+            qs = qs[:limit]
         return qs
+    
+    
 
 
 class VendorOrderItemList(generics.ListAPIView):

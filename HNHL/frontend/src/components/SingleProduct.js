@@ -1,38 +1,31 @@
-import logo from "../logo.svg";
 import { Link } from "react-router-dom";
 import { CurrencyContext, CartContext, UserContext } from "../Context";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 
 function SingleProduct(props) {
+  // Base URL for API requests
   const baseUrl = "http://127.0.0.1:8000/api";
+
+  // Contexts for currency, cart, and user data
   const { CurrencyData } = useContext(CurrencyContext);
   const { cartData, setCartData } = useContext(CartContext);
-  const [cartButtonClickStatus, setcartButtonClickStatus] = useState(false);
   const [ProductInWishlist, setProductInWishlist] = useState(false);
   const userContext = useContext(UserContext);
   const customerId = localStorage.getItem("customer_id");
 
+  // Check if the product is in the user's wishlist when the component mounts
   useEffect(() => {
     checkProductInWishList(baseUrl + "/check-in-wishlist/", props.product.id);
-    checkProductInCart(props.product_id);
   }, []);
 
-  function checkProductInCart(product_id) {
-    var previousCart = localStorage.getItem(`cartData_${customerId}`);
-    var cartJson = JSON.parse(previousCart);
-    if (cartJson != null) {
-      cartJson.map((cart) => {
-        if (cart != null && cart.product.id == product_id) {
-          setcartButtonClickStatus(true);
-        }
-      });
-    }
-  }
-
+  // Handler function to add a product to the cart
   const cartAddButtonHandler = () => {
+    // Retrieve and parse the existing cart data from local storage
     var previousCart = localStorage.getItem(`cartData_${customerId}`);
     var cartJson = JSON.parse(previousCart);
+
+    // Create cart data for the current product
     var cartData = {
       product: {
         id: props.product.id,
@@ -48,7 +41,8 @@ function SingleProduct(props) {
       },
       total_amount: 10,
     };
-    console.log(cartData);
+
+    // Update cart data in local storage and state
     if (cartJson != null) {
       cartJson.push(cartData);
       var cartString = JSON.stringify(cartJson);
@@ -60,26 +54,10 @@ function SingleProduct(props) {
       var cartString = JSON.stringify(newCartList);
       localStorage.setItem(`cartData_${customerId}`, cartString);
     }
-    setcartButtonClickStatus(true);
   };
 
-  const cartRemoveButtonHandler = () => {
-    var previousCart = localStorage.getItem(`cartData_${customerId}`);
-    var cartJson = JSON.parse(previousCart);
-    cartJson.map((cart, index) => {
-      if (cart != null && cart.product.id == props.product.id) {
-        //delete cartJson[index];
-        cartJson.splice(index, 1);
-      }
-    });
-    var cartString = JSON.stringify(cartJson);
-    localStorage.setItem(`cartData_${customerId}`, cartString);
-    setcartButtonClickStatus(false);
-    setCartData(cartJson);
-  };
-
+  // Function to save a product in the user's wishlist
   function saveInWishList() {
-    const customerId = localStorage.getItem("customer_id");
     const formData = new FormData();
     formData.append("customer", customerId);
     formData.append("product", props.product.id);
@@ -95,8 +73,9 @@ function SingleProduct(props) {
         console.log(error);
       });
   }
+
+  // Function to check if a product is in the user's wishlist
   function checkProductInWishList(baseUrl, product_id) {
-    const customerId = localStorage.getItem("customer_id");
     const formData = new FormData();
     formData.append("customer", customerId);
     formData.append("product", product_id);
@@ -115,9 +94,11 @@ function SingleProduct(props) {
       });
   }
 
+  // Render a card displaying the product information
   return (
     <div className="col-12 col-md-3 mb-4" style={{ minWidth: "250px" }}>
       <div className="card">
+        {/* Product image with a clickable link to the product details */}
         <Link to={`/product/${props.product.slug}/${props.product.id}`}>
           <img
             src={props.product.image}
@@ -130,6 +111,7 @@ function SingleProduct(props) {
           className="card-body"
           style={{ height: "110px", width: "100%", objectFit: "contain" }}
         >
+          {/* Product title with a clickable link to the product details */}
           <h4 className="card-title">
             <Link
               to={`/product/${props.product.slug}/${props.product.id}`}
@@ -138,46 +120,39 @@ function SingleProduct(props) {
               {props.product.title}{" "}
             </Link>
           </h4>
-          {CurrencyData != "USD" && CurrencyData != "EUR" && (
+          {/* Display price based on the selected currency */}
+          {CurrencyData !== "USD" && CurrencyData !== "EUR" && (
             <h5 className="card-title">Price: {props.product.price} zł</h5>
           )}
-          {CurrencyData == "USD" && (
+          {CurrencyData === "USD" && (
             <h5 className="card-title">Price: {props.product.usd_price} $</h5>
           )}
-          {CurrencyData == "EUR" && (
+          {CurrencyData === "EUR" && (
             <h5 className="card-title">Price: {props.product.eur_price} €</h5>
           )}
         </div>
         <div className="card-footer">
+          {/* Display add to cart and wishlist buttons based on user login status */}
           {userContext.login && (
             <>
-              {!cartButtonClickStatus && (
-                <button
-                  title="Add to Cart"
-                  type="button"
-                  onClick={cartAddButtonHandler}
-                  className="btn btn-primary"
-                >
-                  <i className="fa-solid fa-cart-plus"></i>
-                </button>
-              )}
-              {cartButtonClickStatus && (
-                <button
-                  title="Remove from Cart"
-                  type="button"
-                  onClick={cartRemoveButtonHandler}
-                  className="btn btn-warning"
-                >
-                  <i className="fa-solid fa-cart-plus"></i>
-                </button>
-              )}
+              {/* Add to cart button */}
+              <button
+                title="Add to Cart"
+                type="button"
+                onClick={cartAddButtonHandler}
+                className="btn btn-primary"
+              >
+                <i className="fa-solid fa-cart-plus"></i>
+              </button>
+
+              {/* Add to wishlist button */}
               {!ProductInWishlist && (
                 <button
                   onClick={saveInWishList}
                   title="Add to Wishlist"
                   className="btn btn-danger ms-1"
                 >
-                  <i className="fa fa-heart"></i>
+                  <i className="fa fa-heart" />
                 </button>
               )}
               {ProductInWishlist && (
@@ -190,8 +165,10 @@ function SingleProduct(props) {
               )}
             </>
           )}
+          {/* Display disabled buttons for non-logged-in users */}
           {userContext.login == null && (
             <>
+              {/* Disabled add to cart button */}
               <button
                 title="Add to Cart"
                 type="button"
@@ -200,6 +177,7 @@ function SingleProduct(props) {
                 <i className="fa-solid fa-cart-plus"></i>
               </button>
 
+              {/* Disabled add to wishlist button */}
               <button
                 title="Add to Wishlist"
                 className="btn btn-danger ms-1 disabled"
@@ -213,4 +191,6 @@ function SingleProduct(props) {
     </div>
   );
 }
+
+// Export the SingleProduct component as the default export
 export default SingleProduct;

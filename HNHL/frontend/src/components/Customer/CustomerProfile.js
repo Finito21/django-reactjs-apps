@@ -6,8 +6,10 @@ import "../../CurrencySwitcher.css";
 const baseUrl = "http://127.0.0.1:8000/api";
 
 function CustomerProfile() {
+  // State variable for success message
   const [SuccessMsg, setSuccessMsg] = useState("");
 
+  // State variable for profile data
   const [ProfileData, setProfileData] = useState({
     user_id: "",
     first_name: "",
@@ -18,12 +20,10 @@ function CustomerProfile() {
     p_image: "",
   });
 
+  // Retrieve customer_id from local storage
   var customer_id = localStorage.getItem("customer_id");
 
-  useEffect(() => {
-    fetchData(baseUrl + "/customer/" + customer_id);
-  }, []);
-
+  // Function to fetch profile data
   function fetchData(baseurl) {
     fetch(baseurl)
       .then((response) => response.json())
@@ -40,6 +40,12 @@ function CustomerProfile() {
       });
   }
 
+  // useEffect to fetch data when the component mounts
+  useEffect(() => {
+    fetchData(baseUrl + "/customer/" + customer_id);
+  }, []);
+
+  // Handler for input changes
   const inputHandler = (event) => {
     setProfileData({
       ...ProfileData,
@@ -47,6 +53,7 @@ function CustomerProfile() {
     });
   };
 
+  // Handler for file changes
   const handleFileChange = (event) => {
     setProfileData({
       ...ProfileData,
@@ -54,12 +61,14 @@ function CustomerProfile() {
     });
   };
 
+  // Handler for form submission
   const submitHandler = (event) => {
     const formData = new FormData();
     formData.append("user", ProfileData.user_id);
     formData.append("mobile", ProfileData.mobile);
     formData.append("profile_image", ProfileData.p_image);
 
+    // API call to update profile information
     axios
       .put(baseUrl + "/customer/" + customer_id + "/", formData, {
         headers: {
@@ -74,11 +83,14 @@ function CustomerProfile() {
         console.log(error);
       });
 
+    // Another FormData for updating user information
     const formUserData = new FormData();
     formUserData.append("first_name", ProfileData.first_name);
     formUserData.append("last_name", ProfileData.last_name);
     formUserData.append("username", ProfileData.username);
     formUserData.append("email", ProfileData.email);
+
+    // API call to update user information
     axios
       .put(baseUrl + "/user/" + ProfileData.user_id + "/", formUserData)
       .then(function (response) {
@@ -102,8 +114,9 @@ function CustomerProfile() {
             <div className="card-body">
               {SuccessMsg && <p className="text-success">{SuccessMsg}</p>}
               <form>
+                {/* Input for first name */}
                 <div className="mb-3">
-                  <label for="firstName" className="form-label">
+                  <label htmlFor="firstName" className="form-label">
                     First Name
                   </label>
                   <input
@@ -115,8 +128,9 @@ function CustomerProfile() {
                     id="firstName"
                   />
                 </div>
+                {/* Input for last name */}
                 <div className="mb-3">
-                  <label for="lastName" className="form-label">
+                  <label htmlFor="lastName" className="form-label">
                     Last Name
                   </label>
                   <input
@@ -128,9 +142,9 @@ function CustomerProfile() {
                     id="lastName"
                   />
                 </div>
-
+                {/* Input for username */}
                 <div className="mb-3">
-                  <label for="username" className="form-label">
+                  <label htmlFor="username" className="form-label">
                     Username
                   </label>
                   <input
@@ -142,8 +156,9 @@ function CustomerProfile() {
                     id="username"
                   />
                 </div>
+                {/* Input for email */}
                 <div className="mb-3">
-                  <label for="email" className="form-label">
+                  <label htmlFor="email" className="form-label">
                     Email
                   </label>
                   <input
@@ -155,8 +170,9 @@ function CustomerProfile() {
                     id="email"
                   />
                 </div>
+                {/* Input for mobile */}
                 <div className="mb-3">
-                  <label for="mobile" className="form-label">
+                  <label htmlFor="mobile" className="form-label">
                     Mobile
                   </label>
                   <input
@@ -168,16 +184,18 @@ function CustomerProfile() {
                     id="email"
                   />
                 </div>
+                {/* Input for profile image */}
                 <div className="mb-3">
                   <div className="mb-3">
                     <p>
                       <img
                         src={ProfileData.p_image}
                         width="100"
-                        class="mt-2 rounded"
+                        className="mt-2 rounded"
+                        alt="Profile"
                       />
                     </p>
-                    <label for="profileImg" className="form-label">
+                    <label htmlFor="profileImg" className="form-label">
                       Profile Image
                     </label>
                     <input
@@ -189,6 +207,7 @@ function CustomerProfile() {
                     />
                   </div>
                 </div>
+                {/* Submit button */}
                 <button
                   type="button"
                   onClick={submitHandler}
@@ -204,4 +223,5 @@ function CustomerProfile() {
     </div>
   );
 }
+
 export default CustomerProfile;

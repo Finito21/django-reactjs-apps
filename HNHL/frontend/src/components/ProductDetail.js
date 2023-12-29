@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import logo from "../logo.svg";
 import SingleRelatedProduct from "./SingleRelatedProduct";
 import { useParams } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
@@ -7,39 +6,30 @@ import { UserContext, CartContext, CurrencyContext } from "../Context";
 import axios from "axios";
 
 function ProductDetail() {
+  // Define the base URL for API requests
   const baseUrl = "http://127.0.0.1:8000/api";
+
+  // State variables for storing product information
   const [productData, setproductData] = useState([]);
   const [productImgs, setproductImgs] = useState([]);
   const [productTags, setproductTags] = useState([]);
   const [relatedProducts, setrelatedProducts] = useState([]);
-  const { product_slug, product_id } = useParams();
-  const [cartButtonClickStatus, setcartButtonClickStatus] = useState(false);
+
+  // Get the product_id from the URL parameters
+  const { product_id } = useParams();
+
+  // State variable to check if the product is in the wishlist
   const [ProductInWishlist, setProductInWishlist] = useState(false);
+
+  // Get cart data and user context from the CartContext and UserContext
   const { cartData, setCartData } = useContext(CartContext);
   const userContext = useContext(UserContext);
-  const customerId = localStorage.getItem("customer_id");
 
+  // Get customer ID from local storage and currency data from CurrencyContext
+  const customerId = localStorage.getItem("customer_id");
   const { CurrencyData } = useContext(CurrencyContext);
 
-  useEffect(() => {
-    fetchData(baseUrl + "/product/" + product_id);
-    fetchRelatedData(baseUrl + "/related-products/" + product_id);
-    checkProductInCart(product_id);
-    checkProductInWishList(baseUrl + "/check-in-wishlist/", product_id);
-  }, []);
-
-  function checkProductInCart(product_id) {
-    var previousCart = localStorage.getItem(`cartData_${customerId}`);
-    var cartJson = JSON.parse(previousCart);
-    if (cartJson != null) {
-      cartJson.map((cart) => {
-        if (cart != null && cart.product.id == product_id) {
-          setcartButtonClickStatus(true);
-        }
-      });
-    }
-  }
-
+  // Function to fetch product data from the API
   function fetchData(baseurl) {
     fetch(baseurl + "/product/" + product_id);
     fetch(baseurl)
@@ -51,6 +41,7 @@ function ProductDetail() {
       });
   }
 
+  // Function to fetch related product data from the API
   function fetchRelatedData(baseurl) {
     fetch(baseurl + "/related-products/" + product_id);
     fetch(baseurl)
@@ -60,6 +51,7 @@ function ProductDetail() {
       });
   }
 
+  // Array to store links for product tags
   const tagsLinks = [];
   for (let i = 0; i < productTags.length; i++) {
     let tag = productTags[i].trim();
@@ -73,10 +65,12 @@ function ProductDetail() {
     );
   }
 
-  ///////////////////////////////////////////////////////////////////////////////////////////
+  // Function to handle adding the product to the cart
   const cartAddButtonHandler = () => {
     var previousCart = localStorage.getItem(`cartData_${customerId}`);
     var cartJson = JSON.parse(previousCart);
+
+    // Prepare data for the current product
     var cartData = {
       product: {
         id: productData.id,
@@ -92,6 +86,8 @@ function ProductDetail() {
       },
       total_amount: 10,
     };
+
+    // Update cart data in local storage and state
     if (cartJson != null) {
       cartJson.push(cartData);
       var cartString = JSON.stringify(cartJson);
@@ -103,30 +99,16 @@ function ProductDetail() {
       var cartString = JSON.stringify(newCartList);
       localStorage.setItem(`cartData_${customerId}`, cartString);
     }
-    setcartButtonClickStatus(true);
   };
 
-  const cartRemoveButtonHandler = () => {
-    var previousCart = localStorage.getItem(`cartData_${customerId}`);
-    var cartJson = JSON.parse(previousCart);
-    cartJson.map((cart, index) => {
-      if (cart != null && cart.product.id == productData.id) {
-        //delete cartJson[index];
-        cartJson.splice(index, 1);
-      }
-    });
-    var cartString = JSON.stringify(cartJson);
-    localStorage.setItem(`cartData_${customerId}`, cartString);
-    setcartButtonClickStatus(false);
-    setCartData(cartJson);
-  };
-
+  // Function to save the product in the wishlist
   function saveInWishList() {
     const customerId = localStorage.getItem("customer_id");
     const formData = new FormData();
     formData.append("customer", customerId);
     formData.append("product", productData.id);
 
+    // Make a POST request to save the product in the wishlist
     axios
       .post(baseUrl + "/wishlist/", formData)
       .then(function (response) {
@@ -139,12 +121,14 @@ function ProductDetail() {
       });
   }
 
+  // Function to check if the product is in the wishlist
   function checkProductInWishList(baseUrl, product_id) {
     const customerId = localStorage.getItem("customer_id");
     const formData = new FormData();
     formData.append("customer", customerId);
     formData.append("product", product_id);
 
+    // Make a POST request to check if the product is in the wishlist
     axios
       .post(baseUrl, formData)
       .then(function (response) {
@@ -159,15 +143,25 @@ function ProductDetail() {
       });
   }
 
+  // useEffect to fetch data and check wishlist status on component mount
+  useEffect(() => {
+    fetchData(baseUrl + "/product/" + product_id);
+    fetchRelatedData(baseUrl + "/related-products/" + product_id);
+    checkProductInWishList(baseUrl + "/check-in-wishlist/", product_id);
+  }, []);
+
+  // Render the product details section
   return (
     <section className="container mt-4">
       <div className="row">
         <div className="col-4">
+          {/* Product thumbnail carousel */}
           <div
             id="productThumbnailSlider"
             className="carousel carousel-dark slide"
             data-bs-ride="true"
           >
+            {/* Carousel indicators */}
             <div className="carousel-indicators">
               {productImgs.map((img, index) => {
                 if (index === 0) {
@@ -194,6 +188,8 @@ function ProductDetail() {
                 }
               })}
             </div>
+
+            {/* Carousel inner content */}
             <div className="carousel-inner">
               {productImgs.map((img, index) => {
                 return (
@@ -212,6 +208,8 @@ function ProductDetail() {
                 );
               })}
             </div>
+
+            {/* Carousel control buttons */}
             <button
               className="carousel-control-prev"
               type="button"
@@ -244,6 +242,7 @@ function ProductDetail() {
           <p>{productData.detail}</p>
           <p>{productData.purchase_count}</p>
 
+          {/* Display price based on selected currency */}
           {CurrencyData != "USD" && CurrencyData != "EUR" && (
             <h5 className="card-title">Price: {productData.price} zł</h5>
           )}
@@ -253,16 +252,18 @@ function ProductDetail() {
           {CurrencyData == "EUR" && (
             <h5 className="card-title">Price: {productData.eur_price} €</h5>
           )}
+
+          {/* Add to Cart and Wishlist buttons */}
           <p className="mt-3">
             {userContext.login && (
               <>
                 <button
-                  title="Remove from Cart"
+                  title="Add to Cart"
                   type="button"
-                  onClick={cartRemoveButtonHandler}
-                  className="btn btn-warning"
+                  onClick={cartAddButtonHandler}
+                  className="btn btn-primary"
                 >
-                  <i className="fa-solid fa-cart-plus"></i>Remove from Cart
+                  <i className="fa-solid fa-cart-plus"></i> Add to Cart
                 </button>
 
                 {!ProductInWishlist && (
@@ -271,7 +272,7 @@ function ProductDetail() {
                     title="Add to Wishlist"
                     className="btn btn-danger ms-1"
                   >
-                    <i className="fa fa-heart"></i>Wishlist
+                    <i className="fa fa-heart"></i> Wishlist
                   </button>
                 )}
                 {ProductInWishlist && (
@@ -279,7 +280,7 @@ function ProductDetail() {
                     title="Add to Wishlist"
                     className="btn btn-danger ms-1 disabled"
                   >
-                    <i className="fa fa-heart"></i>Wishlist
+                    <i className="fa fa-heart"></i> Wishlist
                   </button>
                 )}
               </>
@@ -291,19 +292,21 @@ function ProductDetail() {
                   type="button"
                   className="btn btn-success disabled"
                 >
-                  <i className="fa-solid fa-cart-plus"></i>Add to Cart
+                  <i className="fa-solid fa-cart-plus"></i> Add to Cart
                 </button>
 
                 <button
                   title="Add to Wishlist"
                   className="btn btn-danger ms-1 disabled"
                 >
-                  <i className="fa fa-heart"></i>Wishlist
+                  <i className="fa fa-heart"></i> Wishlist
                 </button>
               </>
             )}
           </p>
           <hr />
+
+          {/* Display product tags */}
           <div className="producttags mt-4">
             <h5>Tags</h5>
             <p>{tagsLinks}</p>
@@ -311,13 +314,14 @@ function ProductDetail() {
         </div>
       </div>
 
+      {/* Display related products */}
       <h3 className="mt-5 mb-3 text-center">Related Products</h3>
-
       <div
         id="relatedProductsSlider"
         className="carousel carousel-dark slide"
         data-bs-ride="true"
       >
+        {/* Carousel indicators */}
         <div className="carousel-indicators">
           {relatedProducts.map((product, index) => {
             if (index === 0) {
@@ -344,6 +348,8 @@ function ProductDetail() {
             }
           })}
         </div>
+
+        {/* Carousel inner content */}
         <div className="carousel-inner">
           {relatedProducts.map((product, index) => {
             if (index === 0) {
@@ -365,4 +371,6 @@ function ProductDetail() {
     </section>
   );
 }
+
+// Export the ProductDetail component as the default export
 export default ProductDetail;

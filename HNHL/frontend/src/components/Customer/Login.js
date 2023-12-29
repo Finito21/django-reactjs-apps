@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
 import "../../switcher.css";
 
@@ -14,10 +14,12 @@ function Login(props) {
 
   const navigate = useNavigate(); // Use useNavigate for navigation
 
+  // Handle switch toggle for switching to the seller login
   const handleSwitchToggle = () => {
     navigate("/vendor/login"); // Use navigate for navigation
   };
 
+  // Handle input changes in the form
   const inputHandler = (event) => {
     setLoginFormData({
       ...loginFormData,
@@ -25,6 +27,7 @@ function Login(props) {
     });
   };
 
+  // Handle form submission
   const submitHandler = (event) => {
     event.preventDefault();
     const formData = new FormData();
@@ -38,6 +41,7 @@ function Login(props) {
           setFormError(true);
           seterrorMsg(response.data.msg);
         } else {
+          // Set customer details in local storage upon successful login
           localStorage.setItem("customer_id", response.data.id);
           localStorage.setItem("customer_login", true);
           localStorage.setItem("customer_username", response.data.user);
@@ -50,14 +54,17 @@ function Login(props) {
       });
   };
 
+  // Redirect to customer dashboard if already logged in
   const checkCustomer = localStorage.getItem("customer_login");
   if (checkCustomer) {
     window.location.href = "/customer/dashboard";
   }
 
+  // Enable the submit button only if both username and password are provided
   const buttonEnable =
-    loginFormData.username != "" && loginFormData.password != "";
+    loginFormData.username !== "" && loginFormData.password !== "";
 
+  // Render the login component
   return (
     <div className="container mt-4">
       <div className="row">
@@ -66,6 +73,7 @@ function Login(props) {
             <h4 className="card-header">Login</h4>
             <div className="card-body">
               {formError && <p className="text-danger">{errorMsg}</p>}
+              {/* Login form */}
               <form>
                 <div className="mb-3">
                   <label htmlFor="username" className="form-label">
@@ -82,20 +90,19 @@ function Login(props) {
                 </div>
 
                 <div className="mb-3">
-                  <div className="mb-3">
-                    <label htmlFor="pwd" className="form-label">
-                      Password
-                    </label>
-                    <input
-                      type="password"
-                      name="password"
-                      value={loginFormData.password}
-                      onChange={inputHandler}
-                      className="form-control"
-                      id="pwd"
-                    />
-                  </div>
+                  <label htmlFor="pwd" className="form-label">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={loginFormData.password}
+                    onChange={inputHandler}
+                    className="form-control"
+                    id="pwd"
+                  />
                 </div>
+                {/* Submit button */}
                 <button
                   type="button"
                   disabled={!buttonEnable}
@@ -108,6 +115,7 @@ function Login(props) {
             </div>
           </div>
 
+          {/* Switch button for navigating to the seller login */}
           <div className="switch d-flex align-items-center justify-content-center mt-3">
             <button
               type="button"

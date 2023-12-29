@@ -1,27 +1,32 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logo from "../logo.svg";
-import SingleSeller from "./SingleSeller";
 import { useState, useEffect } from "react";
 
 function Blog(props) {
+  // Base API URL
   const baseUrl = "http://127.0.0.1:8000/api";
+  // State to store categories
   const [categories, setCategories] = useState([]);
 
-  useEffect(() => {
-    fetchData(baseUrl + "/categories");
-  }, []);
-
+  // Function to fetch data from the API
   function fetchData(baseurl) {
     fetch(baseurl)
       .then((response) => response.json())
       .then((data) => {
+        // Set the retrieved categories in the state
         setCategories(data.results);
       });
   }
 
+  // Effect to fetch data when the component mounts
+  useEffect(() => {
+    fetchData(baseUrl + "/categories");
+  }, []);
+
+  // Render component
   return (
     <section className="container">
+      {/* Introduction card */}
       <div
         className="card text-center bg-dark mt-3"
         style={{ color: "#9B9D9E" }}
@@ -51,12 +56,17 @@ function Blog(props) {
           overall mental performance.
         </p>
       </div>
-      <h3>In our webside you can find product from below categories:</h3>
 
+      {/* Heading for categories */}
+      <h3>
+        In our website, you can find products from the following categories:
+      </h3>
+
+      {/* Map categories to cards */}
       {categories.map((category) => (
-        <div>
+        <div key={category.id}>
+          {/* Category card with image */}
           <div
-            key={category.id}
             className="card text-center mb-3"
             style={{ maxWidth: "300px", margin: "auto" }}
           >
@@ -71,6 +81,7 @@ function Blog(props) {
               />
             </Link>
             <div className="card-body text-center">
+              {/* Category title with a link to the detail page */}
               <h4 className="card-title">
                 <Link
                   to={`/category/${category.title}/${category.id}`}
@@ -81,6 +92,8 @@ function Blog(props) {
               </h4>
             </div>
           </div>
+
+          {/* Category detail card */}
           <div
             className="card text-center bg-dark mb-3"
             style={{ color: "#9B9D9E" }}
@@ -93,4 +106,5 @@ function Blog(props) {
   );
 }
 
+// Export the component
 export default Blog;

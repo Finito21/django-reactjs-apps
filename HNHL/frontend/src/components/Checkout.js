@@ -1,4 +1,3 @@
-import logo from "../logo.svg";
 import { Link } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { CartContext, CurrencyContext } from "../Context";
@@ -7,8 +6,6 @@ import axios from "axios";
 function Checkout(props) {
   const baseUrl = "http://127.0.0.1:8000/api";
   const { cartData, setCartData } = useContext(CartContext);
-  const [cartButtonClickStatus, setcartButtonClickStatus] = useState(false);
-  const [productData, setproductData] = useState([]);
   const { CurrencyData } = useContext(CurrencyContext);
   console.log(cartData);
   console.log(CartContext);
@@ -42,7 +39,6 @@ function Checkout(props) {
     });
     var cartString = JSON.stringify(cartJson);
     localStorage.setItem(`cartData_${customer_id}`, cartString);
-    setcartButtonClickStatus(false);
     setCartData(cartJson);
   };
 

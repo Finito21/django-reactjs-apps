@@ -1,16 +1,22 @@
+// Import necessary dependencies and assets
 import { Link } from "react-router-dom";
 import SingleProduct from "./SingleProduct";
-import logo from "../logo.svg";
 import { useState, useEffect } from "react";
 import SingleSeller from "./SingleSeller";
 import banner from "../banner.svg";
 import "../CurrencySwitcher.css";
+
+// Define the Home component for the home page
 function Home() {
+  // Set the base URL for API requests
   const baseUrl = "http://127.0.0.1:8000/api";
+
+  // State variables to store products, categories, and vendors
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [vendors, setVendors] = useState([]);
 
+  // Typewriter effect logic
   var TxtType = function (el, toRotate, period) {
     this.toRotate = toRotate;
     this.el = el;
@@ -54,8 +60,8 @@ function Home() {
     }, delta);
   };
 
+  // useEffect to initialize the typewriter effect
   useEffect(() => {
-    // Animation initialization logic
     var elements = document.getElementsByClassName("typewrite");
     for (var i = 0; i < elements.length; i++) {
       var toRotate = elements[i].getAttribute("data-type");
@@ -72,12 +78,7 @@ function Home() {
     document.body.appendChild(css);
   }, []);
 
-  useEffect(() => {
-    fetchProducts(baseUrl + "/products/?fetch_limit=4");
-    fetchCategories(baseUrl + "/categories/?fetch_limit=4");
-    fetchVendors(baseUrl + "/vendors/?fetch_limit=4");
-  }, []);
-
+  // Function to fetch products from the API
   function fetchProducts(baseurl) {
     fetch(baseurl)
       .then((response) => response.json())
@@ -85,6 +86,8 @@ function Home() {
         setProducts(data.results);
       });
   }
+
+  // Function to fetch categories from the API
   function fetchCategories(baseurl) {
     fetch(baseurl)
       .then((response) => response.json())
@@ -92,6 +95,8 @@ function Home() {
         setCategories(data.results);
       });
   }
+
+  // Function to fetch vendors from the API
   function fetchVendors(baseurl) {
     fetch(baseurl)
       .then((response) => response.json())
@@ -100,11 +105,21 @@ function Home() {
       });
   }
 
+  // useEffect to fetch data from the API on component mount
+  useEffect(() => {
+    fetchProducts(baseUrl + "/products/?fetch_limit=4");
+    fetchCategories(baseUrl + "/categories/?fetch_limit=4");
+    fetchVendors(baseUrl + "/vendors/?fetch_limit=4");
+  }, []);
+
+  // Render the main content of the Home component
   return (
     <main className="mt-1">
+      {/* Static Slider Section */}
       <div class="static-slider1 py-4">
         <div class="container">
           <div class="row">
+            {/* Left Column */}
             <div class="col-md-7 align-self-center">
               <h1 class="title">
                 Invigorate your mind with our supplements - and remember also
@@ -115,6 +130,7 @@ function Home() {
                   data-type='[ "HEALTHY NUTRITION", "HEALTHY LIFE"]'
                 ></span>
               </h1>
+              {/* Button linking to the blog */}
               <Link
                 to="/blog"
                 className="btn btn-success-gradiant btn-md btn-arrow mt-3 text-white border-0"
@@ -123,36 +139,44 @@ function Home() {
                 <span>Read More</span>
               </Link>
             </div>
+            {/* Right Column */}
             <div class="col-md-5 mt-4 d-flex justify-content-end">
+              {/* Image */}
               <img src={banner} alt="wrapkit" class="img-fluid" />
             </div>
           </div>
         </div>
       </div>
 
+      {/* New Products Section */}
       <div className="container">
+        {/* Heading with a link to view all products */}
         <h3 className="mb-4">
           New Products
           <Link to="/products" className="float-end btn btn-sm btn-dark">
             View All Products
           </Link>
         </h3>
+        {/* Row of new products */}
         <div className="row mb-4">
           {products.map((product) => (
             <SingleProduct product={product} />
           ))}
         </div>
 
+        {/* Categories Section */}
         <h3 className="mb-4">
           Categories
           <Link to="/categories" className="float-end btn btn-sm btn-dark">
             View All Categories
           </Link>
         </h3>
+        {/* Row of category cards */}
         <div className="row mb-4">
           {categories.map((category) => (
             <div className="col-12 col-md-3 mb-4">
               <div className="card">
+                {/* Link to the category page with image and title */}
                 <Link to={`/category/${category.title}/${category.id}`}>
                   <img
                     src={category.category_img}
@@ -162,6 +186,7 @@ function Home() {
                   />
                 </Link>
                 <div className="card-body text-center">
+                  {/* Title of the category */}
                   <h4 className="card-title">
                     <Link
                       to={`/category/${category.title}/${category.id}`}
@@ -176,12 +201,14 @@ function Home() {
           ))}
         </div>
 
+        {/* New Sellers Section */}
         <h3 className="mb-4">
           New Sellers
           <Link to="/sellers" className="float-end btn btn-sm btn-dark">
             View All Seller
           </Link>
         </h3>
+        {/* Row of new sellers */}
         <div className="row mb-4">
           {vendors.map((seller) => (
             <SingleSeller seller={seller} />
@@ -191,4 +218,6 @@ function Home() {
     </main>
   );
 }
+
+// Export the Home component as the default export
 export default Home;
