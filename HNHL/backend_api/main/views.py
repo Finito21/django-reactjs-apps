@@ -10,6 +10,8 @@ from django.contrib.auth.models import User
 from django.db.models import Count
 from django.contrib.auth.hashers import make_password
 
+from .pagination import CustomerPagination
+
 
 # Create your views here.
 class VendorList(generics.ListCreateAPIView):
@@ -171,6 +173,7 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
 class CustomerList(generics.ListCreateAPIView):
     queryset = models.Customer.objects.all()
     serializer_class = serializers.CustomerSerializer
+    page_size = 100
     # permission_classes = [permissions.IsAuthenticated]
 
 
@@ -328,6 +331,8 @@ class VendorOrderItemDetails(generics.RetrieveAPIView):
 class VendorCustomerList(generics.ListAPIView):
     queryset = models.OrderItems.objects.all()
     serializer_class = serializers.OrderItemSerializer
+    pagination_class = CustomerPagination
+    
 
     def get_queryset(self):
         qs = super().get_queryset()

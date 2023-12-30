@@ -30,6 +30,7 @@ function Customers() {
             self.findIndex((c) => c.customer.id === customer.customer.id)
         );
         setCustomerList(uniqueCustomers);
+        console.log(data);
       });
   }
 

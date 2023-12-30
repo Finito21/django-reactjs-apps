@@ -14,3 +14,6 @@ class CustomPagination(pagination.PageNumberPagination):
                 "data": data,
             }
         )
+        
+class CustomerPagination(pagination.PageNumberPagination):
+    page_size=100
